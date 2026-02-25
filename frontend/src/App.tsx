@@ -3,6 +3,8 @@ import { AuthProvider } from './contexts/AuthContext'
 import Login from './pages/Login'
 import PrivateRoute from './components/PrivateRoute'
 import AppLayout from './components/AppLayout'
+import Dashboard from './pages/executor/Dashboard'
+import TaskList from './pages/executor/TaskList'
 
 function Placeholder({ title }: { title: string }) {
   return (
@@ -38,11 +40,11 @@ export default function App() {
           {/* 执行者工作台 */}
           <Route
             path="/executor/dashboard"
-            element={<ProtectedLayout><Placeholder title="EW-01 我的看板" /></ProtectedLayout>}
+            element={<ProtectedLayout><Dashboard /></ProtectedLayout>}
           />
           <Route
             path="/executor/tasks"
-            element={<ProtectedLayout><Placeholder title="EW-02 任务列表" /></ProtectedLayout>}
+            element={<ProtectedLayout><TaskList /></ProtectedLayout>}
           />
           <Route
             path="/executor/tasks/:taskId"
