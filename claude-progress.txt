@@ -26,31 +26,69 @@
    - 已配置所有 25 个页面的路由（EW-01~10, MW-01~15）
    - 当前为 Placeholder 占位页，等待逐步实现
 
-### 下一个 Session 从哪里继续
+---
 
-**下一步：实现 feature_list.json 中优先级最高的 feature**
+## Session 2 — 认证模块（2026-02-25）
 
-推荐从以下顺序开始（MVP 核心功能）：
-1. **feature #1-5（EW-01 我的看板）** — 执行者首页，展示待办+进行中任务
-   - 先实现后端 API：GET /api/tasks（返回模拟数据）
-   - 实现前端 EW-01 页面（真实 UI，非 placeholder）
-   - 写 tests/feature-001.spec.ts 测试
-   - 截图存入 verification/
-   - 将 feature_list.json 中 #1-5 的 passes 改为 true
+### 完成内容
 
-2. **登录/认证（feature #161-164）** — 在实现看板前先做登录
-   - JWT 认证，PostgreSQL 用户表
-   - 登录页面
+1. **后端认证模块实现**
+   - `backend/database.py`：SQLAlchemy engine + SessionLocal + Settings（pydantic-settings）
+   - `backend/models.py`：User 表（id, username, email, hashed_password, display_name, role, is_active, created_at）
+   - `backend/auth.py`：JWT 创建/验证、密码哈希（直接用 bcrypt，不用 passlib）、get_current_user / require_current_user
+   - `backend/routers/auth.py`：POST /api/auth/login、GET /api/auth/me、POST /api/auth/logout
+   - `backend/main.py`：集成以上模块，startup 事件自动创建 3 个默认用户
 
-**注意事项**：
-- 数据库连接：postgresql://ecom:ecom2026@192.168.0.112:5432/ecom_agent
-- 前端运行在 localhost:3000，后端在 localhost:8000
-- 先 npm install（frontend/）和 pip install -r requirements.txt（backend/）
+2. **前端认证模块实现**
+   - `frontend/src/contexts/AuthContext.tsx`：AuthProvider + useAuth hook，JWT 存入 localStorage
+   - `frontend/src/pages/Login.tsx`：登录页面（表单 + 错误提示）
+   - `frontend/src/components/PrivateRoute.tsx`：路由保护（未登录→/login；executor→拒绝访问/manage/*）
+   - `frontend/src/components/AppLayout.tsx`：顶部导航栏（显示用户名 + 退出登录 hover 菜单）
+   - `frontend/src/App.tsx`：已更新，所有路由用 ProtectedLayout 包裹，/manage/* 限 manager 角色
+
+3. **Playwright 测试文件创建（待验证）**
+   - tests/feature-161.spec.ts：登录成功
+   - tests/feature-162.spec.ts：密码错误提示
+   - tests/feature-163.spec.ts：刷新后会话保持
+   - tests/feature-164.spec.ts：退出登录
+
+4. **依赖安装完成**
+   - `backend/.venv` 已创建（Python 3.14.2）并安装依赖
+   - `frontend/node_modules` 已安装
+   - `tests/node_modules` 已安装 + Playwright Chromium 浏览器已下载
+
+### 未完成 / 下次继续
+
+**主要阻塞**：
+- 回家途中，小主机 192.168.0.112 不可达，后端无法启动（DB 连接超时）
+- Playwright 测试尚未完成验证
+
+**关键 Bug 待修复**：
+- 本机有全局 HTTP 代理（Clash，`http_proxy=http://127.0.0.1:7897`）
+  → 启动 Vite 和运行测试时，**必须** 设置 `NO_PROXY="localhost,127.0.0.1"`，否则 `/api` 代理请求被代理拦截导致登录失败
+
+**下次 session 启动步骤**：
+```bash
+# 1. 确认小主机可达
+ping 192.168.0.112
+
+# 2. 启动后端
+cd backend && .venv/Scripts/uvicorn.exe main:app --reload --host 0.0.0.0 --port 8000
+
+# 3. 启动前端（必须加 NO_PROXY）
+cd frontend && NO_PROXY="localhost,127.0.0.1" npm run dev -- --port 3000
+
+# 4. 运行认证测试（必须加 NO_PROXY）
+cd tests && NO_PROXY="localhost,127.0.0.1" npx playwright test feature-161.spec.ts feature-162.spec.ts feature-163.spec.ts feature-164.spec.ts --reporter=list
+
+# 5. 全部通过后更新 feature_list.json #161-164 passes: true
+# 6. 提交代码
+```
+
+### 默认测试账号
+- admin / admin123（role: admin）
+- manager / manager123（role: manager）
+- executor / executor123（role: executor）
 
 ### 当前 passes: true 的 feature
-
-无（全部为 false，从头开始）
-
-### Git 状态
-
-所有文件已 commit 到 dev 分支。
+无（全部 false，认证功能代码已写完，待测试验证）

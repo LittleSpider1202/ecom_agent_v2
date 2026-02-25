@@ -34,4 +34,37 @@
 
 ---
 
+## [2026-02-25] Session 2 — 认证模块实现
+
+- **发现**：Python 可用，但路径不在 PATH 中
+  - 背景：`python`/`python3` 指向 Windows Store 空壳，均无法直接使用
+  - 结论：完整路径 `C:/Users/huzhe/AppData/Local/Python/bin/python.exe`（Python 3.14.2）可用
+  - venv 创建：`C:/Users/huzhe/AppData/Local/Python/bin/python.exe -m venv .venv`
+  - 激活后 pip/uvicorn 在 `.venv/Scripts/` 下
+
+- **发现**：`passlib[bcrypt]` 与新版 `bcrypt 5.x` 不兼容
+  - 背景：passlib 调用 bcrypt 时抛 `AttributeError: module 'bcrypt' has no attribute '__about__'`，以及 `ValueError: password cannot be longer than 72 bytes`
+  - 结论：**不用 passlib**，直接 `import bcrypt`；用 `bcrypt.hashpw(pwd.encode(), bcrypt.gensalt()).decode()` 和 `bcrypt.checkpw(pwd.encode(), hash.encode())`
+
+- **发现**：本机全局 HTTP 代理 `http_proxy=http://127.0.0.1:7897`（Clash 等）会拦截 localhost 请求
+  - 背景：`curl http://localhost:8000` 返回 502；Vite dev server 的 Node.js proxy 也会继承此代理，导致 `/api` 转发到后端失败，浏览器端登录请求卡住
+  - 结论：
+    - curl 测试加 `--noproxy '*'`
+    - 启动 Vite 时必须设 `NO_PROXY="localhost,127.0.0.1"`：
+      ```bash
+      NO_PROXY="localhost,127.0.0.1" npm run dev -- --port 3000
+      ```
+    - 运行 Playwright 测试同理：
+      ```bash
+      NO_PROXY="localhost,127.0.0.1" npx playwright test feature-161.spec.ts
+      ```
+
+- **发现**：端口冲突 — 旧 Vite 进程未被 kill 时，新实例自动切换到 3001
+  - 背景：多次 `run_in_background` 启动 Vite，旧进程残留占用 3000
+  - 结论：启动前用 `netstat -ano | grep ":3000"` 检查；用 `Stop-Process -Id PID -Force` 杀进程（Windows `kill` 命令无效）
+
+- **发现**：小主机不在同一局域网时后端无法启动（DB 连接超时）
+  - 背景：PostgreSQL 和 Redis 在小主机上，出门后 192.168.0.112 不可达
+  - 结论：出门时只能开发前端代码，不能运行后端和测试
+
 <!-- 后续 session 在此追加 -->
