@@ -52,6 +52,15 @@
 - 全部 `"passes": false`
 - 覆盖 app_spec.md 中每一个页面和功能点
 
+**⚠️ 必须分批写入，每批 50 条：**
+1. 先写第 1-50 条，保存文件
+2. 再追加第 51-100 条
+3. 再追加第 101-150 条
+4. 再追加第 151-200 条（及以上）
+5. 最后验证 JSON 格式合法（用 `python -c "import json; json.load(open('feature_list.json'))"` 检查）
+
+单次输出不要超过 50 条，避免触发 token 限制。
+
 **严禁：后续 session 删除或修改任何条目，只能将 `passes: false` 改为 `passes: true`。**
 
 ---
