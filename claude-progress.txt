@@ -90,5 +90,48 @@ cd tests && NO_PROXY="localhost,127.0.0.1" npx playwright test feature-161.spec.
 - manager / manager123（role: manager）
 - executor / executor123（role: executor）
 
+---
+
+## Session 2 续 — EW-01/EW-02（同日）
+
+### 完成内容
+
+1. **后端 TaskInstance 模型 + API**
+   - `backend/models.py`：新增 TaskInstance 表
+   - `backend/routers/tasks.py`：GET /api/tasks/my（看板），GET /api/tasks（列表，含分页/筛选/搜索/排序）
+   - `backend/main.py`：seed 11 条测试任务（5 pending, 2 running, 3 completed, 1 failed）
+
+2. **前端页面**
+   - `frontend/src/hooks/useApi.ts`：axios 实例（自动带 JWT header，401 自动跳登录页）
+   - `frontend/src/pages/executor/Dashboard.tsx`：EW-01 我的看板（待办/进行中/快捷入口/数量角标）
+   - `frontend/src/pages/executor/TaskList.tsx`：EW-02 任务列表（Tab 筛选/搜索/分页/排序）
+   - `frontend/src/App.tsx`：替换占位页为真实组件
+
+3. **Playwright 测试文件（待验证）**
+   - tests/feature-001~005.spec.ts：EW-01 看板
+   - tests/feature-006~010.spec.ts：EW-02 任务列表
+
 ### 当前 passes: true 的 feature
-无（全部 false，认证功能代码已写完，待测试验证）
+无（全部 false，代码已写完，待明天连小主机验证）
+
+### 下次 session 启动步骤
+```bash
+# 1. 确认小主机可达
+ping 192.168.0.112
+
+# 2. 启动后端
+cd backend && .venv/Scripts/uvicorn.exe main:app --reload --host 0.0.0.0 --port 8000
+
+# 3. 启动前端（必须加 NO_PROXY）
+cd frontend && NO_PROXY="localhost,127.0.0.1" npm run dev -- --port 3000
+
+# 4. 运行所有待验证测试
+cd tests && NO_PROXY="localhost,127.0.0.1" npx playwright test \
+  feature-161.spec.ts feature-162.spec.ts feature-163.spec.ts feature-164.spec.ts \
+  feature-001.spec.ts feature-002.spec.ts feature-003.spec.ts feature-004.spec.ts \
+  feature-005.spec.ts feature-006.spec.ts feature-007.spec.ts feature-008.spec.ts \
+  feature-009.spec.ts feature-010.spec.ts \
+  --reporter=list
+
+# 5. 全部通过后更新 feature_list.json passes:true，commit
+```
