@@ -1,0 +1,56 @@
+# Claude Progress Log
+
+## Session 1 — Initializer Agent (2026-02-25)
+
+### 完成内容
+
+1. **feature_list.json 生成完毕**
+   - 共 231 条测试用例（超过要求的 200 条）
+   - functional: 189 条，style: 42 条
+   - 25 条有 10+ 步骤的端到端测试（满足"至少25条"要求）
+   - 覆盖所有页面：EW-01~10, MW-01~15, BOT-01~05
+   - 全部 passes: false
+
+2. **init.sh 创建完毕**
+   - 启动后端 FastAPI（port 8000）
+   - 启动前端 React dev server（port 3000）
+   - 数据库在小主机运行（192.168.0.112）
+
+3. **项目目录结构初始化**
+   - backend/: FastAPI 后端骨架（main.py, requirements.txt, .env.example）
+   - frontend/: React + TypeScript + Tailwind + Vite 骨架（带路由占位页）
+   - tests/: Playwright E2E 测试配置
+   - verification/: 测试截图存档目录（空）
+
+4. **前端路由结构**
+   - 已配置所有 25 个页面的路由（EW-01~10, MW-01~15）
+   - 当前为 Placeholder 占位页，等待逐步实现
+
+### 下一个 Session 从哪里继续
+
+**下一步：实现 feature_list.json 中优先级最高的 feature**
+
+推荐从以下顺序开始（MVP 核心功能）：
+1. **feature #1-5（EW-01 我的看板）** — 执行者首页，展示待办+进行中任务
+   - 先实现后端 API：GET /api/tasks（返回模拟数据）
+   - 实现前端 EW-01 页面（真实 UI，非 placeholder）
+   - 写 tests/feature-001.spec.ts 测试
+   - 截图存入 verification/
+   - 将 feature_list.json 中 #1-5 的 passes 改为 true
+
+2. **登录/认证（feature #161-164）** — 在实现看板前先做登录
+   - JWT 认证，PostgreSQL 用户表
+   - 登录页面
+
+**注意事项**：
+- 数据库连接：postgresql://ecom:ecom2026@192.168.0.112:5432/ecom_agent
+- 前端运行在 localhost:3000，后端在 localhost:8000
+- 先 npm install（frontend/）和 pip install -r requirements.txt（backend/）
+
+### 当前 passes: true 的 feature
+
+无（全部为 false，从头开始）
+
+### Git 状态
+
+所有文件已 commit 到 dev 分支。
