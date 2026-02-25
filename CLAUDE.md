@@ -132,8 +132,11 @@ main（稳定，全绿）
 3. 本地运行测试，通过
 4. 截图存入 verification/ 目录作为证据
 5. 更新 feature_list.json：将对应项 "passes" 改为 true
-6. commit（代码 + 测试文件 + 截图一起提交）
+6. 将本次踩坑立即写入 docs/env-notes.md（不要等到 session 结束）
+7. commit（代码 + 测试文件 + 截图 + env-notes.md 一起提交）
 ```
+
+**为什么是"立即"**：用户可能随时 Ctrl+C 中断 session，等到最后再写会丢失。每个 feature 完成即固化经验，是唯一可靠的方式。
 
 ### 测试要求
 
