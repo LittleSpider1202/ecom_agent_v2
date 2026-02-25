@@ -151,14 +151,25 @@ git commit -m "feat: implement [feature name] - verified end-to-end
 
 ---
 
-### STEP 10：干净结束
+### STEP 10：继续或结束
 
-上下文即将满之前：
+完成一个 feature 后，检查以下条件：
+
+**如果满足以下任一条件，停止并干净结束：**
+- 上下文使用超过 50%
+- 剩余上下文不足以完成下一个 feature
+- 所有 `passes: false` 条目已完成
+
+**干净结束步骤：**
 1. Commit 所有代码
 2. 更新 `claude-progress.txt`
 3. 确认 `feature_list.json` 已保存
 4. 确认没有未提交的变更
 5. 确保应用处于可运行状态（不留破损功能）
+
+**否则，回到 STEP 4，继续拿下一个 feature。**
+
+不需要等待用户指令，直接继续。
 
 ---
 
