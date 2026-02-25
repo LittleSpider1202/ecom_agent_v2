@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>MW-03 · 流程编辑器 · 电商智能运营平台</title>
+<link rel="stylesheet" href="../_styles.css">
+</head>
+<body>
+<div class="page-nav">
+  <a href="../index.html">← 返回导航</a>
+  <span class="nav-center">MW-03 · 流程编辑器 ★</span>
+  <div><a href="mw-02.html">‹ 上一页</a> &nbsp; <a href="mw-04.html">下一页 ›</a></div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-title">MW-03 ★ · 管理工作台 · 流程编辑器</span>
+    <span class="page-desc">自然语言 → DAG，老板无需懂技术就能定义业务流程</span>
+  </div>
+  <div class="page-body">
+    <div class="topbar"><span class="topbar-logo">▣ 电商运营平台</span><div class="topbar-nav"><span>总览</span><span class="active">流程定义</span><span>工具库</span><span>组织</span><span>监控</span><span>分析</span></div><div class="topbar-right"><span>老板▼</span></div></div>
+
+    <div class="row" style="border-top:none;height:560px">
+      <!-- Left Panel -->
+      <div class="col col-20 sidebar" style="overflow-y:auto">
+        <div class="box-title" style="padding:8px">自然语言生成</div>
+        <div style="padding:8px">
+          <textarea class="input" rows="5" placeholder="描述你的流程，例如：&#10;每周一自动获取库存，AI分析缺货商品，生成采购建议，等采购确认后发单给供应商..."></textarea>
+          <span class="btn btn-primary" style="width:100%;text-align:center;display:block">AI 生成 DAG ▼</span>
+        </div>
+        <hr class="divider">
+        <div class="box-title" style="padding:8px">节点工具箱</div>
+        <div style="padding:8px">
+          <div class="wf-label">自动节点</div>
+          <div class="dag-node dag-node-auto" style="display:block;margin:3px 0;cursor:grab">API 调用</div>
+          <div class="dag-node dag-node-auto" style="display:block;margin:3px 0;cursor:grab">数据处理</div>
+          <div class="dag-node dag-node-auto" style="display:block;margin:3px 0;cursor:grab">条件分支</div>
+          <div class="dag-node dag-node-auto" style="display:block;margin:3px 0;cursor:grab">定时等待</div>
+          <div class="dag-node dag-node-auto" style="display:block;margin:3px 0;cursor:grab">飞书通知</div>
+          <div class="wf-label" style="margin-top:8px">人工节点</div>
+          <div class="dag-node dag-node-manual" style="display:block;margin:3px 0;cursor:grab">数值确认</div>
+          <div class="dag-node dag-node-manual" style="display:block;margin:3px 0;cursor:grab">审核判断</div>
+          <div class="dag-node dag-node-manual" style="display:block;margin:3px 0;cursor:grab">内容填写</div>
+          <div class="dag-node dag-node-manual" style="display:block;margin:3px 0;cursor:grab">文件上传</div>
+          <div class="dag-node dag-node-manual" style="display:block;margin:3px 0;cursor:grab">外部操作确认</div>
+        </div>
+      </div>
+
+      <!-- Canvas -->
+      <div class="col col-50" style="background:#fafafa;position:relative;overflow:auto">
+        <div class="hint" style="text-align:center;padding-top:8px">画布区 · 拖拽编排节点</div>
+        <div style="text-align:center;padding:12px 0;line-height:2.8">
+          <span class="dag-node dag-node-auto">开始 / 定时触发</span>
+          <span class="dag-arrow">↓</span><br>
+          <span class="dag-node dag-node-auto">获取库存数据</span>
+          <span class="dag-arrow">↓</span><br>
+          <span class="dag-node dag-node-auto">AI 分析缺货 SKU</span>
+          <span class="dag-arrow">↓</span><br>
+          <span class="dag-node dag-node-manual dag-node-active" title="当前选中">等待采购确认 ←选中</span>
+          <span class="dag-arrow">↓</span><br>
+          <span class="dag-node dag-node-auto">发送采购单</span>
+          <span class="dag-arrow">↓</span><br>
+          <span class="dag-node dag-node-auto">完成</span>
+        </div>
+        <div class="hint" style="text-align:center">右键节点：编辑 / 删除 / 插入 / 连线</div>
+      </div>
+
+      <!-- Right Config Panel -->
+      <div class="col col-30" style="overflow-y:auto">
+        <div class="box-title" style="padding:8px">节点配置 · 等待采购确认</div>
+        <div style="padding:8px">
+          <span class="label">节点名称</span>
+          <input class="input" value="等待采购确认">
+          <span class="label">节点类型</span>
+          <span class="select" style="display:block;width:100%;margin-bottom:8px">人工节点 - 数值确认型 ▼</span>
+          <span class="label">负责角色</span>
+          <span class="select" style="display:block;width:100%;margin-bottom:8px">采购专员 ▼</span>
+          <span class="label">截止时间（触发后）</span>
+          <div style="display:flex;gap:4px;margin-bottom:8px">
+            <input class="input" style="width:60px;margin:0" value="4">
+            <span class="select">小时 ▼</span>
+          </div>
+          <span class="label">超时动作</span>
+          <span class="select" style="display:block;width:100%;margin-bottom:8px">通知管理员 ▼</span>
+          <span class="label">展示给执行者的说明</span>
+          <textarea class="input" rows="3" placeholder="机器已生成采购建议，请确认后提交..."></textarea>
+          <span class="label">AI 建议数据来源字段</span>
+          <input class="input" placeholder="例如：采购建议.数量">
+          <hr class="divider">
+          <span class="label">成功后跳转</span>
+          <span class="select" style="display:block;width:100%;margin-bottom:4px">发送采购单 ▼</span>
+          <span class="label">失败/驳回后跳转</span>
+          <span class="select" style="display:block;width:100%">结束（取消任务） ▼</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="background:#f0f0f0">
+      <div class="col col-100" style="display:flex;gap:8px;align-items:center">
+        <span class="hint">当前：冬季补货 v2.1（草稿中）</span>
+        <span class="btn">保存草稿</span>
+        <span class="btn">预览模拟执行</span>
+        <span class="btn btn-primary" style="margin-left:auto">发布为 v2.2</span>
+        <span class="btn btn-danger">取消</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

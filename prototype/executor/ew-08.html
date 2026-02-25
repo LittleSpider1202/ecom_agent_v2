@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>EW-08 · 知识贡献 · 电商智能运营平台</title>
+<link rel="stylesheet" href="../_styles.css">
+</head>
+<body>
+<div class="page-nav">
+  <a href="../index.html">← 返回导航</a>
+  <span class="nav-center">EW-08 · 知识贡献</span>
+  <div><a href="ew-07.html">‹ 上一页</a> &nbsp; <a href="ew-09.html">下一页 ›</a></div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-title">EW-08 · 执行者工作台 · 知识贡献</span>
+    <span class="page-desc">提交新知识或修正现有内容，管理员审核后生效</span>
+  </div>
+  <div class="page-body">
+    <div class="topbar"><span class="topbar-logo">▣ 电商运营平台</span><div class="topbar-right"><span>张三▼</span></div></div>
+    <div class="row" style="border-top:none">
+      <div class="col col-20 sidebar" style="min-height:400px">
+        <div class="sidebar-item">&#x1F4CB; 我的看板</div>
+        <div class="sidebar-item">&#x2705; 任务列表</div>
+        <div class="sidebar-item active">&#x1F4DA; 知识库</div>
+        <div class="sidebar-item">&#x1F527; 工具箱</div>
+      </div>
+      <div class="col col-80">
+        <div class="breadcrumb">知识库 / 提交知识</div>
+        <div class="section-title">提交类型</div>
+        <div style="display:flex;gap:16px;margin-bottom:12px">
+          <label><input type="radio" name="ktype" checked> 新增知识词条</label>
+          <label><input type="radio" name="ktype"> 修正现有词条</label>
+          <label><input type="radio" name="ktype"> 反馈问题</label>
+        </div>
+        <span class="label">标题</span>
+        <input class="input" placeholder="例如：商品主图尺寸规范">
+        <span class="label">分类</span>
+        <span class="select" style="display:block;width:200px;margin-bottom:8px">选择分类 ▼</span>
+        <span class="label">内容（支持 Markdown）</span>
+        <textarea class="input" rows="7" placeholder="## 适用场景&#10;&#10;## 操作步骤&#10;1. ...&#10;&#10;## 注意事项"></textarea>
+        <span class="label">相关附件（可选）</span>
+        <div class="box btn-ghost" style="text-align:center;padding:12px;cursor:pointer;margin-bottom:8px">拖拽文件到此处，或点击上传</div>
+        <div class="hint" style="margin-bottom:10px">提交后由管理员审核，审核通过后对全员可见</div>
+        <div style="display:flex;gap:8px">
+          <span class="btn btn-primary">提交审核</span>
+          <span class="btn">保存草稿</span>
+          <span class="btn btn-danger">取消</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

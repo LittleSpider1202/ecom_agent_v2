@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>EW-10 · 工具执行详情 · 电商智能运营平台</title>
+<link rel="stylesheet" href="../_styles.css">
+</head>
+<body>
+<div class="page-nav">
+  <a href="../index.html">← 返回导航</a>
+  <span class="nav-center">EW-10 · 工具执行详情</span>
+  <div><a href="ew-09.html">‹ 上一页</a> &nbsp; <a href="../management/mw-01.html">下一页 ›</a></div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-title">EW-10 · 执行者工作台 · 工具执行详情</span>
+    <span class="page-desc">查看单次工具运行日志和输出，支持下载</span>
+  </div>
+  <div class="page-body">
+    <div class="topbar"><span class="topbar-logo">▣ 电商运营平台</span><div class="topbar-right"><span>张三▼</span></div></div>
+    <div class="col col-100" style="border-top:1px solid #ccc">
+      <div class="breadcrumb">工具箱 / 库存盘点数据导出 / 执行记录 #R-014</div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div><strong style="font-size:15px">库存盘点数据导出</strong> <span class="tag tag-green" style="margin-left:8px">成功</span></div>
+        <span class="btn btn-primary">▶ 再次运行</span>
+      </div>
+      <div class="hint" style="margin-top:4px">执行人：张三 · 开始：14:30:05 · 结束：14:30:42 · 耗时：37s · 参数：仓库=主仓</div>
+    </div>
+    <div class="row">
+      <div class="col col-60">
+        <div class="section-title">执行日志</div>
+        <div class="box" style="background:#f8f8f8;font-size:11px;line-height:2">
+          <div class="hint">14:30:05  [INFO] 开始执行：库存盘点数据导出</div>
+          <div class="hint">14:30:06  [INFO] 连接 ERP 系统 api.erp.internal...</div>
+          <div class="hint">14:30:07  [INFO] 连接成功，开始获取库存数据</div>
+          <div class="hint">14:30:38  [INFO] 获取完成，共 847 条 SKU 记录</div>
+          <div class="hint">14:30:39  [INFO] 生成 Excel 文件...</div>
+          <div class="hint">14:30:42  [INFO] 文件生成完成 ✓</div>
+        </div>
+      </div>
+      <div class="col col-40">
+        <div class="section-title">输出结果</div>
+        <div class="box">
+          <div class="hint"><strong>文件：</strong>inventory_20240223.xlsx</div>
+          <div class="hint"><strong>大小：</strong>2.3 MB · <strong>共：</strong>847 条 SKU</div>
+          <div style="margin-top:10px"><span class="btn btn-primary">⬇ 下载文件</span></div>
+        </div>
+        <div class="section-title" style="margin-top:12px">运行参数</div>
+        <div class="hint">仓库：主仓 · 数据截止：2024-02-23 14:30</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

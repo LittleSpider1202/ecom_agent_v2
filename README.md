@@ -46,7 +46,7 @@
 
 ## 产品方案
 
-> 待补充
+线框图原型：[prototype/index.html](prototype/index.html)
 
 ---
 

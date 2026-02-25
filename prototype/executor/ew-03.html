@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>EW-03 · 任务详情（自动步骤） · 电商智能运营平台</title>
+<link rel="stylesheet" href="../_styles.css">
+</head>
+<body>
+<div class="page-nav">
+  <a href="../index.html">← 返回导航</a>
+  <span class="nav-center">EW-03 · 任务详情（自动步骤）</span>
+  <div><a href="ew-02.html">‹ 上一页</a> &nbsp; <a href="ew-04.html">下一页 ›</a></div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-title">EW-03 · 执行者工作台 · 任务详情（自动步骤）</span>
+    <span class="page-desc">查看DAG执行进度，纯观察，机器自动执行中无需操作</span>
+  </div>
+  <div class="page-body">
+    <div class="topbar"><span class="topbar-logo">▣ 电商运营平台</span><div class="topbar-right"><span>张三▼</span></div></div>
+    <div class="col col-100" style="border-top:1px solid #ccc">
+      <div class="breadcrumb">任务列表 / 冬季补货 #T-001</div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <strong style="font-size:15px">冬季补货 #T-001</strong>
+          <span class="tag" style="margin-left:8px">进行中</span>
+        </div>
+        <div class="hint">发起：09:00 | 预计完成：18:00 | 触发来源：定时规则</div>
+      </div>
+      <div style="margin:8px 0">
+        <div class="progress-bar"><div class="progress-fill" style="width:57%"></div></div>
+        <span class="hint">步骤 4/7 · 57%</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col col-60">
+        <div class="section-title">流程执行图</div>
+        <div style="text-align:center;padding:12px 0;line-height:2.4">
+          <span class="dag-node dag-node-done">✓ 获取库存数据</span>
+          <span class="dag-arrow">↓</span><br>
+          <span class="dag-node dag-node-done">✓ AI 分析缺货 SKU</span>
+          <span class="dag-arrow">↓</span><br>
+          <span class="dag-node dag-node-done">✓ 生成采购建议</span>
+          <span class="dag-arrow">↓</span><br>
+          <span class="dag-node dag-node-active">⏸ 等待采购确认</span>
+          <span class="tag tag-red" style="margin-left:8px">等待人工</span>
+          <span class="dag-arrow">↓</span><br>
+          <span class="dag-node">○ 发送采购单</span>
+          <span class="dag-arrow">↓</span><br>
+          <span class="dag-node">○ 确认供应商收到</span>
+          <span class="dag-arrow">↓</span><br>
+          <span class="dag-node">○ 完成</span>
+        </div>
+        <div class="hint" style="text-align:center">图例：✓ 已完成 · ⏸ 等待人工 · ○ 待执行</div>
+        <div class="box box-warning" style="margin-top:12px;text-align:center">
+          ⏸ 当前步骤需要你操作：<strong>确认采购数量</strong>
+          <div style="margin-top:8px"><span class="btn btn-primary">去处理 →</span></div>
+        </div>
+      </div>
+      <div class="col col-40">
+        <div class="section-title">执行日志</div>
+        <div class="hint">09:00:05 &nbsp;系统：触发流程</div>
+        <div class="hint">09:00:06 &nbsp;工具：调用ERP获取库存数据</div>
+        <div class="hint">09:00:23 &nbsp;工具：返回 847 条库存记录</div>
+        <div class="hint">09:00:24 &nbsp;节点：AI分析缺货SKU 开始</div>
+        <div class="hint">09:01:02 &nbsp;节点：识别低库存 SKU 23 个</div>
+        <div class="hint">09:01:03 &nbsp;节点：生成采购建议 开始</div>
+        <div class="hint">09:05:44 &nbsp;节点：采购建议已生成</div>
+        <div class="hint">09:05:45 &nbsp;<strong>当前：等待人工确认，已等待 1h20min</strong></div>
+        <hr class="divider">
+        <div class="section-title">任务信息</div>
+        <div class="hint">流程：冬季补货 v2.1</div>
+        <div class="hint">负责人：张三（采购）</div>
+        <div class="hint">触发方式：每周一09:00定时</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

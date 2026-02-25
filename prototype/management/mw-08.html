@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>MW-08 · 角色权限 · 电商智能运营平台</title>
+<link rel="stylesheet" href="../_styles.css">
+</head>
+<body>
+<div class="page-nav">
+  <a href="../index.html">← 返回导航</a>
+  <span class="nav-center">MW-08 · 角色权限</span>
+  <div><a href="mw-07.html">‹ 上一页</a> &nbsp; <a href="mw-09.html">下一页 ›</a></div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-title">MW-08 · 管理工作台 · 角色权限</span>
+    <span class="page-desc">定义角色及权限矩阵，控制页面访问和任务接收范围</span>
+  </div>
+  <div class="page-body">
+    <div class="topbar"><span class="topbar-logo">▣ 电商运营平台</span><div class="topbar-nav"><span>总览</span><span>流程定义</span><span>工具库</span><span class="active">组织</span></div><div class="topbar-right"><span>老板▼</span></div></div>
+    <div style="padding:10px 12px;border-top:1px solid #ccc"><span class="btn btn-primary">+ 新建角色</span></div>
+    <div class="row">
+      <div class="col col-25 sidebar" style="min-height:380px">
+        <div class="section-title" style="padding:4px 2px">角色列表</div>
+        <div class="sidebar-item" style="font-size:11px;color:#999">系统内置</div>
+        <div class="sidebar-item">管理员</div>
+        <div class="sidebar-item">执行者（默认）</div>
+        <div class="sidebar-item" style="font-size:11px;color:#999;margin-top:4px">自定义</div>
+        <div class="sidebar-item active">采购专员 ←</div>
+        <div class="sidebar-item">仓管员</div>
+        <div class="sidebar-item">客服主管</div>
+        <div class="sidebar-item">运营专员</div>
+      </div>
+      <div class="col col-75">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <strong>角色：采购专员</strong>
+          <div><span class="btn">重命名</span> <span class="btn btn-danger">删除</span></div>
+        </div>
+        <div class="section-title">功能权限矩阵</div>
+        <table class="table" style="margin-bottom:12px">
+          <tr><th>功能模块</th><th style="width:60px;text-align:center">查看</th><th style="width:60px;text-align:center">操作</th><th style="width:60px;text-align:center">管理</th></tr>
+          <tr><td>执行者工作台 · 任务管理</td><td style="text-align:center">✓</td><td style="text-align:center">✓</td><td style="text-align:center">-</td></tr>
+          <tr><td>执行者工作台 · 知识库</td><td style="text-align:center">✓</td><td style="text-align:center">✓</td><td style="text-align:center">-</td></tr>
+          <tr><td>执行者工作台 · 工具箱</td><td style="text-align:center">✓</td><td style="text-align:center">✓</td><td style="text-align:center">-</td></tr>
+          <tr><td>管理工作台 · 全局监控</td><td style="text-align:center">✓</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr>
+          <tr><td>管理工作台 · 流程定义</td><td style="text-align:center">-</td><td style="text-align:center">-</td><td style="text-align:center">-</td></tr>
+        </table>
+        <div class="section-title">可接收人工节点类型</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
+          <span class="tag">采购确认类 ×</span>
+          <span class="tag">供应商沟通类 ×</span>
+          <span class="btn btn-ghost" style="padding:1px 8px">+ 添加</span>
+        </div>
+        <span class="btn btn-primary">保存权限</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

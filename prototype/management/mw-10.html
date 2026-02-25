@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>MW-10 · 全局任务监控 · 电商智能运营平台</title>
+<link rel="stylesheet" href="../_styles.css">
+</head>
+<body>
+<div class="page-nav">
+  <a href="../index.html">← 返回导航</a>
+  <span class="nav-center">MW-10 · 全局任务监控</span>
+  <div><a href="mw-09.html">‹ 上一页</a> &nbsp; <a href="mw-11.html">下一页 ›</a></div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-title">MW-10 · 管理工作台 · 全局任务监控</span>
+    <span class="page-desc">所有进行中任务的实时状态，定位瓶颈，一键催办</span>
+  </div>
+  <div class="page-body">
+    <div class="topbar"><span class="topbar-logo">▣ 电商运营平台</span><div class="topbar-nav"><span>总览</span><span>流程定义</span><span>工具库</span><span>组织</span><span class="active">监控</span><span>分析</span></div><div class="topbar-right"><span>老板▼</span></div></div>
+
+    <div class="col col-100" style="border-top:1px solid #ccc">
+      <div class="stat-row">
+        <div class="stat"><div class="stat-num">18</div><div class="stat-label">进行中</div></div>
+        <div class="stat" style="border:2px solid #555"><div class="stat-num">5</div><div class="stat-label">卡人工节点</div></div>
+        <div class="stat" style="border:2px solid #333"><div class="stat-num">2</div><div class="stat-label">已超时</div></div>
+        <div class="stat"><div class="stat-num">34</div><div class="stat-label">今日完成</div></div>
+      </div>
+    </div>
+
+    <div class="col col-100" style="border-top:1px solid #ccc">
+      <div style="display:flex;gap:8px;align-items:center;padding:4px 0">
+        <span class="select">流程类型 ▼</span>
+        <span class="select">责任人 ▼</span>
+        <span class="select">状态 ▼</span>
+        <span class="btn btn-primary">卡人工节点 (5)</span>
+        <span class="btn btn-danger">超时 (2)</span>
+        <span class="btn btn-ghost">重置</span>
+        <span style="margin-left:auto"><input class="input" style="width:180px;margin:0" placeholder="搜索任务..."></span>
+      </div>
+    </div>
+
+    <div class="col col-100" style="border-top:1px solid #ccc">
+      <table class="table">
+        <tr>
+          <th>任务名</th><th>流程</th><th>进度</th><th>当前节点</th><th>负责人</th><th>等待时长</th><th>截止</th><th>操作</th>
+        </tr>
+        <tr style="background:#f0f0f0">
+          <td><strong>冬季补货 #T-001</strong></td>
+          <td>冬季补货</td>
+          <td>4/7</td>
+          <td><span class="tag tag-red">⏸ 采购确认</span></td>
+          <td>张三</td>
+          <td><strong>1h 20min ⚠</strong></td>
+          <td>18:00</td>
+          <td><span class="btn" style="padding:2px 6px">查看</span> <span class="btn btn-primary" style="padding:2px 6px">催办</span></td>
+        </tr>
+        <tr>
+          <td>日常发货 #T-034</td>
+          <td>日常发货</td>
+          <td>2/5</td>
+          <td>⏳ 自动执行中</td>
+          <td>系统</td>
+          <td>3min</td>
+          <td>12:00</td>
+          <td><span class="btn" style="padding:2px 6px">查看</span></td>
+        </tr>
+        <tr style="background:#f5f5f5">
+          <td><strong>退款审核 #T-033</strong></td>
+          <td>退款流程</td>
+          <td>1/4</td>
+          <td><span class="tag">⏸ 客服确认</span></td>
+          <td>王五</td>
+          <td><strong>2h 05min ⚠</strong></td>
+          <td>已超时</td>
+          <td><span class="btn" style="padding:2px 6px">查看</span> <span class="btn btn-primary" style="padding:2px 6px">催办</span> <span class="btn" style="padding:2px 6px">代为处理</span></td>
+        </tr>
+        <tr>
+          <td>库存盘点 #T-030</td>
+          <td>月度盘点</td>
+          <td>3/3</td>
+          <td>✓ 完成</td>
+          <td>系统</td>
+          <td>-</td>
+          <td>完成</td>
+          <td><span class="btn" style="padding:2px 6px">查看</span></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="col col-100" style="border-top:1px solid #ccc">
+      <div class="section-title">今日任务甘特图（时间线视图）</div>
+      <div style="font-size:11px;padding:4px 0;display:flex;gap:4px;color:#888">
+        <span style="width:120px">09:00</span>
+        <span style="width:80px">10:00</span>
+        <span style="width:80px">11:00</span>
+        <span style="width:80px">12:00</span>
+        <span style="width:80px">13:00</span>
+        <span>...</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:4px;margin-bottom:4px">
+        <span style="font-size:11px;width:120px">冬季补货#001</span>
+        <div style="background:#555;height:12px;width:160px"></div>
+        <div style="background:#aaa;height:12px;width:60px;border:1px dashed #555"></div>
+        <div style="background:#ddd;height:12px;width:100px;border:1px dashed #ccc"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:4px">
+        <span style="font-size:11px;width:120px">日常发货#034</span>
+        <div style="background:#555;height:12px;width:40px"></div>
+        <div style="background:#aaa;height:12px;width:20px"></div>
+        <div style="background:#ddd;height:12px;width:80px;border:1px dashed #ccc"></div>
+      </div>
+      <div class="hint" style="margin-top:4px">■ 已完成 &nbsp; ■ 进行中/等待人工 &nbsp; □ 计划</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>MW-15 · 系统日志 · 电商智能运营平台</title>
+<link rel="stylesheet" href="../_styles.css">
+</head>
+<body>
+<div class="page-nav">
+  <a href="../index.html">← 返回导航</a>
+  <span class="nav-center">MW-15 · 系统日志</span>
+  <div><a href="mw-14.html">‹ 上一页</a></div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-title">MW-15 · 管理工作台 · 系统日志</span>
+    <span class="page-desc">操作审计日志，记录所有用户操作和系统事件，可导出</span>
+  </div>
+  <div class="page-body">
+    <div class="topbar"><span class="topbar-logo">▣ 电商运营平台</span><div class="topbar-right"><span>老板▼</span></div></div>
+    <div style="display:flex;gap:8px;align-items:center;padding:10px 12px;border-top:1px solid #ccc">
+      <span class="select">操作类型 ▼</span><span class="select">操作人 ▼</span><span class="select">今天 ▼</span>
+      <input class="input" style="width:200px;margin:0" placeholder="搜索关键词...">
+      <span class="btn btn-ghost" style="margin-left:auto">导出日志</span>
+    </div>
+    <div class="col col-100" style="border-top:1px solid #ccc">
+      <table class="table">
+        <tr><th style="width:150px">时间</th><th style="width:70px">操作人</th><th style="width:90px">操作类型</th><th>操作内容</th><th style="width:70px">来源</th></tr>
+        <tr>
+          <td class="hint">09:35:22</td><td>老板</td>
+          <td><span class="tag">流程修改</span></td>
+          <td>修改流程「冬季补货」 v2.1→v2.2（采购确认截止时间 4h→6h）</td>
+          <td class="hint">Web</td>
+        </tr>
+        <tr>
+          <td class="hint">09:12:04</td><td>张三</td>
+          <td><span class="tag">任务操作</span></td>
+          <td>提交任务 #T-001 步骤4（采购确认）· 采纳AI建议</td>
+          <td class="hint">Web</td>
+        </tr>
+        <tr>
+          <td class="hint">09:06:15</td><td>张三</td>
+          <td><span class="tag">任务操作</span></td>
+          <td>通过飞书Bot「全部采纳」提交步骤4</td>
+          <td class="hint">飞书Bot</td>
+        </tr>
+        <tr>
+          <td class="hint">09:05:46</td><td>系统</td>
+          <td><span class="tag tag-gray">系统事件</span></td>
+          <td>任务 #T-001 步骤4 进入人工节点 · 已通知张三（飞书）</td>
+          <td class="hint">系统</td>
+        </tr>
+        <tr>
+          <td class="hint">09:00:05</td><td>系统</td>
+          <td><span class="tag tag-gray">系统事件</span></td>
+          <td>定时规则触发流程「冬季补货」· 创建任务实例 #T-001</td>
+          <td class="hint">系统</td>
+        </tr>
+      </table>
+      <div style="text-align:center;padding:12px"><span class="btn">加载更多...</span></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

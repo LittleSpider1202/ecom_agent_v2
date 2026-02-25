@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>电商智能运营平台 · 线框图导航</title>
+<link rel="stylesheet" href="_styles.css">
+<style>
+.nav-section { margin: 24px auto; max-width: 960px; }
+.nav-section-title { font-size: 14px; font-weight: bold; border-bottom: 2px solid #333; padding-bottom: 6px; margin-bottom: 4px; font-family: monospace; }
+.nav-section-desc { font-size: 12px; color: #888; margin-bottom: 12px; }
+.nav-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.nav-item { border: 1px solid #bbb; padding: 10px 14px; font-size: 12px; min-width: 180px; text-decoration: none; color: #222; display: block; }
+.nav-item:hover { background: #333; color: #fff; border-color: #333; }
+.nav-item-id { font-size: 10px; color: #888; margin-bottom: 2px; }
+.nav-item:hover .nav-item-id { color: #aaa; }
+.nav-item-name { font-weight: bold; }
+.nav-item-desc { font-size: 11px; color: #666; margin-top: 2px; }
+.nav-item:hover .nav-item-desc { color: #ccc; }
+</style>
+</head>
+<body>
+
+<h2>电商智能运营平台</h2>
+<h3>线框图导航 · Wire Frames Index · v0.1</h3>
+
+<div class="nav-section">
+  <div class="nav-section-title">站点地图 &amp; Bot</div>
+  <div class="nav-section-desc">交互层 · 系统主动找人 — 任务卡点时推送飞书，卡片内直接操作，无需主动打开系统</div>
+  <div class="nav-grid">
+    <a href="sitemap.html" class="nav-item">
+      <div class="nav-item-id">SITEMAP</div>
+      <div class="nav-item-name">站点地图</div>
+      <div class="nav-item-desc">产品全局页面架构</div>
+    </a>
+    <a href="bot-cards.html" class="nav-item">
+      <div class="nav-item-id">BOT-01~05</div>
+      <div class="nav-item-name">飞书 Bot 卡片设计</div>
+      <div class="nav-item-desc">5 种消息卡片 + 深链接规范</div>
+    </a>
+  </div>
+</div>
+
+<div class="nav-section">
+  <div class="nav-section-title">执行者工作台</div>
+  <div class="nav-section-desc">执行层 · 人机交接界面 — 看板聚合待办，人工节点展示机器已做的和 AI 建议，知识库提供操作依据</div>
+  <div class="nav-grid">
+    <a href="executor/ew-01.html" class="nav-item">
+      <div class="nav-item-id">EW-01</div>
+      <div class="nav-item-name">我的看板</div>
+      <div class="nav-item-desc">执行者首页，待办+进行中</div>
+    </a>
+    <a href="executor/ew-02.html" class="nav-item">
+      <div class="nav-item-id">EW-02</div>
+      <div class="nav-item-name">任务列表</div>
+      <div class="nav-item-desc">所有任务，筛选+搜索</div>
+    </a>
+    <a href="executor/ew-03.html" class="nav-item">
+      <div class="nav-item-id">EW-03</div>
+      <div class="nav-item-name">任务详情（自动步骤）</div>
+      <div class="nav-item-desc">DAG进度，只读观察</div>
+    </a>
+    <a href="executor/ew-04.html" class="nav-item" style="border:2px solid #333">
+      <div class="nav-item-id">EW-04 ★</div>
+      <div class="nav-item-name">人工操作步骤</div>
+      <div class="nav-item-desc">人机交接，执行者操作</div>
+    </a>
+    <a href="executor/ew-05.html" class="nav-item">
+      <div class="nav-item-id">EW-05</div>
+      <div class="nav-item-name">任务历史</div>
+      <div class="nav-item-desc">已完成任务归档</div>
+    </a>
+    <a href="executor/ew-06.html" class="nav-item">
+      <div class="nav-item-id">EW-06</div>
+      <div class="nav-item-name">知识库首页</div>
+      <div class="nav-item-desc">AI搜索+分类浏览</div>
+    </a>
+    <a href="executor/ew-07.html" class="nav-item">
+      <div class="nav-item-id">EW-07</div>
+      <div class="nav-item-name">知识词条详情</div>
+      <div class="nav-item-desc">查看SOP/规范内容</div>
+    </a>
+    <a href="executor/ew-08.html" class="nav-item">
+      <div class="nav-item-id">EW-08</div>
+      <div class="nav-item-name">知识贡献</div>
+      <div class="nav-item-desc">执行者提交/修正知识</div>
+    </a>
+    <a href="executor/ew-09.html" class="nav-item">
+      <div class="nav-item-id">EW-09</div>
+      <div class="nav-item-name">工具列表</div>
+      <div class="nav-item-desc">可用工具，手动触发</div>
+    </a>
+    <a href="executor/ew-10.html" class="nav-item">
+      <div class="nav-item-id">EW-10</div>
+      <div class="nav-item-name">工具执行详情</div>
+      <div class="nav-item-desc">日志+输出下载</div>
+    </a>
+  </div>
+</div>
+
+<div class="nav-section">
+  <div class="nav-section-title">管理工作台</div>
+  <div class="nav-section-desc">管理层 · 规则定义 + 全局决策 — 自然语言→AI生成DAG，实时监控所有卡点，AI决策建议含依据一键触发</div>
+  <div class="nav-grid">
+    <a href="management/mw-01.html" class="nav-item">
+      <div class="nav-item-id">MW-01</div>
+      <div class="nav-item-name">决策驾驶舱</div>
+      <div class="nav-item-desc">老板首页，全局健康度</div>
+    </a>
+    <a href="management/mw-02.html" class="nav-item">
+      <div class="nav-item-id">MW-02</div>
+      <div class="nav-item-name">流程定义列表</div>
+      <div class="nav-item-desc">所有DAG模板管理</div>
+    </a>
+    <a href="management/mw-03.html" class="nav-item" style="border:2px solid #333">
+      <div class="nav-item-id">MW-03 ★</div>
+      <div class="nav-item-name">流程编辑器</div>
+      <div class="nav-item-desc">自然语言→DAG，可视化编辑</div>
+    </a>
+    <a href="management/mw-04.html" class="nav-item">
+      <div class="nav-item-id">MW-04</div>
+      <div class="nav-item-name">流程版本历史</div>
+      <div class="nav-item-desc">版本对比，支持回滚</div>
+    </a>
+    <a href="management/mw-05.html" class="nav-item">
+      <div class="nav-item-id">MW-05</div>
+      <div class="nav-item-name">工具库管理</div>
+      <div class="nav-item-desc">工具列表，启用/禁用</div>
+    </a>
+    <a href="management/mw-06.html" class="nav-item">
+      <div class="nav-item-id">MW-06</div>
+      <div class="nav-item-name">工具上传/编辑</div>
+      <div class="nav-item-desc">配置工具参数和权限</div>
+    </a>
+    <a href="management/mw-07.html" class="nav-item">
+      <div class="nav-item-id">MW-07</div>
+      <div class="nav-item-name">部门管理</div>
+      <div class="nav-item-desc">组织树结构</div>
+    </a>
+    <a href="management/mw-08.html" class="nav-item">
+      <div class="nav-item-id">MW-08</div>
+      <div class="nav-item-name">角色权限</div>
+      <div class="nav-item-desc">权限矩阵配置</div>
+    </a>
+    <a href="management/mw-09.html" class="nav-item">
+      <div class="nav-item-id">MW-09</div>
+      <div class="nav-item-name">成员管理</div>
+      <div class="nav-item-desc">邀请、分配角色部门</div>
+    </a>
+    <a href="management/mw-10.html" class="nav-item">
+      <div class="nav-item-id">MW-10</div>
+      <div class="nav-item-name">全局任务监控</div>
+      <div class="nav-item-desc">所有进行中任务，定位瓶颈</div>
+    </a>
+    <a href="management/mw-11.html" class="nav-item">
+      <div class="nav-item-id">MW-11</div>
+      <div class="nav-item-name">任务实例详情</div>
+      <div class="nav-item-desc">单任务完整DAG执行图</div>
+    </a>
+    <a href="management/mw-12.html" class="nav-item">
+      <div class="nav-item-id">MW-12</div>
+      <div class="nav-item-name">数据分析看板</div>
+      <div class="nav-item-desc">效率趋势，瓶颈识别</div>
+    </a>
+    <a href="management/mw-13.html" class="nav-item">
+      <div class="nav-item-id">MW-13</div>
+      <div class="nav-item-name">AI 决策建议</div>
+      <div class="nav-item-desc">建议列表，采纳/忽略</div>
+    </a>
+    <a href="management/mw-14.html" class="nav-item">
+      <div class="nav-item-id">MW-14</div>
+      <div class="nav-item-name">平台集成配置</div>
+      <div class="nav-item-desc">飞书/ERP/电商平台对接</div>
+    </a>
+    <a href="management/mw-15.html" class="nav-item">
+      <div class="nav-item-id">MW-15</div>
+      <div class="nav-item-name">系统日志</div>
+      <div class="nav-item-desc">操作审计记录</div>
+    </a>
+  </div>
+</div>
+
+<div style="text-align:center;padding:40px;color:#aaa;font-family:monospace">
+  共 27 个页面/卡片
+</div>
+</body>
+</html>

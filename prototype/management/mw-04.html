@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>MW-04 · 流程版本历史 · 电商智能运营平台</title>
+<link rel="stylesheet" href="../_styles.css">
+</head>
+<body>
+<div class="page-nav">
+  <a href="../index.html">← 返回导航</a>
+  <span class="nav-center">MW-04 · 流程版本历史</span>
+  <div><a href="mw-03.html">‹ 上一页</a> &nbsp; <a href="mw-05.html">下一页 ›</a></div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-title">MW-04 · 管理工作台 · 流程版本历史</span>
+    <span class="page-desc">查看历史版本，对比变更内容，支持回滚</span>
+  </div>
+  <div class="page-body">
+    <div class="topbar"><span class="topbar-logo">▣ 电商运营平台</span><div class="topbar-nav"><span>总览</span><span class="active">流程定义</span></div><div class="topbar-right"><span>老板▼</span></div></div>
+    <div class="col col-100" style="border-top:1px solid #ccc">
+      <div class="breadcrumb">流程定义 / 冬季补货流程 / 版本历史</div>
+      <div style="display:flex;justify-content:space-between"><strong>冬季补货流程 · 版本历史</strong><span class="btn">返回列表</span></div>
+    </div>
+    <div class="row">
+      <div class="col col-35">
+        <div class="section-title">版本列表</div>
+        <div class="card box-highlight">
+          <div style="display:flex;justify-content:space-between"><strong>v2.1</strong><span class="tag tag-green">当前生效</span></div>
+          <div class="hint">2024-02-15 · 老板</div>
+          <div class="hint">变更：采购确认截止 4h→6h</div>
+          <div style="margin-top:6px"><span class="btn btn-primary" style="padding:2px 8px">查看</span></div>
+        </div>
+        <div class="card">
+          <div><strong>v2.0</strong></div>
+          <div class="hint">2024-01-10 · 老板</div>
+          <div class="hint">变更：新增 AI 分析缺货节点</div>
+          <div style="display:flex;gap:4px;margin-top:6px">
+            <span class="btn" style="padding:2px 8px">查看</span>
+            <span class="btn" style="padding:2px 8px">对比</span>
+            <span class="btn btn-ghost" style="padding:2px 8px">回滚</span>
+          </div>
+        </div>
+        <div class="card">
+          <div><strong>v1.3</strong></div>
+          <div class="hint">2023-11-20 · 老板 · 初始版本</div>
+          <div style="display:flex;gap:4px;margin-top:6px">
+            <span class="btn" style="padding:2px 8px">查看</span>
+            <span class="btn" style="padding:2px 8px">对比</span>
+            <span class="btn btn-ghost" style="padding:2px 8px">回滚</span>
+          </div>
+        </div>
+      </div>
+      <div class="col col-65">
+        <div class="section-title">v2.0 vs v2.1 差异对比</div>
+        <table class="table">
+          <tr><th>节点</th><th>v2.0</th><th>v2.1（当前）</th></tr>
+          <tr>
+            <td>等待采购确认</td>
+            <td class="hint">截止时间：4 小时</td>
+            <td class="hint" style="background:#f0f0f0"><strong>截止时间：6 小时</strong> ← 已修改</td>
+          </tr>
+          <tr><td>其余节点</td><td colspan="2" class="hint" style="text-align:center">无变更</td></tr>
+        </table>
+        <div class="hint" style="margin-top:8px">注：正在运行中的任务实例使用发起时的版本，不受版本切换影响</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
