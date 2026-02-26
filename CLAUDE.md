@@ -194,6 +194,20 @@ main（稳定，全绿）
 
 ---
 
+## 部署规范
+
+### Dockerfile 同步（强制执行）
+
+凡涉及环境依赖变更，**必须同步更新对应 Dockerfile**：
+
+- 新增/升级 Python 包 → 更新 `backend/Dockerfile`（及 `requirements.txt`）
+- 新增/升级 Node 包 → 更新 `frontend/Dockerfile`
+- 新增系统依赖（apt 包等）→ 更新对应 Dockerfile 的 `RUN apt-get` 层
+
+**Dockerfile 与代码必须在同一个 commit 中提交，不允许分开。**
+
+---
+
 ## 项目管理文件规范
 
 **所有项目管理类文档统一放在 `docs/` 目录下。**

@@ -1,0 +1,50 @@
+services:
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://ecom:ecom2026@pg:5432/ecom_agent
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY: ${SECRET_KEY:-change-me-in-production}
+    depends_on:
+      - pg
+      - redis
+    networks:
+      - app
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - app
+
+  pg:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ecom
+      POSTGRES_PASSWORD: ecom2026
+      POSTGRES_DB: ecom_agent
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - app
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    networks:
+      - app
+
+volumes:
+  pg_data:
+  redis_data:
+
+networks:
+  app:
