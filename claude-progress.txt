@@ -140,10 +140,10 @@ NO_PROXY="localhost,127.0.0.1" npm run dev -- --port 3000
 
 # 3. 运行回归测试（确认没有引入问题）
 cd tests
-NO_PROXY="localhost,127.0.0.1" npx playwright test feature-001.spec.ts feature-161.spec.ts --reporter=list
+NO_PROXY="localhost,127.0.0.1" npx playwright test feature-001.spec.ts feature-017.spec.ts feature-161.spec.ts --reporter=list
 
 # 4. 开发新 feature，完成后运行对应测试
-NO_PROXY="localhost,127.0.0.1" npx playwright test feature-017.spec.ts --reporter=list
+NO_PROXY="localhost,127.0.0.1" npx playwright test feature-026.spec.ts --reporter=list
 ```
 
 ### 小主机部署注意事项
