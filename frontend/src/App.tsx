@@ -5,6 +5,7 @@ import PrivateRoute from './components/PrivateRoute'
 import AppLayout from './components/AppLayout'
 import Dashboard from './pages/executor/Dashboard'
 import TaskList from './pages/executor/TaskList'
+import HumanStep from './pages/executor/HumanStep'
 
 function Placeholder({ title }: { title: string }) {
   return (
@@ -52,7 +53,7 @@ export default function App() {
           />
           <Route
             path="/task/:taskId/step/:stepId"
-            element={<ProtectedLayout><Placeholder title="EW-04 人工操作步骤" /></ProtectedLayout>}
+            element={<ProtectedLayout><HumanStep /></ProtectedLayout>}
           />
           <Route
             path="/executor/history"

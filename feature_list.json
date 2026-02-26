@@ -214,7 +214,7 @@
       "Step 5: 验证页面标题显示步骤名称",
       "Step 6: 验证页面包含背景信息、AI建议和操作按钮"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 18,
@@ -226,7 +226,7 @@
       "Step 3: 验证背景信息显示机器已执行步骤的摘要文本",
       "Step 4: 验证摘要内容非空"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 19,
@@ -238,7 +238,7 @@
       "Step 3: 验证操作说明文字清晰描述需要人做什么",
       "Step 4: 验证说明非空且具体"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 20,
@@ -252,7 +252,7 @@
       "Step 5: 修改AI建议内容",
       "Step 6: 验证内容已被修改（非只读）"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 21,
@@ -271,7 +271,7 @@
       "Step 10: 验证页面跳转回任务列表或看板",
       "Step 11: 验证该任务步骤状态更新为已完成"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 22,
@@ -290,7 +290,7 @@
       "Step 10: 验证任务步骤标记为已完成",
       "Step 11: 验证记录显示是修改后的内容而非原始AI建议"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 23,
@@ -308,7 +308,7 @@
       "Step 9: 验证流程状态更新（可能暂停或需要管理员介入）",
       "Step 10: 验证管理员端可以看到驳回事件"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 24,
@@ -319,7 +319,7 @@
       "Step 2: 验证存在警告文字，如'提交后不可撤回'或类似表述",
       "Step 3: 验证警告文字视觉上突出（红色、警告图标或加粗）"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 25,
@@ -332,7 +332,7 @@
       "Step 4: 验证显示表单验证错误提示",
       "Step 5: 验证不跳转页面，停留在当前步骤页"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 26,

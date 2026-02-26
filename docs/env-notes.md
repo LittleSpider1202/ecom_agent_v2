@@ -121,4 +121,19 @@
   - 5432: pg容器（ecom库）, 6379: redis容器
   - v2 用 8002（后端）+ 80（复用 nginx 前端）
 
+## [2026-02-26] Session 5 — EW-04 人工操作步骤
+
+- **发现**：新增 SQLAlchemy 模型后，`Base.metadata.create_all` 会自动创建新表，无需手动迁移
+  - 背景：新增 `task_steps` 表，只需在 `models.py` 定义并 import 进 `main.py`，启动即自动建表
+  - 结论：开发阶段无需 alembic，每次启动自动补全缺失表
+
+- **发现**：种子数据分段检查策略（避免重复插入）
+  - 结论：每类数据用 `if db.query(Model).count() == 0:` 独立判断，避免多类数据相互干扰
+
+- **发现**：端口 3000/3001/3002 均被旧 Vite 进程占用
+  - 结论：启动新 Vite 前先 `netstat -ano | grep ":3000"` 查占用 PID，`Stop-Process -Id PID -Force` 杀掉
+
+- **发现**：`/api/tasks/{task_id}/steps/{step_id}` 路由中 step_id 可以是 "current" 字符串或数字
+  - 结论：FastAPI 路由参数用 `str` 类型接收，在函数体内分支处理 "current" 和数字 ID
+
 <!-- 后续 session 在此追加 -->

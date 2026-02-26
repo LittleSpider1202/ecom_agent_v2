@@ -85,14 +85,46 @@
 
 ---
 
-## Session 4 — 下次从这里开始
+## Session 5 — EW-04 人工操作步骤（2026-02-26）
 
-### 下一个任务：EW-04 人工操作步骤（feature #17-25）
+### 完成内容
+
+1. **后端 TaskStep 模型 + API**
+   - `backend/models.py`：新增 `TaskStep` 表（task_id, step_name, background_info, instructions, ai_suggestion, status, final_content, reject_reason）
+   - `backend/routers/tasks.py`：新增 3 个 endpoints：
+     - `GET /api/tasks/{task_id}/steps/{step_id}`（step_id 支持 "current" 或数字 ID）
+     - `POST /api/tasks/{task_id}/steps/{step_id}/submit`（mode: accept|modify）
+     - `POST /api/tasks/{task_id}/steps/{step_id}/reject`
+   - `backend/main.py`：startup 事件新增 5 条 TaskStep 种子数据
+
+2. **前端 EW-04 页面**
+   - `frontend/src/pages/executor/HumanStep.tsx`：完整人工步骤页面
+     - 背景信息、操作说明、AI建议（可编辑 textarea）
+     - 红色"提交后不可撤回"警告横幅
+     - 三按钮：全部采纳AI建议 / 修改后提交 / 驳回
+     - 确认对话框（accept/modify/reject 三种）
+     - 表单验证（AI建议不能为空）
+   - `frontend/src/App.tsx`：路由 `/task/:taskId/step/:stepId` → HumanStep
+   - `frontend/src/pages/executor/TaskList.tsx`：添加 has_human_step 字段，点击跳转到人工步骤页
+
+3. **测试全部通过（9/9）**
+   - feature #17-25（EW-04）passes: true
+   - 截图存入 verification/
+
+### 当前 passes: true 的 feature（共 23 条）
+- #1-10（EW-01 看板 + EW-02 任务列表）
+- #17-25（EW-04 人工操作步骤）
+- #161-164（用户认证）
+
+---
+
+## Session 6 — 下次从这里开始
+
+### 下一个任务：MW-01 决策驾驶舱（feature #26-30）
 
 按 feature_list.json 优先级：
-1. **EW-04** 人工操作步骤 — feature #17-25（★ 核心功能）
-2. **MW-01** 决策驾驶舱 — feature #26-30
-3. **MW-03** 流程编辑器 — feature #31-50
+1. **MW-01** 决策驾驶舱 — feature #26-30
+2. **MW-03** 流程编辑器 — feature #31-50
 
 ### 启动步骤
 

@@ -31,3 +31,21 @@ class TaskInstance(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
     notes = Column(Text, nullable=True)
+
+
+class TaskStep(Base):
+    __tablename__ = "task_steps"
+
+    id = Column(Integer, primary_key=True, index=True)
+    task_id = Column(Integer, ForeignKey("task_instances.id"), nullable=False, index=True)
+    step_name = Column(String(100), nullable=False)
+    background_info = Column(Text, nullable=True)   # 机器已完成的背景信息
+    instructions = Column(Text, nullable=True)       # 需要人做什么
+    ai_suggestion = Column(Text, nullable=True)      # AI建议（可修改）
+    # pending | completed | rejected
+    status = Column(String(20), nullable=False, default="pending")
+    final_content = Column(Text, nullable=True)      # 最终提交内容
+    reject_reason = Column(Text, nullable=True)      # 驳回原因
+    completed_by = Column(Integer, ForeignKey("users.id"), nullable=True)
+    completed_at = Column(DateTime(timezone=True), nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())

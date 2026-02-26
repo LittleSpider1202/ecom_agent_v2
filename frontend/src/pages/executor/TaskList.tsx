@@ -8,6 +8,7 @@ interface Task {
   flow_name: string
   status: string
   current_step: string | null
+  has_human_step: boolean
   due_date: string | null
   created_at: string
 }
@@ -166,7 +167,10 @@ export default function TaskList() {
               <tr
                 key={t.id}
                 className="border-t border-gray-100 hover:bg-gray-50 cursor-pointer"
-                onClick={() => navigate(`/executor/tasks/${t.id}`)}
+                onClick={() => t.has_human_step
+                  ? navigate(`/task/${t.id}/step/current`)
+                  : navigate(`/executor/tasks/${t.id}`)
+                }
                 data-testid={`task-row-${t.id}`}
               >
                 <td className="px-4 py-3 font-medium text-gray-800">{t.title}</td>
