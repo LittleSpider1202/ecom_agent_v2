@@ -26,6 +26,7 @@ scp backend/main.py \
 scp backend/routers/__init__.py \
     backend/routers/auth.py \
     backend/routers/tasks.py \
+    backend/routers/dashboard.py \
     "$SERVER:$REMOTE_DIR/backend/routers/"
 
 echo "==== [3/4] 同步前端构建产物 ===="
