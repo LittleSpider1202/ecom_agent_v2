@@ -138,6 +138,15 @@
 
 ## [2026-02-26] Session 6 — MW-01 决策驾驶舱
 
+- **发现**：本地后端固定用 8001 端口，且必须加 NO_PROXY
+  - 背景：8000 被 v1 占用（小主机），本地开发用 8001；全局代理 Clash 会拦截 localhost 请求
+  - 结论：本地启动命令固定为：
+    ```bash
+    cd backend
+    NO_PROXY="localhost,127.0.0.1" .venv/Scripts/uvicorn.exe main:app --port 8001
+    ```
+  - 启动前先运行 `kill_8001.ps1` 清理残留进程，**不要加 `--reload`**（会产生无法 kill 的子进程）
+
 - **发现**：uvicorn 无法通过 `kill PID` / `taskkill //F` 彻底释放端口
   - 背景：`--reload` 模式下存在多个子进程互相复活；`stop-process` 在 MINGW64 里因 `$pid` 是保留变量名而失败
   - 结论：使用 `kill_8001.ps1` 脚本（Get-NetTCPConnection + Stop-Process），同时 kill 所有 `*pythoncore*` python 进程；启动后端时去掉 `--reload` 避免子进程复活
