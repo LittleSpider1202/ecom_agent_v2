@@ -1,9 +1,11 @@
 import { defineConfig, devices } from '@playwright/test'
 
 export default defineConfig({
+  globalSetup: './global.setup.ts',
   testDir: '.',
   testMatch: 'feature-*.spec.ts',
   fullyParallel: false,
+  workers: 1,
   retries: 1,
   reporter: 'html',
   use: {
