@@ -88,4 +88,10 @@
 - **发现**：vite.config.ts proxy 中 target 改为 8001 后，前端必须重启才生效（vite 不会热重载 config 更改）
   - 结论：改 vite.config.ts 后需手动重启 vite 进程
 
+## [2026-02-26] Session 3 补充
+
+- **发现**：Playwright 测试加了 `global.setup.ts`，统一做登录预热
+  - 背景：每个 spec 文件单独登录浪费时间，且冷启动容易超时
+  - 结论：`playwright.config.ts` 已配置 `globalSetup: './global.setup.ts'`，测试直接用 storageState，不需要在每个 spec 里重复登录
+
 <!-- 后续 session 在此追加 -->
