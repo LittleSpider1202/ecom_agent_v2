@@ -1,6 +1,10 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
 from datetime import datetime, timezone, timedelta
+import time
+import uuid
+import logging
 from database import engine, get_db
 from models import Base, User, TaskInstance, TaskStep, AISuggestion
 from auth import get_password_hash
@@ -10,12 +14,37 @@ from routers import dashboard as dashboard_router
 
 Base.metadata.create_all(bind=engine)
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    datefmt="%Y-%m-%dT%H:%M:%S",
+)
+logger = logging.getLogger("app")
+
+
+class TimingMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())[:8]
+        start = time.perf_counter()
+        response = await call_next(request)
+        duration_ms = (time.perf_counter() - start) * 1000
+        response.headers["X-Request-ID"] = request_id
+        response.headers["X-Response-Time"] = f"{duration_ms:.1f}ms"
+        logger.info(
+            "%s %s %d %.1fms",
+            request.method, request.url.path, response.status_code, duration_ms,
+            extra={"request_id": request_id},
+        )
+        return response
+
+
 app = FastAPI(
     title="电商智能运营平台 v2 API",
     version="0.1.0",
     description="人机混合执行流程平台后端服务",
 )
 
+app.add_middleware(TimingMiddleware)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000", "http://localhost:5173", "http://localhost:3001"],
