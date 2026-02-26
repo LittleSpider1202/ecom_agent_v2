@@ -46,92 +46,84 @@
    - `frontend/src/components/AppLayout.tsx`：顶部导航栏（显示用户名 + 退出登录 hover 菜单）
    - `frontend/src/App.tsx`：已更新，所有路由用 ProtectedLayout 包裹，/manage/* 限 manager 角色
 
-3. **Playwright 测试文件创建（待验证）**
-   - tests/feature-161.spec.ts：登录成功
-   - tests/feature-162.spec.ts：密码错误提示
-   - tests/feature-163.spec.ts：刷新后会话保持
-   - tests/feature-164.spec.ts：退出登录
-
-4. **依赖安装完成**
-   - `backend/.venv` 已创建（Python 3.14.2）并安装依赖
-   - `frontend/node_modules` 已安装
-   - `tests/node_modules` 已安装 + Playwright Chromium 浏览器已下载
-
-### 未完成 / 下次继续
-
-**主要阻塞**：
-- 回家途中，小主机 192.168.0.112 不可达，后端无法启动（DB 连接超时）
-- Playwright 测试尚未完成验证
-
-**关键 Bug 待修复**：
-- 本机有全局 HTTP 代理（Clash，`http_proxy=http://127.0.0.1:7897`）
-  → 启动 Vite 和运行测试时，**必须** 设置 `NO_PROXY="localhost,127.0.0.1"`，否则 `/api` 代理请求被代理拦截导致登录失败
-
-**下次 session 启动步骤**：
-```bash
-# 1. 确认小主机可达
-ping 192.168.0.112
-
-# 2. 启动后端
-cd backend && .venv/Scripts/uvicorn.exe main:app --reload --host 0.0.0.0 --port 8000
-
-# 3. 启动前端（必须加 NO_PROXY）
-cd frontend && NO_PROXY="localhost,127.0.0.1" npm run dev -- --port 3000
-
-# 4. 运行认证测试（必须加 NO_PROXY）
-cd tests && NO_PROXY="localhost,127.0.0.1" npx playwright test feature-161.spec.ts feature-162.spec.ts feature-163.spec.ts feature-164.spec.ts --reporter=list
-
-# 5. 全部通过后更新 feature_list.json #161-164 passes: true
-# 6. 提交代码
-```
-
-### 默认测试账号
-- admin / admin123（role: admin）
-- manager / manager123（role: manager）
-- executor / executor123（role: executor）
+3. **Playwright 测试（已通过）**
+   - tests/feature-161~164.spec.ts：登录/密码错误/会话保持/退出
 
 ---
 
-## Session 2 续 — EW-01/EW-02（同日）
+## Session 3 — EW-01/EW-02 + 测试验证（2026-02-26）
 
 ### 完成内容
 
-1. **后端 TaskInstance 模型 + API**
+1. **EW-01 我的看板 + EW-02 任务列表**
    - `backend/models.py`：新增 TaskInstance 表
-   - `backend/routers/tasks.py`：GET /api/tasks/my（看板），GET /api/tasks（列表，含分页/筛选/搜索/排序）
-   - `backend/main.py`：seed 11 条测试任务（5 pending, 2 running, 3 completed, 1 failed）
+   - `backend/routers/tasks.py`：GET /api/tasks/my + GET /api/tasks
+   - `frontend/src/pages/executor/Dashboard.tsx`：EW-01
+   - `frontend/src/pages/executor/TaskList.tsx`：EW-02
 
-2. **前端页面**
-   - `frontend/src/hooks/useApi.ts`：axios 实例（自动带 JWT header，401 自动跳登录页）
-   - `frontend/src/pages/executor/Dashboard.tsx`：EW-01 我的看板（待办/进行中/快捷入口/数量角标）
-   - `frontend/src/pages/executor/TaskList.tsx`：EW-02 任务列表（Tab 筛选/搜索/分页/排序）
-   - `frontend/src/App.tsx`：替换占位页为真实组件
+2. **测试全部通过（14/14）**
+   - feature #1-10（EW-01/02）passes: true
+   - feature #161-164（认证）passes: true
+   - 截图存入 tests/verification/
 
-3. **Playwright 测试文件（待验证）**
-   - tests/feature-001~005.spec.ts：EW-01 看板
-   - tests/feature-006~010.spec.ts：EW-02 任务列表
+3. **小主机部署完成**
+   - 后端：uvicorn 跑在宿主机 `0.0.0.0:8002`（后台 nohup）
+   - 前端：构建后 `docker cp` 进现有 nginx 容器
+   - nginx：`/api/` 反代 `172.17.0.1:8002`，`/` 走 SPA
+   - 访问地址：**http://192.168.0.112**
 
-### 当前 passes: true 的 feature
-无（全部 false，代码已写完，待明天连小主机验证）
+4. **新增部署相关文件**
+   - `backend/Dockerfile` + `backend/requirements-prod.txt`
+   - `frontend/Dockerfile` + `frontend/nginx.conf`
+   - `docker-compose.yml`（完整栈，当前小主机用现有容器替代）
+   - `frontend/src/vite-env.d.ts`（修复构建 TS 报错）
+   - `CLAUDE.md`：新增"部署规范"章节，要求依赖变更同步 Dockerfile
 
-### 下次 session 启动步骤
+### 当前 passes: true 的 feature（共 14 条）
+- #1-10（EW-01 看板 + EW-02 任务列表）
+- #161-164（用户认证）
+
+---
+
+## Session 4 — 下次从这里开始
+
+### 下一个任务：EW-04 人工操作步骤（feature #17-25）
+
+按 feature_list.json 优先级：
+1. **EW-04** 人工操作步骤 — feature #17-25（★ 核心功能）
+2. **MW-01** 决策驾驶舱 — feature #26-30
+3. **MW-03** 流程编辑器 — feature #31-50
+
+### 启动步骤
+
 ```bash
-# 1. 确认小主机可达
-ping 192.168.0.112
+# 1. 本地后端（开发测试用）
+cd backend
+.venv/Scripts/activate
+NO_PROXY="localhost,127.0.0.1" uvicorn main:app --reload --port 8001
 
-# 2. 启动后端
-cd backend && .venv/Scripts/uvicorn.exe main:app --reload --host 0.0.0.0 --port 8000
+# 2. 本地前端（必须加 NO_PROXY）
+cd frontend
+NO_PROXY="localhost,127.0.0.1" npm run dev -- --port 3000
 
-# 3. 启动前端（必须加 NO_PROXY）
-cd frontend && NO_PROXY="localhost,127.0.0.1" npm run dev -- --port 3000
+# 3. 运行回归测试（确认没有引入问题）
+cd tests
+NO_PROXY="localhost,127.0.0.1" npx playwright test feature-001.spec.ts feature-161.spec.ts --reporter=list
 
-# 4. 运行所有待验证测试
-cd tests && NO_PROXY="localhost,127.0.0.1" npx playwright test \
-  feature-161.spec.ts feature-162.spec.ts feature-163.spec.ts feature-164.spec.ts \
-  feature-001.spec.ts feature-002.spec.ts feature-003.spec.ts feature-004.spec.ts \
-  feature-005.spec.ts feature-006.spec.ts feature-007.spec.ts feature-008.spec.ts \
-  feature-009.spec.ts feature-010.spec.ts \
-  --reporter=list
-
-# 5. 全部通过后更新 feature_list.json passes:true，commit
+# 4. 开发新 feature，完成后运行对应测试
+NO_PROXY="localhost,127.0.0.1" npx playwright test feature-017.spec.ts --reporter=list
 ```
+
+### 小主机部署注意事项
+
+- 小主机无法访问 GitHub，代码更新需从本地 SCP 传输
+- 后端以 nohup 运行，PID 见 `ps aux | grep uvicorn`
+- 前端更新：本地 `npm run build`，然后 `docker cp dist/. nginx:/usr/share/nginx/html/`
+- nginx 配置已改为反代 8002（v2），v1 在 8000（勿动）
+- ufw 已开放：8002（v2 后端）
+
+### 关键约束提醒
+
+- vite.config.ts proxy 目前指向 `localhost:8001`（本地开发）
+- 部署用 `npm run build` 静态构建，proxy 不生效，由 nginx 处理
+- 每次新增 Python 依赖必须同步更新 `backend/requirements-prod.txt` 和 `backend/Dockerfile`

@@ -94,4 +94,31 @@
   - 背景：每个 spec 文件单独登录浪费时间，且冷启动容易超时
   - 结论：`playwright.config.ts` 已配置 `globalSetup: './global.setup.ts'`，测试直接用 storageState，不需要在每个 spec 里重复登录
 
+## [2026-02-26] Session 4 — 小主机部署
+
+- **发现**：小主机无法访问 GitHub（网络不通）
+  - 背景：`git pull origin dev` 在服务器上超时（443 连不上）
+  - 结论：代码更新必须从本地 SCP 传输；新文件可直接 SSH echo 写入
+
+- **发现**：小主机 v1 应用占用 8000 端口（`/opt/ecom_agent`，user=ecom，systemd 服务）
+  - 结论：v2 后端改用 **8002** 端口，不要动 8000
+
+- **发现**：ufw 防火墙不自动开放新端口，Docker 容器内无法访问宿主机新端口
+  - 背景：nginx 容器内 `curl 172.17.0.1:8002` 超时 → 504
+  - 结论：`sudo ufw allow 8002/tcp` 后立即生效
+
+- **发现**：小主机现有 nginx 容器已配好 SPA + `/api` 反代
+  - 结论：更新前端只需 `docker cp dist/. nginx:/usr/share/nginx/html/`，更新 proxy 端口改 default.conf 后 `nginx -s reload`
+
+- **发现**：SSH 长连接容易断（Connection reset by peer），长任务必须用 nohup
+  - 结论：`nohup bash -c '...' &disown` 后用 `cat /tmp/xxx.log` 查进度
+
+- **发现**：前端构建需要 `src/vite-env.d.ts`，否则 TypeScript 报 `Cannot find module './index.css'`
+  - 结论：文件内容 `/// <reference types="vite/client" />`，已加入 git
+
+- **发现**：小主机端口占用情况（2026-02-26）
+  - 80: nginx容器, 8000: v1应用, 3000: metabase, 8080: nocodb, 9000: portainer
+  - 5432: pg容器（ecom库）, 6379: redis容器
+  - v2 用 8002（后端）+ 80（复用 nginx 前端）
+
 <!-- 后续 session 在此追加 -->
