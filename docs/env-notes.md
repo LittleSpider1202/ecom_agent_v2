@@ -67,4 +67,25 @@
   - 背景：PostgreSQL 和 Redis 在小主机上，出门后 192.168.0.112 不可达
   - 结论：出门时只能开发前端代码，不能运行后端和测试
 
+## [2026-02-26] Session 3 — EW-01/02 测试验证
+
+- **发现**：uvicorn `--reload` 模式下，`TaskStop` 只杀 reloader 进程，server 子进程残留
+  - 背景：多次启动后端后，老的 server 进程仍占用 8000 端口，无法用 `kill`/`Stop-Process` 杀掉
+  - 结论：
+    - 使用 `kill_8000.ps1` 脚本（Get-NetTCPConnection + Stop-Process）
+    - 或改用不同端口（本次换为 8001），同步更新 `vite.config.ts` proxy target
+    - `stop-process` 命令里 `$pid` 是保留变量，要换成 `$proc`
+
+- **发现**：Playwright `workers:3` 并发 3 个登录请求，会导致部分请求超过 10s timeout（DB 连接池冷启动）
+  - 背景：测试结果 "flaky" — 第一次超时，retry 成功
+  - 结论：**设 `workers: 1`** 顺序运行，20 条测试仍只需 20 秒，彻底消除 flaky
+  - 额外：`globalSetup` 预热只有 1 个 browser，效果有限；workers:1 才是根本解法
+
+- **发现**：Playwright 中用全局 `page.locator('span.rounded-full')` 会匹配整个页面的所有圆形标签
+  - 背景：feature-007 Badge 检查匹配到 header 等其他区域的元素
+  - 结论：badge 检查要限定在目标容器内，例如 `rows.first().locator('span.rounded-full')`
+
+- **发现**：vite.config.ts proxy 中 target 改为 8001 后，前端必须重启才生效（vite 不会热重载 config 更改）
+  - 结论：改 vite.config.ts 后需手动重启 vite 进程
+
 <!-- 后续 session 在此追加 -->
