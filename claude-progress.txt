@@ -118,13 +118,39 @@
 
 ---
 
-## Session 6 — 下次从这里开始
+## Session 6 — MW-01 决策驾驶舱（2026-02-26）
 
-### 下一个任务：MW-01 决策驾驶舱（feature #26-30）
+### 完成内容
 
-按 feature_list.json 优先级：
-1. **MW-01** 决策驾驶舱 — feature #26-30
-2. **MW-03** 流程编辑器 — feature #31-50
+1. **后端 AISuggestion 模型 + API**
+   - `backend/models.py`：新增 `AISuggestion` 表（title, summary, content, category, status）
+   - `backend/routers/dashboard.py`：GET /api/dashboard（health_score + ai_suggestions + active_tasks）、GET /api/suggestions/{id}
+   - `backend/main.py`：3 条 AISuggestion 种子数据 + dev-reset 逻辑（每次重启还原 TaskStep/TaskInstance 状态）
+
+2. **前端 MW-01 页面**
+   - `frontend/src/pages/manager/DecisionCockpit.tsx`：SVG 圆形仪表盘 + AI建议列表 + 活动任务摘要
+   - `frontend/src/pages/manager/SuggestionDetail.tsx`：建议详情页（面包屑 + 完整内容）
+   - `frontend/src/App.tsx`：替换 /manage/dashboard 和 /manage/suggestions/:id 的 Placeholder
+
+3. **测试全部通过（5/5）**
+   - feature #26-30（MW-01）passes: true
+   - 截图存入 tests/verification/
+
+4. **修复**
+   - 回归 bug：TaskInstance.status 未重置导致 pending 任务不出现 → startup 同时重置 task status
+   - deploy.sh 遗漏 dashboard.py → 补充 scp 条目
+
+### 当前 passes: true 的 feature（共 28 条）
+- #1-10（EW-01 看板 + EW-02 任务列表）
+- #17-25（EW-04 人工操作步骤）
+- #26-30（MW-01 决策驾驶舱）
+- #161-164（用户认证）
+
+---
+
+## Session 7 — 下次从这里开始
+
+### 下一个任务：MW-03 流程编辑器（feature #31-50）
 
 ### 启动步骤
 

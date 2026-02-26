@@ -136,4 +136,18 @@
 - **发现**：`/api/tasks/{task_id}/steps/{step_id}` 路由中 step_id 可以是 "current" 字符串或数字
   - 结论：FastAPI 路由参数用 `str` 类型接收，在函数体内分支处理 "current" 和数字 ID
 
+## [2026-02-26] Session 6 — MW-01 决策驾驶舱
+
+- **发现**：uvicorn 无法通过 `kill PID` / `taskkill //F` 彻底释放端口
+  - 背景：`--reload` 模式下存在多个子进程互相复活；`stop-process` 在 MINGW64 里因 `$pid` 是保留变量名而失败
+  - 结论：使用 `kill_8001.ps1` 脚本（Get-NetTCPConnection + Stop-Process），同时 kill 所有 `*pythoncore*` python 进程；启动后端时去掉 `--reload` 避免子进程复活
+
+- **发现**：后端重置 TaskStep 状态时必须同时重置 TaskInstance.status
+  - 背景：`submit_step` 会将 task.status 改为 "completed"，`/api/tasks/my` 只返回 "pending" 任务，导致重置 step 状态后测试仍找不到 pending 任务
+  - 结论：startup 重置逻辑需同时执行：`TaskStep → pending`、`TaskInstance.status → "pending"`、`TaskInstance.has_human_step → True`
+
+- **发现**：deploy.sh 需要手动维护 routers/ 下的文件列表
+  - 背景：新增 `dashboard.py` 后，deploy.sh 的 scp 没有包含它，小主机报 ImportError
+  - 结论：每次新增 router 文件，**必须同步更新 deploy.sh 的 scp 命令**
+
 <!-- 后续 session 在此追加 -->
