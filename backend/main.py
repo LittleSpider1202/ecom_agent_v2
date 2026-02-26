@@ -2,10 +2,11 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime, timezone, timedelta
 from database import engine, get_db
-from models import Base, User, TaskInstance, TaskStep
+from models import Base, User, TaskInstance, TaskStep, AISuggestion
 from auth import get_password_hash
 from routers import auth as auth_router
 from routers import tasks as tasks_router
+from routers import dashboard as dashboard_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -25,6 +26,7 @@ app.add_middleware(
 
 app.include_router(auth_router.router)
 app.include_router(tasks_router.router)
+app.include_router(dashboard_router.router)
 
 
 @app.on_event("startup")
@@ -91,6 +93,23 @@ async def seed_data():
             for t in seed_tasks:
                 db.add(t)
             db.commit()
+
+        # ---- 重置 TaskStep 状态（dev 模式，确保每次重启测试数据新鲜） ----
+        db.query(TaskStep).update({
+            TaskStep.status: "pending",
+            TaskStep.final_content: None,
+            TaskStep.reject_reason: None,
+            TaskStep.completed_by: None,
+            TaskStep.completed_at: None,
+        }, synchronize_session=False)
+        # 重置关联任务的状态和 has_human_step（业务逻辑可能将其改为 completed/False）
+        step_task_ids = [row[0] for row in db.query(TaskStep.task_id).distinct().all()]
+        if step_task_ids:
+            db.query(TaskInstance).filter(TaskInstance.id.in_(step_task_ids)).update(
+                {TaskInstance.has_human_step: True, TaskInstance.status: "pending"},
+                synchronize_session=False,
+            )
+        db.commit()
 
         # ---- TaskStep 种子数据（每个 has_human_step 任务一条） ----
         if db.query(TaskStep).count() == 0:
@@ -227,6 +246,79 @@ async def seed_data():
                         ai_suggestion=tmpl["ai_suggestion"],
                         status="pending",
                     ))
+            db.commit()
+
+        # ---- AISuggestion 种子数据 ----
+        if db.query(AISuggestion).count() == 0:
+            seed_suggestions = [
+                AISuggestion(
+                    title="双十一备货策略优化建议",
+                    summary="基于历史销售数据，建议提前2周增加爆款商品备货量15-20%，重点关注手机配件和家居品类。",
+                    content=(
+                        "## 分析背景\n\n"
+                        "AI系统对过去3年双十一销售数据进行分析，结合当前库存水位与供应商交期，生成本次备货策略建议。\n\n"
+                        "## 核心建议\n\n"
+                        "1. **手机配件品类**：预测销量较日均增长320%，建议备货量 = 历史峰值 × 1.15\n"
+                        "2. **家居用品品类**：预测销量较日均增长180%，建议备货量 = 历史峰值 × 1.20\n"
+                        "3. **服装品类**：季节性需求稳定，建议维持常规备货量\n\n"
+                        "## 风险提示\n\n"
+                        "- 主要供应商苏州优品科技产能存在瓶颈，建议提前14天下单\n"
+                        "- 物流旺季预计从11月5日开始，建议在11月3日前完成入库\n\n"
+                        "## 预期收益\n\n"
+                        "执行本建议预计可额外增加GMV约¥280万，缺货损失减少约¥45万。"
+                    ),
+                    category="库存管理",
+                    status="pending",
+                ),
+                AISuggestion(
+                    title="竞品价格战应对策略",
+                    summary="竞品A近7天持续降价累计18%，建议启动精准促销而非全面跟进降价。",
+                    content=(
+                        "## 竞品动态\n\n"
+                        "过去7天监控数据显示：\n"
+                        "- 竞品A（市场份额28%）：主力SKU降价累计18%\n"
+                        "- 竞品B（市场份额21%）：推出买一赠一活动\n"
+                        "- 竞品C（市场份额15%）：维持原价，侧重内容营销\n\n"
+                        "## 建议策略\n\n"
+                        "**方案A（推荐）：精准促销**\n"
+                        "- 针对价格敏感型用户推送定向优惠券（面值¥20-50）\n"
+                        "- 重点商品搭配赠品，提升感知价值\n"
+                        "- 预计效果：转化率提升12%，利润率损失控制在3%以内\n\n"
+                        "**方案B：全面跟进降价**\n"
+                        "- 主力SKU统一降价10%\n"
+                        "- 预计效果：转化率提升18%，但利润率损失约8%\n\n"
+                        "## 建议决策\n\n"
+                        "建议采用方案A，在维持品牌价值的同时有效应对竞争压力。"
+                    ),
+                    category="定价策略",
+                    status="pending",
+                ),
+                AISuggestion(
+                    title="供应商绩效评估结果与调整建议",
+                    summary="Q3评估显示2家供应商延期率超标，建议调整采购份额并启动备选供应商考察。",
+                    content=(
+                        "## 评估概况\n\n"
+                        "本季度共对12家主要供应商进行绩效评估，综合考量准时交货率、产品合格率、价格竞争力三项指标。\n\n"
+                        "## 问题供应商\n\n"
+                        "**供应商E（深圳某科技）**\n"
+                        "- 准时交货率：61%（要求≥85%）\n"
+                        "- 原因：产能扩张期设备故障频繁\n"
+                        "- 建议：将采购份额从25%降至10%，待其完成产线升级后重新评估\n\n"
+                        "**供应商H（广州某工厂）**\n"
+                        "- 产品合格率：88%（要求≥95%）\n"
+                        "- 原因：原材料供应商变更导致品质波动\n"
+                        "- 建议：暂停新订单，要求提交质量整改方案\n\n"
+                        "## 优秀供应商奖励建议\n\n"
+                        "苏州优品科技、杭州精品源头连续3季度表现优异，建议提升采购份额并签订长期框架协议。\n\n"
+                        "## 下步行动\n\n"
+                        "建议在2周内完成备选供应商考察，确保供应链稳定性。"
+                    ),
+                    category="供应商管理",
+                    status="pending",
+                ),
+            ]
+            for s in seed_suggestions:
+                db.add(s)
             db.commit()
     finally:
         db.close()

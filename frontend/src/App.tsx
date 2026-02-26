@@ -6,6 +6,8 @@ import AppLayout from './components/AppLayout'
 import Dashboard from './pages/executor/Dashboard'
 import TaskList from './pages/executor/TaskList'
 import HumanStep from './pages/executor/HumanStep'
+import DecisionCockpit from './pages/manager/DecisionCockpit'
+import SuggestionDetail from './pages/manager/SuggestionDetail'
 
 function Placeholder({ title }: { title: string }) {
   return (
@@ -83,7 +85,7 @@ export default function App() {
           {/* 管理工作台 — 需要 manager 角色 */}
           <Route
             path="/manage/dashboard"
-            element={<ProtectedLayout requiredRole="manager"><Placeholder title="MW-01 决策驾驶舱" /></ProtectedLayout>}
+            element={<ProtectedLayout requiredRole="manager"><DecisionCockpit /></ProtectedLayout>}
           />
           <Route
             path="/manage/flows"
@@ -143,7 +145,7 @@ export default function App() {
           />
           <Route
             path="/manage/suggestions/:id"
-            element={<ProtectedLayout requiredRole="manager"><Placeholder title="MW-13 AI决策建议详情" /></ProtectedLayout>}
+            element={<ProtectedLayout requiredRole="manager"><SuggestionDetail /></ProtectedLayout>}
           />
           <Route
             path="/manage/integrations"

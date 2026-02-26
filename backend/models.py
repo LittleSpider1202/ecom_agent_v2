@@ -49,3 +49,16 @@ class TaskStep(Base):
     completed_by = Column(Integer, ForeignKey("users.id"), nullable=True)
     completed_at = Column(DateTime(timezone=True), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class AISuggestion(Base):
+    __tablename__ = "ai_suggestions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(200), nullable=False)
+    summary = Column(Text, nullable=False)
+    content = Column(Text, nullable=False)
+    category = Column(String(50), nullable=True)
+    # pending | accepted | ignored
+    status = Column(String(20), nullable=False, default="pending")
+    created_at = Column(DateTime(timezone=True), server_default=func.now())

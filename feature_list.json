@@ -346,7 +346,7 @@
       "Step 5: 验证存在AI建议列表区域",
       "Step 6: 验证存在进行中任务摘要区域"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 27,
@@ -358,7 +358,7 @@
       "Step 3: 验证显示数值或百分比",
       "Step 4: 验证有视觉化表示（仪表盘或评分卡）"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 28,
@@ -370,7 +370,7 @@
       "Step 3: 验证显示至少一条AI建议（或空状态提示）",
       "Step 4: 验证每条建议显示摘要文字"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 29,
@@ -382,7 +382,7 @@
       "Step 3: 验证显示任务数量统计",
       "Step 4: 验证显示任务列表或摘要"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 30,
@@ -394,7 +394,7 @@
       "Step 3: 验证跳转到 /manage/suggestions/{id}",
       "Step 4: 验证建议详情页显示完整建议内容"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 31,
