@@ -26,3 +26,7 @@ Thumbs.db
 
 # Logs
 *.log
+
+# 本地临时脚本（kill_*.ps1、check_*.ps1 等调试用，不入库）
+kill_*.ps1
+check_*.ps1
