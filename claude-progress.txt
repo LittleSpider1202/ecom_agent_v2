@@ -247,14 +247,62 @@
 
 ---
 
-## Session 10 — 下次从这里开始
+## Session 10 — EW-05 任务历史（2026-02-27）
 
-### 下一个任务：更多 functional features
+### 完成内容
 
-优先级：
-1. MW-02 流程定义列表 — 查 feature_list.json 找对应 index
-2. EW-05 任务历史 — 查 feature_list.json
-3. 继续推进 EW/MW 页面
+1. **后端 TaskInstance.completed_at 字段**
+   - 新增字段（`ALTER TABLE ... ADD COLUMN IF NOT EXISTS` 兼容迁移）
+   - startup 自动补填历史任务的 completed_at（`created_at + 6h`）
+
+2. **新增 API 端点**
+   - `GET /api/tasks/history`：已完成/失败/驳回任务，支持搜索+日期范围筛选+分页
+   - `GET /api/tasks/my-steps`：当前用户处理过的所有步骤（带操作类型）
+
+3. **前端 EW-05 页面**
+   - `frontend/src/pages/executor/TaskHistory.tsx`：两个 Tab
+     - "已完成任务"：列表（流程名、状态徽章、完成时间 YYYY-MM-DD HH:mm、耗时）+ 搜索+日期筛选
+     - "我的操作记录"：步骤历史（操作类型：采纳/修改/驳回，颜色区分）
+   - `frontend/src/App.tsx`：替换 /executor/history Placeholder
+
+4. **测试全部通过（6/6）**
+   - features #51-55, #92 passes: true
+   - 截图存入 verification/
+
+### 关键踩坑
+- Playwright 搜索测试：用 `waitForResponse` 而非 `waitForTimeout(500)` 来确保 API 响应到达
+
+### 当前 passes: true 的 feature（共 60 条）
+- #1-10（EW-01/EW-02）
+- #11-16（EW-03 任务详情）
+- #17-25（EW-04 人工操作步骤）
+- #26-30（MW-01 决策驾驶舱）
+- #31-42（MW-03 流程编辑器）
+- #43-50（Style 测试）
+- #51-55, #92（EW-05 任务历史）
+- #161-164（用户认证）
+
+---
+
+## Session 11 — 下次从这里开始
+
+### 下一个任务：MW-02 流程定义列表（features #76-80, #96）
+
+### 启动步骤
+
+```bash
+# 1. 本地后端
+cd backend
+NO_PROXY="localhost,127.0.0.1" .venv/Scripts/uvicorn.exe main:app --port 8001
+
+# 2. 本地前端
+cd frontend
+NO_PROXY="localhost,127.0.0.1" npm run dev -- --port 3000
+
+# 3. 回归测试
+cd tests
+NO_PROXY="localhost,127.0.0.1" npx playwright test feature-001.spec.ts feature-051.spec.ts feature-161.spec.ts --reporter=list
+```
 
 ### 启动步骤
 
