@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from database import get_db
 from models import Flow, FlowVersion, TaskInstance
 from auth import require_current_user
@@ -19,6 +20,23 @@ class FlowSaveRequest(BaseModel):
 
 class GenerateRequest(BaseModel):
     prompt: str
+
+
+def _compute_health(db: Session, flow_name: str) -> dict:
+    """Compute success_rate (0-100) and avg_duration (minutes) for a flow."""
+    tasks = db.query(TaskInstance).filter(TaskInstance.flow_name == flow_name).all()
+    total = len(tasks)
+    if total == 0:
+        return {"success_rate": None, "avg_duration": None}
+    completed = [t for t in tasks if t.status == "completed"]
+    success_rate = round(len(completed) / total * 100)
+    durations = [
+        (t.completed_at - t.created_at).total_seconds() / 60
+        for t in completed
+        if t.completed_at and t.created_at
+    ]
+    avg_duration = round(sum(durations) / len(durations)) if durations else None
+    return {"success_rate": success_rate, "avg_duration": avg_duration}
 
 
 @router.post("/generate")
@@ -52,16 +70,23 @@ def generate_flow(req: GenerateRequest, user=Depends(require_current_user)):
 
 
 @router.get("")
-def list_flows(db: Session = Depends(get_db), user=Depends(require_current_user)):
-    flows = db.query(Flow).order_by(Flow.id.desc()).all()
-    return [
-        {
+def list_flows(search: Optional[str] = None, db: Session = Depends(get_db), user=Depends(require_current_user)):
+    query = db.query(Flow)
+    if search:
+        query = query.filter(Flow.name.ilike(f"%{search}%"))
+    flows = query.order_by(Flow.id.desc()).all()
+    result = []
+    for f in flows:
+        health = _compute_health(db, f.name)
+        result.append({
             "id": f.id, "name": f.name, "version": f.version,
             "status": f.status, "trigger_type": f.trigger_type,
+            "is_enabled": f.status != "inactive",
+            "success_rate": health["success_rate"],
+            "avg_duration": health["avg_duration"],
             "created_at": f.created_at.isoformat() if f.created_at else None,
-        }
-        for f in flows
-    ]
+        })
+    return result
 
 
 @router.post("")
@@ -132,6 +157,17 @@ def get_versions(flow_id: int, db: Session = Depends(get_db), user=Depends(requi
         {"id": v.id, "version": v.version, "created_at": v.created_at.isoformat() if v.created_at else None}
         for v in versions
     ]
+
+
+@router.patch("/{flow_id}/toggle")
+def toggle_flow(flow_id: int, db: Session = Depends(get_db), user=Depends(require_current_user)):
+    flow = db.query(Flow).filter(Flow.id == flow_id).first()
+    if not flow:
+        raise HTTPException(status_code=404, detail="Flow not found")
+    flow.status = "inactive" if flow.status != "inactive" else "active"
+    db.commit()
+    db.refresh(flow)
+    return {"id": flow.id, "status": flow.status, "is_enabled": flow.status != "inactive"}
 
 
 @router.post("/{flow_id}/trigger")

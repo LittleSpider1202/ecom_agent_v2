@@ -344,6 +344,34 @@ async def seed_data():
                 db.add(node)
             db.commit()
 
+        # ---- Flow 种子数据（与 TaskInstance.flow_name 对应，用于健康指标计算）----
+        if not db.query(Flow).filter(Flow.name == "采购审核流程").first():
+            seed_flows = [
+                Flow(name="采购审核流程", status="active", trigger_type="manual", version=3,
+                     description="自动采集竞品数据，AI生成采购建议，人工审核确认"),
+                Flow(name="动态定价流程", status="active", trigger_type="cron", trigger_config="0 6 * * *", version=2,
+                     description="每日自动监控竞品价格，触发定价策略调整建议"),
+                Flow(name="新品上架流程", status="active", trigger_type="manual", version=1,
+                     description="新品信息录入、审核、上架一体化流程"),
+                Flow(name="竞品分析流程", status="active", trigger_type="cron", trigger_config="0 8 * * 1", version=2,
+                     description="每周采集竞品动态，生成监控报告"),
+                Flow(name="库存管理流程", status="inactive", trigger_type="cron", trigger_config="0 0 * * *", version=1,
+                     description="每日库存盘点与预警流程"),
+                Flow(name="促销活动流程", status="active", trigger_type="manual", version=4,
+                     description="大促活动策划、执行、复盘全流程"),
+                Flow(name="供应商管理流程", status="active", trigger_type="manual", version=2,
+                     description="供应商资质审核与绩效评估流程"),
+                Flow(name="数据分析流程", status="active", trigger_type="cron", trigger_config="0 9 1 * *", version=1,
+                     description="月度数据报表自动生成与分析"),
+                Flow(name="仓储管理流程", status="inactive", trigger_type="manual", version=1,
+                     description="仓库入驻申请与容量规划流程"),
+                Flow(name="物流配置流程", status="active", trigger_type="manual", version=1,
+                     description="物流渠道对接与配置流程"),
+            ]
+            for f in seed_flows:
+                db.add(f)
+            db.commit()
+
         # ---- AISuggestion 种子数据 ----
         if db.query(AISuggestion).count() == 0:
             seed_suggestions = [

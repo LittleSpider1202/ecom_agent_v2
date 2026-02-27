@@ -1001,7 +1001,7 @@
       "Step 3: 验证显示流程列表",
       "Step 4: 验证每条流程显示名称和状态"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 77,
@@ -1013,7 +1013,7 @@
       "Step 3: 验证显示成功率百分比",
       "Step 4: 验证显示平均执行耗时"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 78,
@@ -1025,7 +1025,7 @@
       "Step 3: 验证跳转到 /manage/flows/new",
       "Step 4: 验证编辑器显示空白画布"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 79,
@@ -1037,7 +1037,7 @@
       "Step 3: 验证列表过滤为匹配流程",
       "Step 4: 清空搜索，验证列表恢复"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 80,
@@ -1051,7 +1051,7 @@
       "Step 5: 再次点击启用",
       "Step 6: 验证状态恢复为启用"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 81,
@@ -1266,7 +1266,7 @@
       "Step 3: 验证健康状态好的流程有绿色指示",
       "Step 4: 验证健康状态差的流程有红色或黄色指示"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 97,

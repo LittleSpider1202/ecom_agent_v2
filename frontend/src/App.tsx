@@ -11,6 +11,7 @@ import TaskHistory from './pages/executor/TaskHistory'
 import DecisionCockpit from './pages/manager/DecisionCockpit'
 import SuggestionDetail from './pages/manager/SuggestionDetail'
 import FlowEditor from './pages/manager/FlowEditor'
+import FlowList from './pages/manager/FlowList'
 import FlowVersions from './pages/manager/FlowVersions'
 import TaskMonitor from './pages/manager/TaskMonitor'
 
@@ -94,7 +95,7 @@ export default function App() {
           />
           <Route
             path="/manage/flows"
-            element={<ProtectedLayout requiredRole="manager"><Placeholder title="MW-02 流程定义列表" /></ProtectedLayout>}
+            element={<ProtectedLayout requiredRole="manager"><FlowList /></ProtectedLayout>}
           />
           <Route
             path="/manage/flows/new"
