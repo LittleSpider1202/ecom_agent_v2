@@ -213,14 +213,48 @@
 
 ---
 
-## Session 9 — 下次从这里开始
+## Session 9 — EW-03 任务详情（自动）（2026-02-27）
+
+### 完成内容
+
+1. **后端 TaskDagNode 模型 + API**
+   - `backend/models.py`：新增 `TaskDagNode` 表（task_id, node_key, label, node_type, status, log, pos_x, pos_y, source_keys, error_msg）
+   - `backend/routers/tasks.py`：新增 `GET /api/tasks/{id}/dag`（返回 nodes + 推导出的 edges）
+   - `backend/main.py`：导入 TaskDagNode，为"618大促活动方案执行"任务种子5条 DAG 节点
+
+2. **前端 EW-03 页面**
+   - `frontend/src/pages/executor/TaskDetail.tsx`：完整任务详情页
+     - ReactFlow read-only DAG 视图（nodesDraggable=false, nodesConnectable=false）
+     - 节点颜色：completed=green+✓, running=blue+animate-pulse, failed=red+×, pending=gray
+     - 点击节点弹出右侧日志面板（data-testid="log-panel"）
+     - 日志面板有关闭按钮（data-testid="log-panel-close"）
+   - `frontend/src/App.tsx`：/executor/tasks/:taskId 路由替换 TaskDetail
+   - `tests/feature-011.spec.ts`：#11-16 全部通过（6/6）
+
+3. **关键踩坑**
+   - ReactFlow pane 拦截 Playwright 鼠标点击 → 用 `page.evaluate` dispatch MouseEvent
+   - SVG edge `<g>` 元素 toBeVisible 报 hidden → 改用 count() 验证
+   - Node.js 上下文无 localStorage → 用 `page.request.post()` 重新登录获取 token
+
+### 当前 passes: true 的 feature（共 54 条）
+- #1-10（EW-01 看板 + EW-02 任务列表）
+- #11-16（EW-03 任务详情）
+- #17-25（EW-04 人工操作步骤）
+- #26-30（MW-01 决策驾驶舱）
+- #31-42（MW-03 流程编辑器）
+- #43-50（Style 测试）
+- #161-164（用户认证）
+
+---
+
+## Session 10 — 下次从这里开始
 
 ### 下一个任务：更多 functional features
 
 优先级：
-1. EW-03 任务详情（自动）— feature #11-16（待查 feature_list.json）
-2. MW-02 流程定义列表 — feature #? 待查
-3. 更多 EW/MW 页面
+1. MW-02 流程定义列表 — 查 feature_list.json 找对应 index
+2. EW-05 任务历史 — 查 feature_list.json
+3. 继续推进 EW/MW 页面
 
 ### 启动步骤
 
