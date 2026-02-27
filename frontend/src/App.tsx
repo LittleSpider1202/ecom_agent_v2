@@ -7,6 +7,7 @@ import Dashboard from './pages/executor/Dashboard'
 import TaskList from './pages/executor/TaskList'
 import HumanStep from './pages/executor/HumanStep'
 import TaskDetail from './pages/executor/TaskDetail'
+import TaskHistory from './pages/executor/TaskHistory'
 import DecisionCockpit from './pages/manager/DecisionCockpit'
 import SuggestionDetail from './pages/manager/SuggestionDetail'
 import FlowEditor from './pages/manager/FlowEditor'
@@ -63,7 +64,7 @@ export default function App() {
           />
           <Route
             path="/executor/history"
-            element={<ProtectedLayout><Placeholder title="EW-05 任务历史" /></ProtectedLayout>}
+            element={<ProtectedLayout><TaskHistory /></ProtectedLayout>}
           />
           <Route
             path="/executor/knowledge"

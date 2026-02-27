@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
+from sqlalchemy import text
 from datetime import datetime, timezone, timedelta
 import time
 import uuid
@@ -14,6 +15,13 @@ from routers import dashboard as dashboard_router
 from routers import flows as flows_router
 
 Base.metadata.create_all(bind=engine)
+
+# 补充新增字段（create_all 不会 ALTER 已有表）
+with engine.connect() as _conn:
+    _conn.execute(text(
+        "ALTER TABLE task_instances ADD COLUMN IF NOT EXISTS completed_at TIMESTAMP WITH TIME ZONE"
+    ))
+    _conn.commit()
 
 logging.basicConfig(
     level=logging.INFO,
@@ -109,20 +117,34 @@ async def seed_data():
                 # 已完成（completed）
                 TaskInstance(title="上月退货率分析报告", flow_name="数据分析流程", status="completed",
                              current_step=None, assigned_to=executor.id,
-                             created_at=now - timedelta(days=3)),
+                             created_at=now - timedelta(days=3),
+                             completed_at=now - timedelta(days=2, hours=20)),
                 TaskInstance(title="Q3季度供应商绩效评估", flow_name="供应商管理流程", status="completed",
                              current_step=None, assigned_to=executor.id,
-                             created_at=now - timedelta(days=5)),
+                             created_at=now - timedelta(days=5),
+                             completed_at=now - timedelta(days=4, hours=18)),
                 TaskInstance(title="新仓库入驻申请材料提交", flow_name="仓储管理流程", status="completed",
                              current_step=None, assigned_to=executor.id,
-                             created_at=now - timedelta(days=7)),
+                             created_at=now - timedelta(days=7),
+                             completed_at=now - timedelta(days=6, hours=14)),
                 # 失败（failed）
                 TaskInstance(title="跨境物流对接配置", flow_name="物流配置流程", status="failed",
                              current_step="API对接失败", assigned_to=executor.id,
-                             created_at=now - timedelta(days=2)),
+                             created_at=now - timedelta(days=2),
+                             completed_at=now - timedelta(days=1, hours=22)),
             ]
             for t in seed_tasks:
                 db.add(t)
+            db.commit()
+
+        # ---- 为历史任务补充 completed_at（首次迁移兼容）----
+        completed_tasks = db.query(TaskInstance).filter(
+            TaskInstance.status.in_(["completed", "failed", "rejected"]),
+            TaskInstance.completed_at == None,
+        ).all()
+        for t in completed_tasks:
+            t.completed_at = t.created_at + timedelta(hours=6)
+        if completed_tasks:
             db.commit()
 
         # ---- 重置 TaskStep 状态（dev 模式，确保每次重启测试数据新鲜） ----

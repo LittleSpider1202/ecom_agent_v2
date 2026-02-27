@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Query, HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy import or_
 from typing import Optional
-from datetime import datetime, timezone
+from datetime import datetime, date, timezone
 from pydantic import BaseModel
 from database import get_db
 from auth import require_current_user
@@ -23,6 +23,7 @@ def task_to_dict(t: TaskInstance) -> dict:
         "due_date": t.due_date.isoformat() if t.due_date else None,
         "created_at": t.created_at.isoformat() if t.created_at else None,
         "updated_at": t.updated_at.isoformat() if t.updated_at else None,
+        "completed_at": t.completed_at.isoformat() if t.completed_at else None,
     }
 
 
@@ -91,6 +92,78 @@ async def list_tasks(
         "page_size": page_size,
         "total_pages": (total + page_size - 1) // page_size,
     }
+
+
+@router.get("/history")
+async def get_task_history(
+    search: Optional[str] = Query(None, description="按任务名称搜索"),
+    date_from: Optional[date] = Query(None, alias="from"),
+    date_to: Optional[date] = Query(None, alias="to"),
+    page: int = Query(1, ge=1),
+    page_size: int = Query(20, ge=1, le=100),
+    current_user: User = Depends(require_current_user),
+    db: Session = Depends(get_db),
+):
+    """任务历史：已完成/失败/驳回的任务"""
+    query = db.query(TaskInstance).filter(
+        TaskInstance.assigned_to == current_user.id,
+        TaskInstance.status.in_(["completed", "failed", "rejected"]),
+    )
+    if search:
+        query = query.filter(TaskInstance.title.ilike(f"%{search}%"))
+    if date_from:
+        query = query.filter(TaskInstance.completed_at >= datetime(date_from.year, date_from.month, date_from.day, tzinfo=timezone.utc))
+    if date_to:
+        from datetime import timedelta
+        end = datetime(date_to.year, date_to.month, date_to.day, tzinfo=timezone.utc) + timedelta(days=1)
+        query = query.filter(TaskInstance.completed_at < end)
+    query = query.order_by(TaskInstance.completed_at.desc().nullslast())
+    total = query.count()
+    items = query.offset((page - 1) * page_size).limit(page_size).all()
+
+    def history_item(t: TaskInstance) -> dict:
+        duration_s = None
+        if t.completed_at and t.created_at:
+            duration_s = int((t.completed_at - t.created_at).total_seconds())
+        return {
+            **task_to_dict(t),
+            "duration_seconds": duration_s,
+        }
+
+    return {
+        "items": [history_item(t) for t in items],
+        "total": total,
+        "page": page,
+        "page_size": page_size,
+    }
+
+
+@router.get("/my-steps")
+async def get_my_steps(
+    current_user: User = Depends(require_current_user),
+    db: Session = Depends(get_db),
+):
+    """我的操作记录：当前用户处理过的所有步骤"""
+    steps = (
+        db.query(TaskStep, TaskInstance)
+        .join(TaskInstance, TaskStep.task_id == TaskInstance.id)
+        .filter(TaskStep.completed_by == current_user.id)
+        .order_by(TaskStep.completed_at.desc())
+        .all()
+    )
+    result = []
+    for step, task in steps:
+        action = "采纳" if step.status == "completed" and step.final_content == step.ai_suggestion else \
+                 "驳回" if step.status == "rejected" else "修改"
+        result.append({
+            "step_id": step.id,
+            "step_name": step.step_name,
+            "task_id": task.id,
+            "task_title": task.title,
+            "action": action,
+            "completed_at": step.completed_at.isoformat() if step.completed_at else None,
+        })
+    return result
 
 
 @router.get("/monitor")

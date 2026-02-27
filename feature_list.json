@@ -685,7 +685,7 @@
       "Step 4: 验证已完成任务列表存在",
       "Step 5: 验证每条任务显示完成时间"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 52,
@@ -698,7 +698,7 @@
       "Step 4: 验证显示完成时间",
       "Step 5: 验证显示总耗时"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 53,
@@ -710,7 +710,7 @@
       "Step 3: 验证只显示当前用户操作过的步骤记录",
       "Step 4: 验证每条记录显示操作时间和操作类型（采纳/修改/驳回）"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 54,
@@ -723,7 +723,7 @@
       "Step 4: 清空搜索",
       "Step 5: 验证列表恢复全部显示"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 55,
@@ -736,7 +736,7 @@
       "Step 4: 点击筛选按钮",
       "Step 5: 验证列表只显示在该日期范围内完成的任务"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 56,
@@ -1215,7 +1215,7 @@
       "Step 4: 验证时间戳格式一致（如 YYYY-MM-DD HH:mm）",
       "Step 5: 验证操作类型（采纳/驳回）有颜色区分"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 93,
