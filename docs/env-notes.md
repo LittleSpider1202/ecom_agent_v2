@@ -159,4 +159,28 @@
   - 背景：新增 `dashboard.py` 后，deploy.sh 的 scp 没有包含它，小主机报 ImportError
   - 结论：每次新增 router 文件，**必须同步更新 deploy.sh 的 scp 命令**
 
+## [2026-02-27] Session 7 — MW-03 流程编辑器
+
+- **发现**：`@xyflow/react` (ReactFlow v12) handle 属性变更
+  - 背景：v11 的 `data-handletype="source"/"target"` 在 v12 已改为仅有 `data-handlepos`
+  - 结论：测试中用 `data-handlepos="bottom"` 选 source handle，`data-handlepos="top"` 选 target handle
+  - Playwright 选择器：`.react-flow__handle[data-handlepos="bottom"]`
+
+- **发现**：LocalStorage token key 是 `auth_token`，不是 `token`
+  - 背景：FlowEditor.tsx 误用 `localStorage.getItem('token')` → null → 所有 API 调用返回 401
+  - 结论：`AuthContext.tsx` 存储 key 为 `auth_token`；`auth_user` 存储 user JSON
+
+- **发现**：Playwright 登录改用 API programmatic 方式，彻底消除 UI 登录 flakiness
+  - 背景：多次 UI 表单登录 + `waitForURL` 在后续 retry 中易超时（browser context 残留状态）
+  - 结论：用 `page.request.post('http://localhost:8001/api/auth/login', { form: {...} })`
+    取 token，再 `page.evaluate` 写入 localStorage，最后 `page.goto` 直接进目标页
+  - 注意：必须先 `page.goto('/login')` 建立 origin context 才能写 localStorage
+
+- **发现**：ReactFlow v12 需要 `ReactFlowProvider` 包裹才能使用 `useReactFlow()` hook
+  - 背景：`useReactFlow` 报错 "seems to be outside the root"
+  - 结论：将内部组件 `FlowEditorInner` 包裹在 `<ReactFlowProvider>` 中，外层导出包装组件
+
+- **发现**：`@xyflow/react` 包安装后，CSS 路径为 `@xyflow/react/dist/style.css`
+  - 结论：`import '@xyflow/react/dist/style.css'` 在组件文件顶部引入
+
 <!-- 后续 session 在此追加 -->
