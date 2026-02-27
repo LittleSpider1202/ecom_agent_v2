@@ -579,7 +579,7 @@
       "Step 4: 验证待办和进行中区域布局整齐",
       "Step 5: 验证卡片之间有合理间距"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 44,
@@ -593,7 +593,7 @@
       "Step 5: 验证状态徽章颜色突出（如橙色或红色表示紧急）",
       "Step 6: 验证截止日期文字清晰可读"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 45,
@@ -606,7 +606,7 @@
       "Step 4: 验证不同状态的徽章使用不同颜色（待处理=橙色，进行中=蓝色，已完成=绿色）",
       "Step 5: 验证表格行有hover效果"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 46,
@@ -619,7 +619,7 @@
       "Step 4: 验证操作按钮区域在页面底部或右侧显眼位置",
       "Step 5: 验证不可撤回警告文字颜色为红色或橙色"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 47,
@@ -632,7 +632,7 @@
       "Step 4: 验证健康状态好时为绿色，差时为红色",
       "Step 5: 验证页面整体布局无元素溢出"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 48,
@@ -645,7 +645,7 @@
       "Step 4: 验证自动节点和人工节点颜色或样式明显不同",
       "Step 5: 验证节点标签文字清晰可读"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 49,
@@ -658,7 +658,7 @@
       "Step 4: 验证节点面板固定在侧边不遮挡画布",
       "Step 5: 验证工具栏位于顶部或浮动工具栏，不影响画布操作"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 50,
@@ -672,7 +672,7 @@
       "Step 5: 点击保存",
       "Step 6: 验证触发器配置已保存并显示在流程信息中"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 51,
