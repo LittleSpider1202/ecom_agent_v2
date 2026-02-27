@@ -8,6 +8,9 @@ import TaskList from './pages/executor/TaskList'
 import HumanStep from './pages/executor/HumanStep'
 import DecisionCockpit from './pages/manager/DecisionCockpit'
 import SuggestionDetail from './pages/manager/SuggestionDetail'
+import FlowEditor from './pages/manager/FlowEditor'
+import FlowVersions from './pages/manager/FlowVersions'
+import TaskMonitor from './pages/manager/TaskMonitor'
 
 function Placeholder({ title }: { title: string }) {
   return (
@@ -93,15 +96,15 @@ export default function App() {
           />
           <Route
             path="/manage/flows/new"
-            element={<ProtectedLayout requiredRole="manager"><Placeholder title="MW-03 流程编辑器（新建）" /></ProtectedLayout>}
+            element={<ProtectedLayout requiredRole="manager"><FlowEditor /></ProtectedLayout>}
           />
           <Route
             path="/manage/flows/:flowId"
-            element={<ProtectedLayout requiredRole="manager"><Placeholder title="MW-03 流程编辑器" /></ProtectedLayout>}
+            element={<ProtectedLayout requiredRole="manager"><FlowEditor /></ProtectedLayout>}
           />
           <Route
             path="/manage/flows/:flowId/versions"
-            element={<ProtectedLayout requiredRole="manager"><Placeholder title="MW-04 流程版本历史" /></ProtectedLayout>}
+            element={<ProtectedLayout requiredRole="manager"><FlowVersions /></ProtectedLayout>}
           />
           <Route
             path="/manage/tools"
@@ -129,7 +132,7 @@ export default function App() {
           />
           <Route
             path="/manage/monitor"
-            element={<ProtectedLayout requiredRole="manager"><Placeholder title="MW-10 全局任务监控" /></ProtectedLayout>}
+            element={<ProtectedLayout requiredRole="manager"><TaskMonitor /></ProtectedLayout>}
           />
           <Route
             path="/manage/tasks/:taskId"

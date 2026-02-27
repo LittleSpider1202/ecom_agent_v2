@@ -6,11 +6,12 @@ import time
 import uuid
 import logging
 from database import engine, get_db
-from models import Base, User, TaskInstance, TaskStep, AISuggestion
+from models import Base, User, TaskInstance, TaskStep, AISuggestion, Flow, FlowVersion
 from auth import get_password_hash
 from routers import auth as auth_router
 from routers import tasks as tasks_router
 from routers import dashboard as dashboard_router
+from routers import flows as flows_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -56,6 +57,7 @@ app.add_middleware(
 app.include_router(auth_router.router)
 app.include_router(tasks_router.router)
 app.include_router(dashboard_router.router)
+app.include_router(flows_router.router)
 
 
 @app.on_event("startup")

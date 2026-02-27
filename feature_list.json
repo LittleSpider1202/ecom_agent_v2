@@ -407,7 +407,7 @@
       "Step 4: 验证存在节点类型面板（左侧或右侧）",
       "Step 5: 验证存在工具栏（保存、触发等按钮）"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 32,
@@ -422,7 +422,7 @@
       "Step 6: 验证画布上出现多个节点",
       "Step 7: 验证节点之间有连线"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 33,
@@ -435,7 +435,7 @@
       "Step 4: 验证节点出现在画布上",
       "Step 5: 验证节点显示类型图标和默认名称"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 34,
@@ -448,7 +448,7 @@
       "Step 4: 验证节点出现在画布上",
       "Step 5: 验证节点样式与自动节点不同（颜色或图标有区别）"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 35,
@@ -462,7 +462,7 @@
       "Step 5: 验证两节点之间出现连线（边）",
       "Step 6: 验证连线方向正确（从上游到下游）"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 36,
@@ -475,7 +475,7 @@
       "Step 4: 验证节点从画布消失",
       "Step 5: 验证相关连线也一并删除"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 37,
@@ -490,7 +490,7 @@
       "Step 6: 点击保存",
       "Step 7: 验证节点显示配置信息摘要"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 38,
@@ -509,7 +509,7 @@
       "Step 10: 验证节点显示负责人角色信息",
       "Step 11: 验证节点颜色或图标表示为人工节点"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 39,
@@ -522,7 +522,7 @@
       "Step 4: 验证URL更新为 /manage/flows/{flowId}",
       "Step 5: 验证右上角或面板显示版本号（如 v1）"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 40,
@@ -537,7 +537,7 @@
       "Step 6: 导航到任务监控页面",
       "Step 7: 验证新任务实例出现在列表中"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 41,
@@ -551,7 +551,7 @@
       "Step 5: 导航到流程版本历史页面",
       "Step 6: 验证历史中显示 v1 和 v2 两个版本"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 42,
@@ -566,7 +566,7 @@
       "Step 6: 点击保存",
       "Step 7: 验证节点显示为菱形或分支图标"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 43,

@@ -93,6 +93,21 @@ async def list_tasks(
     }
 
 
+@router.get("/monitor")
+async def monitor_tasks(
+    current_user: User = Depends(require_current_user),
+    db: Session = Depends(get_db),
+):
+    """全局任务监控：返回所有任务实例（不过滤用户）"""
+    tasks = (
+        db.query(TaskInstance)
+        .order_by(TaskInstance.created_at.desc())
+        .limit(200)
+        .all()
+    )
+    return [task_to_dict(t) for t in tasks]
+
+
 @router.get("/{task_id}")
 async def get_task(
     task_id: int,

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, Text, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Text, ForeignKey, JSON
 from sqlalchemy.sql import func
 from database import Base
 
@@ -48,6 +48,33 @@ class TaskStep(Base):
     reject_reason = Column(Text, nullable=True)      # 驳回原因
     completed_by = Column(Integer, ForeignKey("users.id"), nullable=True)
     completed_at = Column(DateTime(timezone=True), nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class Flow(Base):
+    __tablename__ = "flows"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(200), nullable=False)
+    description = Column(Text, nullable=True)
+    nodes = Column(JSON, nullable=False, default=list)
+    edges = Column(JSON, nullable=False, default=list)
+    version = Column(Integer, nullable=False, default=1)
+    trigger_type = Column(String(20), nullable=True)   # manual | cron
+    trigger_config = Column(String(200), nullable=True) # cron expression
+    status = Column(String(20), nullable=False, default="draft")
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+
+class FlowVersion(Base):
+    __tablename__ = "flow_versions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    flow_id = Column(Integer, ForeignKey("flows.id"), nullable=False, index=True)
+    version = Column(Integer, nullable=False)
+    nodes = Column(JSON, nullable=False)
+    edges = Column(JSON, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 
