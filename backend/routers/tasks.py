@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 from pydantic import BaseModel
 from database import get_db
 from auth import require_current_user
-from models import TaskInstance, TaskStep, User
+from models import TaskInstance, TaskStep, TaskDagNode, User
 
 router = APIRouter(prefix="/api/tasks", tags=["tasks"])
 
@@ -106,6 +106,44 @@ async def monitor_tasks(
         .all()
     )
     return [task_to_dict(t) for t in tasks]
+
+
+@router.get("/{task_id}/dag")
+async def get_task_dag(
+    task_id: int,
+    current_user: User = Depends(require_current_user),
+    db: Session = Depends(get_db),
+):
+    task = db.query(TaskInstance).filter(TaskInstance.id == task_id).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="任务不存在")
+    dag_nodes = (
+        db.query(TaskDagNode)
+        .filter(TaskDagNode.task_id == task_id)
+        .order_by(TaskDagNode.id)
+        .all()
+    )
+    nodes = []
+    for n in dag_nodes:
+        nodes.append({
+            "id": n.node_key,
+            "label": n.label,
+            "node_type": n.node_type,
+            "status": n.status,
+            "log": n.log or "",
+            "error_msg": n.error_msg or "",
+            "position": {"x": n.pos_x, "y": n.pos_y},
+            "source_keys": n.source_keys or [],
+        })
+    edges = []
+    for n in dag_nodes:
+        for src in (n.source_keys or []):
+            edges.append({"id": f"e-{src}-{n.node_key}", "source": src, "target": n.node_key})
+    return {
+        "task": task_to_dict(task),
+        "nodes": nodes,
+        "edges": edges,
+    }
 
 
 @router.get("/{task_id}")

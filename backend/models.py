@@ -78,6 +78,23 @@ class FlowVersion(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 
+class TaskDagNode(Base):
+    __tablename__ = "task_dag_nodes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    task_id = Column(Integer, ForeignKey("task_instances.id"), nullable=False, index=True)
+    node_key = Column(String(50), nullable=False)      # "n1", "n2", ...（在该 task 内唯一）
+    label = Column(String(200), nullable=False)
+    node_type = Column(String(20), nullable=False, default="auto")   # auto | human | condition
+    # pending | running | completed | failed
+    status = Column(String(20), nullable=False, default="pending")
+    log = Column(Text, nullable=True)                  # 执行日志
+    pos_x = Column(Integer, nullable=False, default=0)
+    pos_y = Column(Integer, nullable=False, default=0)
+    source_keys = Column(JSON, nullable=False, default=list)  # 前驱节点 key 列表
+    error_msg = Column(Text, nullable=True)            # 失败错误信息
+
+
 class AISuggestion(Base):
     __tablename__ = "ai_suggestions"
 

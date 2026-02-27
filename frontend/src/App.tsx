@@ -6,6 +6,7 @@ import AppLayout from './components/AppLayout'
 import Dashboard from './pages/executor/Dashboard'
 import TaskList from './pages/executor/TaskList'
 import HumanStep from './pages/executor/HumanStep'
+import TaskDetail from './pages/executor/TaskDetail'
 import DecisionCockpit from './pages/manager/DecisionCockpit'
 import SuggestionDetail from './pages/manager/SuggestionDetail'
 import FlowEditor from './pages/manager/FlowEditor'
@@ -54,7 +55,7 @@ export default function App() {
           />
           <Route
             path="/executor/tasks/:taskId"
-            element={<ProtectedLayout><Placeholder title="EW-03 任务详情（自动）" /></ProtectedLayout>}
+            element={<ProtectedLayout><TaskDetail /></ProtectedLayout>}
           />
           <Route
             path="/task/:taskId/step/:stepId"

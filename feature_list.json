@@ -140,7 +140,7 @@
       "Step 5: 验证页面显示任务名称和流程信息",
       "Step 6: 验证DAG进度图区域存在"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 12,
@@ -152,7 +152,7 @@
       "Step 3: 验证节点之间有连线（边）",
       "Step 4: 验证节点显示步骤名称"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 13,
@@ -163,7 +163,7 @@
       "Step 2: 找到已完成的节点",
       "Step 3: 验证该节点显示完成状态（绿色或勾选图标）"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 14,
@@ -174,7 +174,7 @@
       "Step 2: 找到进行中的节点",
       "Step 3: 验证该节点显示执行中状态（加载动画或蓝色高亮）"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 15,
@@ -186,7 +186,7 @@
       "Step 3: 验证该节点显示失败状态（红色或错误图标）",
       "Step 4: 验证有错误提示文字"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 16,
@@ -200,7 +200,7 @@
       "Step 5: 关闭日志面板",
       "Step 6: 验证面板关闭，DAG图恢复正常显示"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 17,

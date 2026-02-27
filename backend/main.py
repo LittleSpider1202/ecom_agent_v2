@@ -6,7 +6,7 @@ import time
 import uuid
 import logging
 from database import engine, get_db
-from models import Base, User, TaskInstance, TaskStep, AISuggestion, Flow, FlowVersion
+from models import Base, User, TaskInstance, TaskStep, TaskDagNode, AISuggestion, Flow, FlowVersion
 from auth import get_password_hash
 from routers import auth as auth_router
 from routers import tasks as tasks_router
@@ -277,6 +277,49 @@ async def seed_data():
                         ai_suggestion=tmpl["ai_suggestion"],
                         status="pending",
                     ))
+            db.commit()
+
+        # ---- TaskDagNode 种子数据 ----
+        # 为"618大促活动方案执行"（自动任务，running）创建 DAG 节点
+        auto_task = db.query(TaskInstance).filter(
+            TaskInstance.title == "618大促活动方案执行"
+        ).first()
+        if auto_task and db.query(TaskDagNode).filter(TaskDagNode.task_id == auto_task.id).count() == 0:
+            dag_nodes = [
+                TaskDagNode(
+                    task_id=auto_task.id, node_key="n1", label="采集活动数据",
+                    node_type="auto", status="completed", pos_x=200, pos_y=60,
+                    source_keys=[],
+                    log="[INFO] 开始采集竞品活动数据...\n[INFO] 采集完成：共获取 1,284 条数据\n[INFO] 数据已写入分析队列",
+                ),
+                TaskDagNode(
+                    task_id=auto_task.id, node_key="n2", label="竞品价格分析",
+                    node_type="auto", status="completed", pos_x=200, pos_y=200,
+                    source_keys=["n1"],
+                    log="[INFO] 开始价格比对分析...\n[INFO] 检测到3家竞品均已降价\n[INFO] 竞品A降价15%，竞品B满减活动，竞品C组合优惠\n[INFO] 分析报告已生成",
+                ),
+                TaskDagNode(
+                    task_id=auto_task.id, node_key="n3", label="AI生成活动方案",
+                    node_type="auto", status="running", pos_x=200, pos_y=340,
+                    source_keys=["n2"],
+                    log="[INFO] 调用 AI 方案生成服务...\n[INFO] 模型推理中，已完成 60%...",
+                ),
+                TaskDagNode(
+                    task_id=auto_task.id, node_key="n4", label="推送通知测试",
+                    node_type="auto", status="failed", pos_x=460, pos_y=340,
+                    source_keys=["n2"],
+                    log="[INFO] 开始推送渠道连通性测试...\n[ERROR] API 连接超时 (timeout: 30s)\n[ERROR] 重试第1次...失败\n[ERROR] 重试第2次...失败\n[ERROR] 重试第3次...失败\n[FATAL] 推送服务不可用，任务终止",
+                    error_msg="推送接口连接超时，已重试 3 次均失败",
+                ),
+                TaskDagNode(
+                    task_id=auto_task.id, node_key="n5", label="发布活动页面",
+                    node_type="auto", status="pending", pos_x=200, pos_y=480,
+                    source_keys=["n3"],
+                    log="",
+                ),
+            ]
+            for node in dag_nodes:
+                db.add(node)
             db.commit()
 
         # ---- AISuggestion 种子数据 ----

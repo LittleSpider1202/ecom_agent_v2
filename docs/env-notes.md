@@ -197,4 +197,21 @@
   - 背景：点击行期望跳转到 HumanStep，实际进入 EW-03（Placeholder）
   - 结论：直接 `page.goto('/task/1/step/current')` 跳过行点击，种子数据 task 1 有 has_human_step=true
 
+## [2026-02-27] Session 9 — EW-03 任务详情
+
+- **发现**：ReactFlow pane 拦截 Playwright 鼠标事件，节点 div 上的 onClick 无法通过 `.click()` 或 `.click({ force: true })` 触发
+  - 背景：ReactFlow 的 `react-flow__pane draggable` 覆盖整个画布，Playwright 检测到它拦截 pointer events
+  - 结论：用 `page.evaluate(() => el.dispatchEvent(new MouseEvent('click', { bubbles: true })))` 在浏览器上下文直接 dispatch，可绕过 pane 拦截
+
+- **发现**：ReactFlow SVG edge 元素（`.react-flow__edge`）是 `<g>` 标签，Playwright 的 `toBeVisible()` 报 "hidden"
+  - 背景：SVG `<g>` 默认不参与 Playwright 的可见性检测
+  - 结论：用 `await page.locator('[data-testid^="rf__edge-"]').count()` 验证边存在，不用 `toBeVisible`
+
+- **发现**：Playwright test 中 `localStorage` 不在 Node.js 上下文（只在浏览器上下文）
+  - 背景：`page.request.get()` 调用时无法访问 `localStorage`
+  - 结论：在 `page.request.get()` 前先用 `page.request.post()` 重新登录获取 token，或用 `page.evaluate()` 执行浏览器端代码
+
+- **发现**：新增 SQLAlchemy 模型（TaskDagNode）时，`Base.metadata.create_all` 自动创建新表，无需 ALTER TABLE
+  - 结论：种子数据使用 `if db.query(TaskDagNode).filter(TaskDagNode.task_id == task.id).count() == 0:` 防重复
+
 <!-- 后续 session 在此追加 -->
