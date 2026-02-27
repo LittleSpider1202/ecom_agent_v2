@@ -284,9 +284,73 @@
 
 ---
 
-## Session 11 — 下次从这里开始
+## Session 11 — MW-02 流程定义列表（2026-02-27）
 
-### 下一个任务：MW-02 流程定义列表（features #76-80, #96）
+### 完成内容
+
+1. **后端 `flows.py` 扩展**
+   - `GET /api/flows` 新增 `success_rate`、`avg_duration`、`is_enabled` 字段（从 TaskInstance 聚合计算）
+   - 支持 `?search=` query param 按名称过滤
+   - 新增 `PATCH /api/flows/{id}/toggle` 端点（在 "active"/"inactive" 间切换）
+
+2. **后端 `main.py` 种子数据**
+   - 新增 10 条 Flow 种子（名称与 TaskInstance.flow_name 匹配）
+   - 条件：`if not db.query(Flow).filter(Flow.name == "采购审核流程").first():` 防重复
+
+3. **前端 FlowList.tsx**
+   - 路由：`/manage/flows`
+   - 搜索框 + 流程卡片列表（name, version, trigger_type, 状态）
+   - 健康指标（success_rate %, avg_duration 分钟）
+   - 健康颜色指示器：绿(>=80%), 黄(>=50%), 红(<50%)
+   - 启用/禁用开关（toggle）
+   - "新建流程"按钮 → /manage/flows/new
+
+4. **测试全部通过（6/6）**
+   - features #76-80, #96 passes: true
+   - 截图存入 verification/
+
+### 关键踩坑
+- Flow 种子条件判断不能用 count()==0（表已有 14 条测试数据）
+- ReactFlow 严格模式：`.react-flow` 匹配 19 个元素 → 用 `getByTestId('rf__wrapper')`
+
+### 当前 passes: true 的 feature（共 66 条）
+- #1-10（EW-01/EW-02）
+- #11-16（EW-03 任务详情）
+- #17-25（EW-04 人工操作步骤）
+- #26-30（MW-01 决策驾驶舱）
+- #31-42（MW-03 流程编辑器）
+- #43-50（Style 测试）
+- #51-55, #92（EW-05 任务历史）
+- #76-80, #96（MW-02 流程定义列表）
+- #161-164（用户认证）
+
+---
+
+## Session 12 — 下次从这里开始
+
+### 启动步骤
+
+```bash
+# 1. 本地后端
+cd backend
+NO_PROXY="localhost,127.0.0.1" .venv/Scripts/uvicorn.exe main:app --port 8001
+
+# 2. 本地前端
+cd frontend
+NO_PROXY="localhost,127.0.0.1" npm run dev -- --port 3000
+
+# 3. 回归测试
+cd tests
+NO_PROXY="localhost,127.0.0.1" npx playwright test feature-001.spec.ts feature-076.spec.ts feature-161.spec.ts --reporter=list
+```
+
+### 关键约束提醒
+
+- Flow 种子条件：用 `filter(Flow.name == "采购审核流程").first()` 判断，不用 count()==0
+- ReactFlow 根节点测试：用 `getByTestId('rf__wrapper')` 而非 `.react-flow`（多元素）
+- `@xyflow/react` v12：handle属性用 `data-handlepos` 不是 `data-handletype`
+- 登录测试用 API 登录（`page.request.post` + 写 localStorage），不用 UI 表单
+- token 在 localStorage 存储 key 是 `auth_token`
 
 ### 启动步骤
 

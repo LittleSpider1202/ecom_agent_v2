@@ -133,3 +133,5 @@
 - `/api/tasks/my` 返回 `{ pending: [...], running: [...], pending_count, running_count }`，**不是平铺数组**
 - MW-01 健康分值颜色用 `style={{ color: '#22c55e' }}` inline，不是 Tailwind class → 测试用 `getAttribute('style')` 检查
 - 任务行点击根据 `has_human_step` 分流：`true` → HumanStep，`false` → TaskDetail（`/executor/tasks/:id`）
+- Flow 种子数据判断：用 `if not db.query(Flow).filter(Flow.name == "采购审核流程").first():`，不能用 `count() == 0`（测试运行后 Flow 表已有数据）
+- ReactFlow 测试：`.react-flow` / `[class*="react-flow"]` 会命中 19 个子元素（strict mode violation）→ 改用 `getByTestId('rf__wrapper')` 定位根节点
