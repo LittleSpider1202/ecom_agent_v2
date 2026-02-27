@@ -183,4 +183,18 @@
 - **发现**：`@xyflow/react` 包安装后，CSS 路径为 `@xyflow/react/dist/style.css`
   - 结论：`import '@xyflow/react/dist/style.css'` 在组件文件顶部引入
 
+## [2026-02-27] Session 8 — Style 测试 #43-50
+
+- **发现**：`/api/tasks/my` 返回 `{pending: [...], running: [...], pending_count, running_count}`，不是平铺数组
+  - 背景：测试中用 `tasks.find(...)` 报 `not a function`，因为 tasks 是对象
+  - 结论：用 `tasks.pending.find(...)` 或直接用已知任务 ID 导航
+
+- **发现**：MW-01 健康分值颜色用 `style={{ color: '#22c55e' }}` inline，非 Tailwind class
+  - 背景：测试检查 `text-green` class 失败，实际是 `style` 属性
+  - 结论：检查颜色时用 `getAttribute('style')` 匹配 `color:` 或用 `evaluate` 读取 computedStyle
+
+- **发现**：TaskList row click 根据 `has_human_step` 决定导航目标
+  - 背景：点击行期望跳转到 HumanStep，实际进入 EW-03（Placeholder）
+  - 结论：直接 `page.goto('/task/1/step/current')` 跳过行点击，种子数据 task 1 有 has_human_step=true
+
 <!-- 后续 session 在此追加 -->

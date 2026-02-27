@@ -183,14 +183,44 @@
 
 ---
 
-## Session 8 — 下次从这里开始
+## Session 8 — Style 测试 #43-50（2026-02-27）
 
-### 下一个任务：Style 测试 #43-50 + 更多 functional features
+### 完成内容
+
+1. **Style 测试 #43-50 全部通过（8/8）**
+   - `tests/feature-043.spec.ts`：8条测试
+   - #43: EW-01 看板 — 无水平滚动 + 两列布局
+   - #44: EW-01 看板卡片 — 标题/徽章/颜色
+   - #45: EW-02 任务列表 — pending 徽章颜色为黄色(bg-yellow-100)
+   - #46: EW-04 人工步骤 — 红色 warning-banner + 区域分离
+   - #47: MW-01 决策驾驶舱 — 健康分数大字 + inline color style
+   - #48: MW-03 流程编辑器 — auto=bg-blue-50, human=bg-orange-50
+   - #49: MW-03 流程编辑器布局 — panel 左侧，canvas 主区，toolbar 顶部
+   - #50: MW-03 cron触发 — 保存后重载验证persistence
+
+2. **关键踩坑**
+   - `/api/tasks/my` 返回 `{pending:[...], running:[...]}` 不是平铺数组
+   - 健康分值颜色用 `style={{ color }}` inline，不是 Tailwind class
+   - task row click 导航到 EW-03 而非 HumanStep（因 has_human_step 检查）→ 直接 navigate 到 `/task/1/step/current`
+
+### 当前 passes: true 的 feature（共 48 条）
+- #1-10（EW-01 看板 + EW-02 任务列表）
+- #17-25（EW-04 人工操作步骤）
+- #26-30（MW-01 决策驾驶舱）
+- #31-42（MW-03 流程编辑器）
+- #43-50（Style 测试）
+- #161-164（用户认证）
+
+---
+
+## Session 9 — 下次从这里开始
+
+### 下一个任务：更多 functional features
 
 优先级：
-1. #43-50：Style 测试（EW-01/02/04/MW-01/MW-03 视觉验证） + #50 cron触发
-2. MW-02 流程定义列表（#? 待查）
-3. EW-03 任务详情（自动）
+1. EW-03 任务详情（自动）— feature #11-16（待查 feature_list.json）
+2. MW-02 流程定义列表 — feature #? 待查
+3. 更多 EW/MW 页面
 
 ### 启动步骤
 
