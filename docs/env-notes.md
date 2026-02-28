@@ -213,4 +213,18 @@
 - Session 14 开始：vite.config.ts proxy target 改为 `http://192.168.0.112:8002`（本地后端无法稳定启动）
 - 测试直接用 API_URL = 'http://192.168.0.112:8002'（不走proxy）
 - 如需本地开发，改回 `http://localhost:8001` + 确保DB连接不超时
+- **陷阱**：新建前端页面如用硬编码 `http://localhost:8001` 会绕过 Vite proxy → 导致邀请等 API 失败
+  - 结论：前端组件的 fetch 必须用相对路径 `''`（空字符串），让 `/api/...` 经过 Vite proxy
+
+## FlowVersions 回滚对话框 data-testid 注意
+
+- 点击列表项"回滚"按钮后，同时出现：列表内联确认按钮 + 全屏遮罩对话框
+- 列表内联确认按钮被遮罩拦截，Playwright 无法点击
+- 解决：只给遮罩对话框内的确认按钮设 `data-testid="confirm-rollback-v{n}"`；列表内联按钮不设 testid
+
+## Playwright #206 搜索按钮 disabled 陷阱
+
+- `/executor/knowledge` 页面有多个 `button[type="submit"]`，其中知识库搜索按钮可能为 disabled
+- 用宽泛的 `button[type="submit"]` 选择器会命中错误按钮，导致 click 超时
+- 结论：知识库搜索直接用 `keyboard.press('Enter')` 代替点击按钮
 

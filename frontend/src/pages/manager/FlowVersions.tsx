@@ -185,7 +185,6 @@ export default function FlowVersions() {
                   confirmRollback === v.version ? (
                     <div className="flex gap-2">
                       <button
-                        data-testid={`confirm-rollback-v${v.version}`}
                         onClick={() => handleRollback(v.version)}
                         disabled={rolling !== null}
                         className="px-3 py-1 bg-orange-500 text-white text-xs rounded hover:bg-orange-600 disabled:opacity-50 font-medium"
@@ -231,7 +230,7 @@ export default function FlowVersions() {
             <div className="flex gap-3 justify-end">
               <button onClick={() => setConfirmRollback(null)} className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm">取消</button>
               <button
-                data-testid="dialog-rollback-btn"
+                data-testid={`confirm-rollback-v${confirmRollback}`}
                 onClick={() => handleRollback(confirmRollback)}
                 disabled={rolling !== null}
                 className="px-4 py-2 bg-orange-500 text-white rounded-lg text-sm hover:bg-orange-600 disabled:opacity-50 font-medium"

@@ -2727,7 +2727,7 @@
       "Step 9: 执行者完成人工步骤",
       "Step 10: 验证任务继续执行并最终完成"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 206,
@@ -2746,7 +2746,7 @@
       "Step 10: 验证词条出现在搜索结果中",
       "Step 11: 点击查看详情，验证内容正确显示"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 207,
@@ -2765,7 +2765,7 @@
       "Step 10: 成员完成人工步骤并提交",
       "Step 11: 管理员在MW-15系统日志中查看到该成员的操作记录"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 208,
@@ -2783,7 +2783,7 @@
       "Step 9: 验证当前版本恢复到v1的配置",
       "Step 10: 重新触发流程，验证执行正常"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 209,
@@ -2803,7 +2803,7 @@
       "Step 11: 验证工具节点成功执行并有日志输出",
       "Step 12: 管理员在MW-05工具库查看该工具调用统计"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 210,
