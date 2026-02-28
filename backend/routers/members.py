@@ -41,6 +41,7 @@ def user_to_dict(u: User, departments: dict):
 @router.get("")
 def list_members(
     q: Optional[str] = None,
+    department_id: Optional[int] = None,
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
@@ -51,6 +52,8 @@ def list_members(
             (User.username.ilike(f"%{q}%")) |
             (User.feishu_id.ilike(f"%{q}%"))
         )
+    if department_id is not None:
+        query = query.filter(User.department_id == department_id)
     users = query.order_by(User.id).all()
     depts = {d.id: d for d in db.query(Department).all()}
     return [user_to_dict(u, depts) for u in users]

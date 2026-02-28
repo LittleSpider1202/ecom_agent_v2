@@ -50,6 +50,7 @@ export default function MemberManagement() {
   const [members, setMembers] = useState<Member[]>([])
   const [departments, setDepartments] = useState<Department[]>([])
   const [search, setSearch] = useState('')
+  const [deptFilter, setDeptFilter] = useState('')
   const [loading, setLoading] = useState(true)
 
   // Invite dialog
@@ -73,11 +74,14 @@ export default function MemberManagement() {
   // Remove dialog
   const [removeMember, setRemoveMember] = useState<Member | null>(null)
 
-  const load = (q = '') => {
+  const load = (q = '', deptId = '') => {
     setLoading(true)
-    const params = q ? `?q=${encodeURIComponent(q)}` : ''
+    const params = new URLSearchParams()
+    if (q) params.set('q', q)
+    if (deptId) params.set('department_id', deptId)
+    const qs = params.toString() ? `?${params.toString()}` : ''
     Promise.all([
-      apiCall(`/api/members${params}`),
+      apiCall(`/api/members${qs}`),
       apiCall('/api/departments'),
     ]).then(([memberData, deptData]) => {
       setMembers(memberData)
@@ -90,7 +94,12 @@ export default function MemberManagement() {
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value)
-    load(e.target.value)
+    load(e.target.value, deptFilter)
+  }
+
+  const handleDeptFilter = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setDeptFilter(e.target.value)
+    load(search, e.target.value)
   }
 
   const handleInvite = async () => {
@@ -167,15 +176,26 @@ export default function MemberManagement() {
         </button>
       </div>
 
-      {/* Search */}
-      <div className="mb-4">
+      {/* Search & Filter */}
+      <div className="mb-4 flex gap-3 flex-wrap">
         <input
           data-testid="member-search"
           value={search}
           onChange={handleSearch}
           placeholder="搜索姓名、用户名或飞书ID..."
-          className="w-full max-w-md border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-72"
         />
+        <select
+          data-testid="dept-filter"
+          value={deptFilter}
+          onChange={handleDeptFilter}
+          className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="">全部部门</option>
+          {departments.map(d => (
+            <option key={d.id} value={d.id}>{d.name}</option>
+          ))}
+        </select>
       </div>
 
       {/* Member list */}

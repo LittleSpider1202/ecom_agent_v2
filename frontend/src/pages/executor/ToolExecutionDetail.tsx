@@ -48,6 +48,13 @@ export default function ToolExecutionDetail() {
     fetchExecution()
   }, [executionId, token]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Poll every 2 seconds when execution is running
+  useEffect(() => {
+    if (!execution || execution.status !== 'running') return
+    const timer = setInterval(fetchExecution, 2000)
+    return () => clearInterval(timer)
+  }, [execution?.status]) // eslint-disable-line react-hooks/exhaustive-deps
+
   // Auto-scroll logs to bottom
   useEffect(() => {
     if (logRef.current) {

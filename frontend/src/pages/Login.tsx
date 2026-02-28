@@ -1,4 +1,4 @@
-import { useState, FormEvent } from 'react'
+import { useState, FormEvent, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 
@@ -14,10 +14,13 @@ export default function Login() {
 
   const from = (location.state as { from?: string })?.from || '/executor/dashboard'
 
-  if (user) {
-    navigate(from, { replace: true })
-    return null
-  }
+  useEffect(() => {
+    if (user) {
+      navigate(from, { replace: true })
+    }
+  }, [user, from, navigate])
+
+  if (user) return null
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()

@@ -2900,7 +2900,7 @@
       "Step 6: 验证所有5个节点最终全部完成",
       "Step 7: 验证任务总状态为已完成"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 216,
@@ -2914,7 +2914,7 @@
       "Step 5: 验证管理员收到失败告警（飞书或系统通知）",
       "Step 6: 进入任务详情，验证失败节点显示错误信息"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 217,
@@ -2928,7 +2928,7 @@
       "Step 5: 验证页面无需刷新就能看到最新状态",
       "Step 6: 工具执行完成后，验证状态更新为'成功'或'失败'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 218,
@@ -2940,7 +2940,7 @@
       "Step 3: 验证列表只显示该部门成员",
       "Step 4: 清除筛选，验证全部成员显示"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 219,
@@ -2953,7 +2953,7 @@
       "Step 4: 验证Console中无红色Error错误",
       "Step 5: 记录任何Warning，确认不影响功能"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 220,
