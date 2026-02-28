@@ -1917,7 +1917,7 @@
       "Step 4: 验证每个图表有图例",
       "Step 5: 验证坐标轴有单位标注"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 147,
@@ -1930,7 +1930,7 @@
       "Step 4: 验证'采纳'按钮为主色（蓝色或绿色）",
       "Step 5: 验证'忽略'按钮为次要样式（灰色或空心）"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 148,
@@ -1943,7 +1943,7 @@
       "Step 4: 验证已连接的平台显示绿色状态图标",
       "Step 5: 验证未连接的平台显示灰色或橙色警告图标"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 149,
@@ -1956,7 +1956,7 @@
       "Step 4: 验证不同操作类型用不同颜色标签区分",
       "Step 5: 验证时间戳列格式统一"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 150,
@@ -1969,7 +1969,7 @@
       "Step 4: 验证各区域之间有合理间距",
       "Step 5: 验证信息密度不过高（可读性好）"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 151,

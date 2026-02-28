@@ -197,6 +197,17 @@ export default function AnalyticsDashboard() {
               <h2 className="text-base font-semibold text-gray-700">效率趋势</h2>
               <span className="text-xs text-gray-400">最近 {days} 天</span>
             </div>
+            {/* Chart legend */}
+            <div className="flex items-center gap-4 mb-2" data-testid="chart-legend">
+              <div className="flex items-center gap-1">
+                <div className="w-3 h-3 rounded-sm bg-blue-500"></div>
+                <span className="text-xs text-gray-500">已完成任务</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <div className="w-3 h-3 rounded-sm bg-gray-300"></div>
+                <span className="text-xs text-gray-500">新建任务</span>
+              </div>
+            </div>
             {trend && renderBarChart(trend.data)}
             {/* Time axis label */}
             <div className="text-xs text-center text-gray-400 mt-2" data-testid="time-axis-label">时间轴（天）</div>

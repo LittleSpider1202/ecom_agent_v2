@@ -7,10 +7,17 @@ interface Suggestion {
   title: string
   summary: string
   category: string
+  priority: string
   status: string
   created_at: string | null
   decided_at: string | null
   decided_by: number | null
+}
+
+const PRIORITY_COLOR: Record<string, string> = {
+  高: 'bg-red-100 text-red-700',
+  中: 'bg-yellow-100 text-yellow-700',
+  低: 'bg-gray-100 text-gray-600',
 }
 
 const CATEGORY_COLOR: Record<string, string> = {
@@ -137,6 +144,14 @@ export default function SuggestionList() {
                       data-testid={`suggestion-category-${s.id}`}
                     >
                       {s.category}
+                    </span>
+                    <span
+                      className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                        PRIORITY_COLOR[s.priority] ?? 'bg-gray-100 text-gray-600'
+                      }`}
+                      data-testid={`priority-badge-${s.id}`}
+                    >
+                      {s.priority}优先级
                     </span>
                     {s.status !== 'pending' && (
                       <span className="text-xs text-gray-400">

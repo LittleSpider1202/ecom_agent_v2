@@ -8,13 +8,17 @@ from models import AISuggestion, TaskInstance, Flow, User
 router = APIRouter(prefix="/api/suggestions", tags=["suggestions"])
 
 
+_PRIORITY_MAP = {"库存管理": "高", "供应链": "高", "定价策略": "中", "运营效率": "中"}
+
 def suggestion_to_dict(s: AISuggestion) -> dict:
+    priority = _PRIORITY_MAP.get(s.category, "低")
     return {
         "id": s.id,
         "title": s.title,
         "summary": s.summary,
         "content": s.content,
         "category": s.category,
+        "priority": priority,
         "status": s.status,
         "created_at": s.created_at.isoformat() if s.created_at else None,
         "decided_at": s.decided_at.isoformat() if getattr(s, "decided_at", None) else None,
