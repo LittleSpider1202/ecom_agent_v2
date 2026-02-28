@@ -152,3 +152,35 @@
   - 结论：新增列须手动运行 `ALTER TABLE ... ADD COLUMN IF NOT EXISTS ...`
   - 示例：`conn.execute(text('ALTER TABLE tools ADD COLUMN IF NOT EXISTS config JSONB'))`
 - uvicorn 启动时若表中缺列会立即报 `sqlalchemy.exc.ProgrammingError: column xxx does not exist` → 查 log 排查
+
+## 工具执行测试 — ERP工具被禁用问题
+
+- 之前的 ToolManagement 测试会调用 `/api/tools/{id}/toggle` 禁用工具
+- 导致 ERP库存查询、竞品数据采集 等工具 `enabled=False`，executor无法查到
+- **解决**：测试中先用 manager 获取 `/api/tools/all`（含disabled），若 enabled=False 先 PATCH toggle，再用 executor 执行
+- 种子数据 `enabled=True` 不保证运行时仍为True（会被其他测试改变）
+
+## Playwright 全局 Toast 测试模式
+
+- 在 AppLayout.tsx 用 `window.__showToast` 暴露全局 toast 方法（useEffect注册/清理）
+- 子页面通过 `(window as unknown as Record<...>).__showToast?.(msg, 'success')` 触发
+- Playwright 测试等待 `[data-testid="global-toast"]` toBeVisible（timeout 3000ms 内消失）
+
+## Playwright intercept + 加载状态测试
+
+- `page.route('**/api/tasks/my', async route => { await delay(800); await route.continue() })`
+- 在 goto 之前注册 route，page 加载期间 API 被延迟
+- 用 `page.locator('body').innerText()` 获取渲染后文本（不用 `page.content()` 返回静态HTML）
+
+## 工作流引擎 — should_fail 节点模拟
+
+- 在 flow 节点 data 中加 `should_fail: true`，trigger_flow 会将该节点状态设为 "failed"，任务整体 = "failed"
+- bot告警：type="alert"，target_user="manager"
+- condition节点同时有 should_fail 不处理（skip优先）
+
+## Vite proxy 切换历史
+
+- Session 14 开始：vite.config.ts proxy target 改为 `http://192.168.0.112:8002`（本地后端无法稳定启动）
+- 测试直接用 API_URL = 'http://192.168.0.112:8002'（不走proxy）
+- 如需本地开发，改回 `http://localhost:8001` + 确保DB连接不超时
+
