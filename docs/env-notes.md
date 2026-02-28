@@ -140,6 +140,12 @@
 - **`data-testid` 前缀冲突**：`[data-testid^="entry-"]` 会匹配 `data-testid="entry-list"` 容器 → 容器用不同前缀（如 `knowledge-list`），或只给 item 加 `data-testid`
 - **filter locator 在 toggle 后失效**：`row.filter({has: locator('已启用')})` 在 toggle 后该 filter 不再匹配，导致子元素 "element(s) not found" → 改用 page 级别 `page.locator('[data-testid="xxx"]')` 直接查
 
+## CSS group-hover + Playwright
+
+- Tailwind `hidden group-hover:flex` → display:none; even `force: true` click fails
+- Solution: change to always-visible `flex` for admin pages; OR use `page.evaluate()` to dispatch click
+- `[data-testid^="dept-node-"]`.filter({hasText: 'X'}) matches PARENT nodes too (nested text) → use `[data-testid^="dept-name-"]`.filter({hasText: /^X$/}) to get exact match, then extract id from testid attribute
+
 ## 数据库 Schema 迁移
 
 - `Base.metadata.create_all()` 只建表，**不添加新列**到已有表
