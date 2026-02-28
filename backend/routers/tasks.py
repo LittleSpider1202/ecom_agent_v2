@@ -372,6 +372,58 @@ async def submit_step(
     return {"success": True, "message": "提交成功"}
 
 
+class TaskCreateRequest(BaseModel):
+    title: str
+    flow_name: Optional[str] = "手动创建"
+    status: Optional[str] = "pending"
+
+
+class TaskUpdateRequest(BaseModel):
+    status: Optional[str] = None
+    title: Optional[str] = None
+
+
+@router.post("")
+def create_task(
+    body: TaskCreateRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_current_user),
+):
+    """Create a new task instance directly."""
+    task = TaskInstance(
+        title=body.title,
+        flow_name=body.flow_name or "手动创建",
+        status=body.status or "pending",
+        assigned_to=current_user.id,
+    )
+    db.add(task)
+    db.commit()
+    db.refresh(task)
+    return task_to_dict(task)
+
+
+@router.patch("/{task_id}")
+def update_task(
+    task_id: int,
+    body: TaskUpdateRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_current_user),
+):
+    """Update task status or title."""
+    task = db.query(TaskInstance).filter(TaskInstance.id == task_id).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="任务不存在")
+    if body.status:
+        task.status = body.status
+        if body.status in ("completed", "failed"):
+            task.completed_at = datetime.now(timezone.utc)
+    if body.title:
+        task.title = body.title
+    db.commit()
+    db.refresh(task)
+    return task_to_dict(task)
+
+
 @router.post("/{task_id}/steps/{step_id}/reject")
 async def reject_step(
     task_id: int,

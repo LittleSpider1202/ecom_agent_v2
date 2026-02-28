@@ -2367,7 +2367,7 @@
       "Step 4: 验证AI回答引用了退货处理SOP的内容",
       "Step 5: 验证回答中提示了相关知识词条链接"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 181,
@@ -2380,7 +2380,7 @@
       "Step 4: 验证任务状态与关闭前一致",
       "Step 5: 验证任务进度数据未丢失"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 182,
@@ -2393,7 +2393,7 @@
       "Step 4: 找到并点击该流程",
       "Step 5: 验证流程编辑器中显示之前配置的节点和连线"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 183,
@@ -2407,7 +2407,7 @@
       "Step 5: 通过PATCH /api/tasks/{id} 更新任务状态",
       "Step 6: 验证更新成功并在UI中反映"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 184,
@@ -2421,7 +2421,7 @@
       "Step 5: 通过PUT /api/flows/{id} 更新流程",
       "Step 6: 验证版本号递增"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 185,
