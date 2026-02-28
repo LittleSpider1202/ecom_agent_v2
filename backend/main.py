@@ -17,6 +17,7 @@ from routers import knowledge as knowledge_router
 from routers import tools as tools_router
 from routers import departments as departments_router
 from routers import roles as roles_router
+from routers import members as members_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -24,6 +25,18 @@ Base.metadata.create_all(bind=engine)
 with engine.connect() as _conn:
     _conn.execute(text(
         "ALTER TABLE task_instances ADD COLUMN IF NOT EXISTS completed_at TIMESTAMP WITH TIME ZONE"
+    ))
+    _conn.execute(text(
+        "ALTER TABLE tools ADD COLUMN IF NOT EXISTS config JSONB"
+    ))
+    _conn.execute(text(
+        "ALTER TABLE tools ADD COLUMN IF NOT EXISTS params JSONB"
+    ))
+    _conn.execute(text(
+        "ALTER TABLE users ADD COLUMN IF NOT EXISTS department_id INTEGER REFERENCES departments(id) ON DELETE SET NULL"
+    ))
+    _conn.execute(text(
+        "ALTER TABLE users ADD COLUMN IF NOT EXISTS feishu_id VARCHAR(100)"
     ))
     _conn.commit()
 
@@ -74,6 +87,7 @@ app.include_router(knowledge_router.router)
 app.include_router(tools_router.router)
 app.include_router(departments_router.router)
 app.include_router(roles_router.router)
+app.include_router(members_router.router)
 
 
 @app.on_event("startup")

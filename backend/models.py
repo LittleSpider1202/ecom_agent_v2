@@ -13,6 +13,8 @@ class User(Base):
     display_name = Column(String(100), nullable=True)
     role = Column(String(20), nullable=False, default="executor")  # executor | manager | admin
     is_active = Column(Boolean, default=True)
+    department_id = Column(Integer, ForeignKey("departments.id"), nullable=True)
+    feishu_id = Column(String(100), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 

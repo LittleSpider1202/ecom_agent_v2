@@ -22,6 +22,7 @@ import ToolManagement from './pages/manager/ToolManagement'
 import ToolEditor from './pages/manager/ToolEditor'
 import DepartmentManagement from './pages/manager/DepartmentManagement'
 import RoleManagement from './pages/manager/RoleManagement'
+import MemberManagement from './pages/manager/MemberManagement'
 import TaskMonitor from './pages/manager/TaskMonitor'
 
 function Placeholder({ title }: { title: string }) {
@@ -140,7 +141,7 @@ export default function App() {
           />
           <Route
             path="/manage/members"
-            element={<ProtectedLayout requiredRole="manager"><Placeholder title="MW-09 成员管理" /></ProtectedLayout>}
+            element={<ProtectedLayout requiredRole="manager"><MemberManagement /></ProtectedLayout>}
           />
           <Route
             path="/manage/monitor"
