@@ -84,14 +84,20 @@ test('#79 MW-02 流程定义列表：按名称搜索过滤', async ({ page }) =>
 
   // Search for "采购"
   await page.fill('[data-testid="flow-search-input"]', '采购')
-  const [searchResponse] = await Promise.all([
+  await Promise.all([
     page.waitForResponse(r => r.url().includes('/api/flows')),
     page.click('button[type="submit"]'),
   ])
-  await searchResponse
+  // Wait for list to actually filter
+  await page.waitForFunction(
+    () => {
+      const cards = document.querySelectorAll('[data-testid^="flow-card-"]')
+      return cards.length > 0 && Array.from(cards).every(c => c.textContent?.includes('采购'))
+    },
+    { timeout: 5000 }
+  )
 
   // Filtered list should show only matching flows
-  await page.waitForTimeout(300)
   const filteredCards = page.locator('[data-testid^="flow-card-"]')
   const filteredCount = await filteredCards.count()
   expect(filteredCount).toBeGreaterThan(0)
@@ -104,9 +110,15 @@ test('#79 MW-02 流程定义列表：按名称搜索过滤', async ({ page }) =>
   }
 
   // Clear search → list restores
-  await page.click('button:has-text("清空")')
-  await page.waitForResponse(r => r.url().includes('/api/flows'))
-  await page.waitForTimeout(300)
+  await Promise.all([
+    page.waitForResponse(r => r.url().includes('/api/flows')),
+    page.click('button:has-text("清空")'),
+  ])
+  await page.waitForFunction(
+    (n: number) => document.querySelectorAll('[data-testid^="flow-card-"]').length === n,
+    totalBefore,
+    { timeout: 5000 }
+  )
   const restoredCount = await page.locator('[data-testid^="flow-card-"]').count()
   expect(restoredCount).toEqual(totalBefore)
 
@@ -128,19 +140,25 @@ test('#80 MW-02 流程定义列表：启用/禁用开关切换状态', async ({ 
   const card = page.locator(`[data-testid="flow-card-${flowId}"]`)
   const statusBefore = await card.locator('span').filter({ hasText: /已启用|已禁用/ }).textContent()
 
-  // Click toggle
-  await firstToggle.click()
-  await page.waitForResponse(r => r.url().includes(`/api/flows/${flowId}/toggle`))
-  await page.waitForTimeout(300)
+  // Click toggle (register waitForResponse before click to avoid race)
+  const expectedAfter = statusBefore === '已启用' ? '已禁用' : '已启用'
+  await Promise.all([
+    page.waitForResponse(r => r.url().includes(`/api/flows/${flowId}/toggle`)),
+    firstToggle.click(),
+  ])
+  // Wait for DOM to reflect change
+  await card.locator('span').filter({ hasText: expectedAfter }).waitFor({ timeout: 5000 })
 
   // State should have changed
   const statusAfter = await card.locator('span').filter({ hasText: /已启用|已禁用/ }).textContent()
   expect(statusAfter).not.toEqual(statusBefore)
 
   // Click again to restore
-  await firstToggle.click()
-  await page.waitForResponse(r => r.url().includes(`/api/flows/${flowId}/toggle`))
-  await page.waitForTimeout(300)
+  await Promise.all([
+    page.waitForResponse(r => r.url().includes(`/api/flows/${flowId}/toggle`)),
+    firstToggle.click(),
+  ])
+  await card.locator('span').filter({ hasText: statusBefore! }).waitFor({ timeout: 5000 })
 
   const statusRestored = await card.locator('span').filter({ hasText: /已启用|已禁用/ }).textContent()
   expect(statusRestored).toEqual(statusBefore)

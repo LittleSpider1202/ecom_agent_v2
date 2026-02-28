@@ -107,3 +107,62 @@ class AISuggestion(Base):
     # pending | accepted | ignored
     status = Column(String(20), nullable=False, default="pending")
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class KnowledgeEntry(Base):
+    __tablename__ = "knowledge_entries"
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(200), nullable=False)
+    content = Column(Text, nullable=False)
+    # 仓库操作 | 客服规范 | 采购流程 | 运营规则 | 产品信息 | 平台规则
+    category = Column(String(50), nullable=False)
+    version = Column(String(20), nullable=False, default="v1.0")
+    view_count = Column(Integer, nullable=False, default=0)
+    helpful_count = Column(Integer, nullable=False, default=0)
+    # active | archived
+    status = Column(String(20), nullable=False, default="active")
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+
+class KnowledgeSubmission(Base):
+    __tablename__ = "knowledge_submissions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    submitter_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    # new | correction
+    type = Column(String(20), nullable=False, default="new")
+    entry_id = Column(Integer, ForeignKey("knowledge_entries.id"), nullable=True)
+    title = Column(String(200), nullable=True)
+    content = Column(Text, nullable=False)
+    category = Column(String(50), nullable=True)
+    correction_reason = Column(Text, nullable=True)
+    # pending | approved | rejected
+    status = Column(String(20), nullable=False, default="pending")
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class Tool(Base):
+    __tablename__ = "tools"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(100), nullable=False)
+    description = Column(Text, nullable=True)
+    tool_type = Column(String(20), nullable=False, default="api")  # api | webhook | script
+    enabled = Column(Boolean, nullable=False, default=True)
+    # comma-separated roles that can use this tool
+    allowed_roles = Column(String(200), nullable=False, default="executor,manager")
+    call_count = Column(Integer, nullable=False, default=0)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class ToolExecution(Base):
+    __tablename__ = "tool_executions"
+    id = Column(Integer, primary_key=True, index=True)
+    tool_id = Column(Integer, ForeignKey("tools.id"), nullable=False)
+    triggered_by = Column(Integer, ForeignKey("users.id"), nullable=True)
+    status = Column(String(20), nullable=False, default="running")  # running | success | failed
+    logs = Column(Text, nullable=True)
+    output_file = Column(String(300), nullable=True)
+    started_at = Column(DateTime(timezone=True), server_default=func.now())
+    finished_at = Column(DateTime(timezone=True), nullable=True)

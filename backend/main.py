@@ -7,12 +7,14 @@ import time
 import uuid
 import logging
 from database import engine, get_db
-from models import Base, User, TaskInstance, TaskStep, TaskDagNode, AISuggestion, Flow, FlowVersion
+from models import Base, User, TaskInstance, TaskStep, TaskDagNode, AISuggestion, Flow, FlowVersion, KnowledgeEntry, KnowledgeSubmission, Tool, ToolExecution
 from auth import get_password_hash
 from routers import auth as auth_router
 from routers import tasks as tasks_router
 from routers import dashboard as dashboard_router
 from routers import flows as flows_router
+from routers import knowledge as knowledge_router
+from routers import tools as tools_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -66,6 +68,8 @@ app.include_router(auth_router.router)
 app.include_router(tasks_router.router)
 app.include_router(dashboard_router.router)
 app.include_router(flows_router.router)
+app.include_router(knowledge_router.router)
+app.include_router(tools_router.router)
 
 
 @app.on_event("startup")
@@ -372,6 +376,288 @@ async def seed_data():
                 db.add(f)
             db.commit()
 
+        # ---- KnowledgeEntry 种子数据 ----
+        if db.query(KnowledgeEntry).count() == 0:
+            seed_knowledge = [
+                KnowledgeEntry(
+                    title="退货处理SOP",
+                    category="客服规范",
+                    version="v2.3",
+                    view_count=128,
+                    helpful_count=45,
+                    content=(
+                        "# 退货处理标准操作流程（SOP）\n\n"
+                        "## 适用范围\n\n"
+                        "本SOP适用于所有电商平台（淘宝、天猫、拼多多）的退货处理操作。\n\n"
+                        "## 处理步骤\n\n"
+                        "### 第一步：接收退货申请\n\n"
+                        "1. 在平台后台查看退货申请\n"
+                        "2. 核对退货原因（质量问题/不喜欢/尺寸不合适等）\n"
+                        "3. 判断是否符合退货条件（7天无理由/质量问题30天）\n\n"
+                        "### 第二步：审核与确认\n\n"
+                        "1. 质量问题：截图存档，联系供应商\n"
+                        "2. 非质量问题：检查是否超过退货期限\n"
+                        "3. 特殊情况上报主管处理\n\n"
+                        "### 第三步：退款操作\n\n"
+                        "1. 同意退货后，在系统操作退款\n"
+                        "2. 退款到账时间：支付宝1-3个工作日，银行卡3-7个工作日\n"
+                        "3. 记录退货原因和处理结果\n\n"
+                        "## 注意事项\n\n"
+                        "- 质量问题优先处理，不得拖延超过24小时\n"
+                        "- 所有退货记录需存档备查"
+                    ),
+                ),
+                KnowledgeEntry(
+                    title="发货规范操作指南",
+                    category="仓库操作",
+                    version="v1.5",
+                    view_count=89,
+                    helpful_count=32,
+                    content=(
+                        "# 发货规范操作指南\n\n"
+                        "## 发货前准备\n\n"
+                        "1. 核对订单信息（收货地址、商品数量、SKU）\n"
+                        "2. 检查库存是否充足\n"
+                        "3. 准备打包材料（纸箱、气泡膜、胶带）\n\n"
+                        "## 打包规范\n\n"
+                        "### 易碎品\n"
+                        "- 使用气泡膜包裹2层\n"
+                        "- 箱内填充泡沫颗粒，防止晃动\n"
+                        "- 外箱标注「易碎」\n\n"
+                        "### 普通商品\n"
+                        "- 产品放入内袋后装箱\n"
+                        "- 避免单件重量超过5kg\n\n"
+                        "## 发货流程\n\n"
+                        "1. 打印快递单并粘贴\n"
+                        "2. 系统录入快递单号\n"
+                        "3. 交给快递员并索取回单\n"
+                        "4. 更新系统发货状态"
+                    ),
+                ),
+                KnowledgeEntry(
+                    title="客服话术框架",
+                    category="客服规范",
+                    version="v3.1",
+                    view_count=210,
+                    helpful_count=78,
+                    content=(
+                        "# 客服话术框架\n\n"
+                        "## 基本原则\n\n"
+                        "- 热情、专业、解决问题为导向\n"
+                        "- 响应时间：工作时间内3分钟以内\n"
+                        "- 首次回复必须包含称呼（亲/您好）\n\n"
+                        "## 常见场景话术\n\n"
+                        "### 售前咨询\n"
+                        "**用户问：这个产品质量怎么样？**\n"
+                        "推荐回复：亲，我们的产品均经过严格质检，已获得XX认证。\n"
+                        "您可以放心购买，如有任何质量问题，我们承诺7天无理由退换货。\n\n"
+                        "### 物流查询\n"
+                        "**用户问：我的快递到哪了？**\n"
+                        "推荐回复：亲，您的订单已于[日期]发出，快递单号为[单号]，\n"
+                        "您可在[快递官网]查询实时物流信息。\n\n"
+                        "### 投诉处理\n"
+                        "1. 首先道歉并表示理解\n"
+                        "2. 了解具体问题\n"
+                        "3. 给出解决方案\n"
+                        "4. 确认用户满意后结束对话"
+                    ),
+                ),
+                KnowledgeEntry(
+                    title="采购流程操作规范",
+                    category="采购流程",
+                    version="v2.0",
+                    view_count=67,
+                    helpful_count=23,
+                    content=(
+                        "# 采购流程操作规范\n\n"
+                        "## 采购申请\n\n"
+                        "1. 填写采购申请单（商品名称、数量、预算、用途）\n"
+                        "2. 主管审批（5000元以下当日审批）\n"
+                        "3. 财务确认预算\n\n"
+                        "## 供应商选择\n\n"
+                        "### 优先级排序\n"
+                        "1. 战略合作供应商（价格优惠10%以上）\n"
+                        "2. 合格供应商名录内供应商\n"
+                        "3. 新供应商（需提前30天资质审核）\n\n"
+                        "## 下单流程\n\n"
+                        "1. 与供应商确认价格和交期\n"
+                        "2. 发送正式采购订单\n"
+                        "3. 供应商回签确认\n"
+                        "4. 安排付款（预付50%，到货验收后付尾款）\n\n"
+                        "## 到货验收\n\n"
+                        "- 核对数量和型号\n"
+                        "- 抽样质检（抽检率5%）\n"
+                        "- 不合格品拒收并通知供应商"
+                    ),
+                ),
+                KnowledgeEntry(
+                    title="淘宝天猫违规规则速查",
+                    category="平台规则",
+                    version="v4.2",
+                    view_count=156,
+                    helpful_count=61,
+                    content=(
+                        "# 淘宝天猫违规规则速查\n\n"
+                        "## 商品发布规范\n\n"
+                        "### 标题规范\n"
+                        "- 禁止使用\"第一\"、\"最\"、\"全网最低\"等极限用词\n"
+                        "- 禁止虚假宣传（功效未经证实）\n"
+                        "- 标题长度：30个字以内\n\n"
+                        "### 图片规范\n"
+                        "- 主图不得含有文字（天猫规定）\n"
+                        "- 禁止添加水印或边框\n"
+                        "- 图片分辨率不低于800×800像素\n\n"
+                        "## 常见违规及处罚\n\n"
+                        "| 违规类型 | 处罚力度 |\n"
+                        "|---------|--------|\n"
+                        "| 虚假发货 | 扣48分 |\n"
+                        "| 拒绝退款 | 扣12分 |\n"
+                        "| 虚假描述 | 扣12分 |\n\n"
+                        "## 申诉流程\n\n"
+                        "1. 登录卖家中心 → 违规申诉\n"
+                        "2. 上传证据（物流截图/聊天记录等）\n"
+                        "3. 等待平台审核（1-3个工作日）"
+                    ),
+                ),
+                KnowledgeEntry(
+                    title="库存盘点操作规程",
+                    category="仓库操作",
+                    version="v1.2",
+                    view_count=44,
+                    helpful_count=18,
+                    content=(
+                        "# 库存盘点操作规程\n\n"
+                        "## 盘点频率\n\n"
+                        "- 月度盘点：每月最后一个工作日\n"
+                        "- 季度全盘：每季度末进行全仓盘点\n"
+                        "- 日常动态盘点：高频商品每周盘点\n\n"
+                        "## 盘点步骤\n\n"
+                        "1. 导出系统库存清单\n"
+                        "2. 停止当日入库/出库操作\n"
+                        "3. 按区域逐一清点实物\n"
+                        "4. 与系统数据比对\n"
+                        "5. 差异超过1%需复盘\n\n"
+                        "## 盘点差异处理\n\n"
+                        "- 盈余：检查是否有未录入入库单\n"
+                        "- 亏损：检查是否有未录入出库单，排查丢失\n"
+                        "- 重大差异（超过5%）：上报仓库主管处理"
+                    ),
+                ),
+                KnowledgeEntry(
+                    title="运营活动策划指南",
+                    category="运营规则",
+                    version="v1.8",
+                    view_count=93,
+                    helpful_count=37,
+                    content=(
+                        "# 运营活动策划指南\n\n"
+                        "## 活动类型\n\n"
+                        "1. **节日大促**：双十一、618、双十二\n"
+                        "2. **日常促销**：周末特卖、爆款秒杀\n"
+                        "3. **新品推广**：新品上市活动\n\n"
+                        "## 策划流程\n\n"
+                        "### 活动前30天\n"
+                        "- 确定活动主题和时间\n"
+                        "- 选品和定价\n"
+                        "- 库存备货计划\n\n"
+                        "### 活动前7天\n"
+                        "- 上架活动商品\n"
+                        "- 配置优惠规则\n"
+                        "- 测试下单流程\n\n"
+                        "### 活动当天\n"
+                        "- 开启实时监控\n"
+                        "- 备用客服上线\n"
+                        "- 库存预警提醒\n\n"
+                        "## 活动效果评估\n\n"
+                        "关键指标：GMV、转化率、客单价、复购率"
+                    ),
+                ),
+                KnowledgeEntry(
+                    title="新品选品标准",
+                    category="产品信息",
+                    version="v1.3",
+                    view_count=72,
+                    helpful_count=29,
+                    content=(
+                        "# 新品选品标准\n\n"
+                        "## 市场分析维度\n\n"
+                        "1. **市场规模**：类目年销售额 > 1000万\n"
+                        "2. **增长趋势**：近3个月搜索量环比增长 > 10%\n"
+                        "3. **竞争程度**：竞品数量 < 500个（蓝海市场）\n\n"
+                        "## 产品评估维度\n\n"
+                        "- 利润率 > 20%\n"
+                        "- 退货率 < 5%\n"
+                        "- 供应商交期 < 15天\n\n"
+                        "## 选品禁区\n\n"
+                        "- 高仿/侵权商品\n"
+                        "- 需要特殊资质的商品（食品、化妆品等需提前确认）\n"
+                        "- 易碎/超重（单件超10kg）商品慎选\n\n"
+                        "## 试销流程\n\n"
+                        "1. 小批量采购（50-100件）\n"
+                        "2. 上架测试（2-4周）\n"
+                        "3. 数据达标后追加采购"
+                    ),
+                ),
+                KnowledgeEntry(
+                    title="拼多多规则手册",
+                    category="平台规则",
+                    version="v2.1",
+                    view_count=83,
+                    helpful_count=35,
+                    content=(
+                        "# 拼多多规则手册\n\n"
+                        "## 店铺规范\n\n"
+                        "- 店铺名称不得含有竞品名称\n"
+                        "- 客服响应时间要求：30分钟内\n"
+                        "- DSR评分（服务/物流/描述）需维持 > 4.7\n\n"
+                        "## 商品规范\n\n"
+                        "### 主图要求\n"
+                        "- 纯白背景（活动期间可用节日背景）\n"
+                        "- 不超过3个促销标签\n\n"
+                        "### 价格规范\n"
+                        "- 活动价不得高于历史最低价\n"
+                        "- 不得设置虚高原价\n\n"
+                        "## 违规处罚\n\n"
+                        "| 违规等级 | 处罚 |\n"
+                        "|---------|-----|\n"
+                        "| 轻微 | 商品下架整改 |\n"
+                        "| 严重 | 店铺降权 |\n"
+                        "| 恶意 | 永久封号 |\n\n"
+                        "## 申诉入口\n\n"
+                        "商家后台 → 违规申诉 → 填写申诉理由 → 上传证据"
+                    ),
+                ),
+                KnowledgeEntry(
+                    title="供应商评估标准",
+                    category="采购流程",
+                    version="v1.6",
+                    view_count=51,
+                    helpful_count=22,
+                    content=(
+                        "# 供应商评估标准\n\n"
+                        "## 评估维度\n\n"
+                        "### 1. 准时交货率（权重40%）\n"
+                        "- 优秀：≥ 95%\n"
+                        "- 合格：85%-94%\n"
+                        "- 不合格：< 85%\n\n"
+                        "### 2. 产品合格率（权重35%）\n"
+                        "- 优秀：≥ 98%\n"
+                        "- 合格：93%-97%\n"
+                        "- 不合格：< 93%\n\n"
+                        "### 3. 价格竞争力（权重25%）\n"
+                        "- 与同类供应商对比，低于平均价5%以上为优秀\n\n"
+                        "## 评估结果处理\n\n"
+                        "- 综合评分 ≥ 90：战略合作供应商，增加采购份额\n"
+                        "- 综合评分 75-89：合格供应商，维持合作\n"
+                        "- 综合评分 60-74：需整改，给予3个月改进期\n"
+                        "- 综合评分 < 60：终止合作"
+                    ),
+                ),
+            ]
+            for k in seed_knowledge:
+                db.add(k)
+            db.commit()
+
         # ---- AISuggestion 种子数据 ----
         if db.query(AISuggestion).count() == 0:
             seed_suggestions = [
@@ -443,6 +729,54 @@ async def seed_data():
             ]
             for s in seed_suggestions:
                 db.add(s)
+            db.commit()
+
+        # ---- Tool 种子数据 ----
+        if db.query(Tool).count() == 0:
+            seed_tools = [
+                Tool(
+                    name="发货单导出",
+                    description="从系统中导出待发货订单清单，生成Excel文件供仓库打印使用。",
+                    tool_type="script",
+                    enabled=True,
+                    allowed_roles="executor,manager",
+                    call_count=12,
+                ),
+                Tool(
+                    name="ERP库存查询",
+                    description="实时查询ERP系统中指定SKU的库存数量和仓位信息。",
+                    tool_type="api",
+                    enabled=True,
+                    allowed_roles="executor,manager",
+                    call_count=45,
+                ),
+                Tool(
+                    name="退货快递单打印",
+                    description="批量生成退货快递单，对接顺丰/菜鸟API，自动下单并打印。",
+                    tool_type="api",
+                    enabled=True,
+                    allowed_roles="executor,manager",
+                    call_count=8,
+                ),
+                Tool(
+                    name="竞品数据采集",
+                    description="采集竞品店铺商品价格、销量、评价数据，写入数据库。",
+                    tool_type="script",
+                    enabled=True,
+                    allowed_roles="manager",
+                    call_count=3,
+                ),
+                Tool(
+                    name="飞书消息推送",
+                    description="向指定飞书群或个人发送通知消息。",
+                    tool_type="webhook",
+                    enabled=False,
+                    allowed_roles="executor,manager",
+                    call_count=0,
+                ),
+            ]
+            for t in seed_tools:
+                db.add(t)
             db.commit()
     finally:
         db.close()

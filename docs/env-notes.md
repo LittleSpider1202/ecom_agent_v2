@@ -135,3 +135,6 @@
 - 任务行点击根据 `has_human_step` 分流：`true` → HumanStep，`false` → TaskDetail（`/executor/tasks/:id`）
 - Flow 种子数据判断：用 `if not db.query(Flow).filter(Flow.name == "采购审核流程").first():`，不能用 `count() == 0`（测试运行后 Flow 表已有数据）
 - ReactFlow 测试：`.react-flow` / `[class*="react-flow"]` 会命中 19 个子元素（strict mode violation）→ 改用 `getByTestId('rf__wrapper')` 定位根节点
+- **`getByText()` strict mode violation**：侧边栏导航中也有相同文字（如"知识贡献"出现在 nav 和 h1 中）→ 改用 `getByRole('heading', { name: '...' })` 定位页面标题
+- **`getByText()` 多元素**：列表中多个 item 都有相同文字（如多条"待审核"状态 badge）→ 加 `.first()` 或用 `.nth(i)` 取特定元素
+- **`data-testid` 前缀冲突**：`[data-testid^="entry-"]` 会匹配 `data-testid="entry-list"` 容器 → 容器用不同前缀（如 `knowledge-list`），或只给 item 加 `data-testid`

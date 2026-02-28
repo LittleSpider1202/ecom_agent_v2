@@ -749,7 +749,7 @@
       "Step 4: 验证存在知识分类浏览区域",
       "Step 5: 验证分类包括仓库操作、客服规范、采购流程等"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 57,
@@ -763,7 +763,7 @@
       "Step 5: 验证显示AI回答文字",
       "Step 6: 验证回答引用了相关知识词条"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 58,
@@ -776,7 +776,7 @@
       "Step 4: 点击'客服规范'分类",
       "Step 5: 验证切换为客服规范相关词条"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 59,
@@ -788,7 +788,7 @@
       "Step 3: 触发搜索（Enter或点击搜索按钮）",
       "Step 4: 验证显示包含该关键词的知识词条列表"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 60,
@@ -800,7 +800,7 @@
       "Step 3: 验证跳转到 /executor/knowledge/{id}",
       "Step 4: 验证显示该词条的详细内容"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 61,
@@ -812,7 +812,7 @@
       "Step 3: 验证显示词条正文内容",
       "Step 4: 验证显示所属分类"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 62,
@@ -824,7 +824,7 @@
       "Step 3: 验证有编号列表或步骤说明",
       "Step 4: 验证格式渲染正确（Markdown渲染）"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 63,
@@ -837,7 +837,7 @@
       "Step 4: 验证有帮助计数增加",
       "Step 5: 验证按钮状态变为已点击（防止重复提交）"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 64,
@@ -848,7 +848,7 @@
       "Step 2: 验证显示版本号（如 v2.3）",
       "Step 3: 验证显示最后更新时间"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 65,
@@ -860,7 +860,7 @@
       "Step 3: 刷新页面",
       "Step 4: 验证查看次数至少不减少"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 66,
@@ -872,7 +872,7 @@
       "Step 3: 验证存在提交新知识词条的表单",
       "Step 4: 验证存在提交修正意见的区域"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 67,
@@ -887,7 +887,7 @@
       "Step 6: 验证显示提交成功消息",
       "Step 7: 验证提交记录出现在'我的提交'列表，状态为'待审核'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 68,
@@ -902,7 +902,7 @@
       "Step 6: 点击提交",
       "Step 7: 验证提交成功消息"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 69,
@@ -913,7 +913,7 @@
       "Step 2: 验证成功消息包含'等待管理员审核'或类似文字",
       "Step 3: 验证成功后可查看提交记录"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 70,
@@ -925,7 +925,7 @@
       "Step 3: 验证显示工具卡片或列表",
       "Step 4: 验证每个工具显示名称和描述"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 71,
@@ -936,7 +936,7 @@
       "Step 2: 导航到工具列表",
       "Step 3: 验证无权限的工具不出现在列表中"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 72,
@@ -951,7 +951,7 @@
       "Step 6: 验证跳转到工具执行详情页",
       "Step 7: 验证执行状态为'进行中'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 73,
@@ -963,7 +963,7 @@
       "Step 3: 验证显示执行状态（进行中/成功/失败）",
       "Step 4: 验证显示开始时间"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 74,
@@ -976,7 +976,7 @@
       "Step 4: 验证日志有输出内容（逐行显示）",
       "Step 5: 等待数秒，验证日志区域自动滚动到最新行"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 75,
@@ -989,7 +989,7 @@
       "Step 4: 验证文件下载开始",
       "Step 5: 验证下载的文件格式正确（如 .xlsx 或 .csv）"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 76,

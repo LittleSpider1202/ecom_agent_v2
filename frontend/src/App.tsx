@@ -8,6 +8,11 @@ import TaskList from './pages/executor/TaskList'
 import HumanStep from './pages/executor/HumanStep'
 import TaskDetail from './pages/executor/TaskDetail'
 import TaskHistory from './pages/executor/TaskHistory'
+import KnowledgeHome from './pages/executor/KnowledgeHome'
+import KnowledgeDetail from './pages/executor/KnowledgeDetail'
+import KnowledgeContribute from './pages/executor/KnowledgeContribute'
+import ToolList from './pages/executor/ToolList'
+import ToolExecutionDetail from './pages/executor/ToolExecutionDetail'
 import DecisionCockpit from './pages/manager/DecisionCockpit'
 import SuggestionDetail from './pages/manager/SuggestionDetail'
 import FlowEditor from './pages/manager/FlowEditor'
@@ -69,23 +74,23 @@ export default function App() {
           />
           <Route
             path="/executor/knowledge"
-            element={<ProtectedLayout><Placeholder title="EW-06 知识库" /></ProtectedLayout>}
+            element={<ProtectedLayout><KnowledgeHome /></ProtectedLayout>}
           />
           <Route
             path="/executor/knowledge/contribute"
-            element={<ProtectedLayout><Placeholder title="EW-08 知识贡献" /></ProtectedLayout>}
+            element={<ProtectedLayout><KnowledgeContribute /></ProtectedLayout>}
           />
           <Route
             path="/executor/knowledge/:id"
-            element={<ProtectedLayout><Placeholder title="EW-07 知识词条详情" /></ProtectedLayout>}
+            element={<ProtectedLayout><KnowledgeDetail /></ProtectedLayout>}
           />
           <Route
             path="/executor/tools"
-            element={<ProtectedLayout><Placeholder title="EW-09 工具列表" /></ProtectedLayout>}
+            element={<ProtectedLayout><ToolList /></ProtectedLayout>}
           />
           <Route
             path="/executor/tools/:executionId"
-            element={<ProtectedLayout><Placeholder title="EW-10 工具执行详情" /></ProtectedLayout>}
+            element={<ProtectedLayout><ToolExecutionDetail /></ProtectedLayout>}
           />
 
           {/* 管理工作台 — 需要 manager 角色 */}
