@@ -30,20 +30,6 @@ import SuggestionList from './pages/manager/SuggestionList'
 import IntegrationConfig from './pages/manager/IntegrationConfig'
 import SystemLogs from './pages/manager/SystemLogs'
 
-function Placeholder({ title }: { title: string }) {
-  return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="text-center">
-        <div className="text-5xl mb-4">🚧</div>
-        <h2 className="text-xl font-semibold text-gray-700">{title}</h2>
-        <p className="text-gray-400 mt-2">开发中...</p>
-        <a href="/" className="mt-4 inline-block text-blue-600 hover:underline">
-          返回首页
-        </a>
-      </div>
-    </div>
-  )
-}
 
 function ProtectedLayout({ children, requiredRole }: { children: React.ReactNode; requiredRole?: 'manager' }) {
   return (

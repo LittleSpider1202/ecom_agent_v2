@@ -33,6 +33,10 @@ scp backend/routers/__init__.py \
     backend/routers/departments.py \
     backend/routers/roles.py \
     backend/routers/members.py \
+    backend/routers/analytics.py \
+    backend/routers/suggestions.py \
+    backend/routers/integrations.py \
+    backend/routers/logs.py \
     "$SERVER:$REMOTE_DIR/backend/routers/"
 
 echo "==== [3/4] 同步前端构建产物 ===="
