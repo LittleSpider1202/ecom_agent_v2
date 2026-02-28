@@ -19,6 +19,7 @@ import FlowEditor from './pages/manager/FlowEditor'
 import FlowList from './pages/manager/FlowList'
 import FlowVersions from './pages/manager/FlowVersions'
 import ToolManagement from './pages/manager/ToolManagement'
+import ToolEditor from './pages/manager/ToolEditor'
 import TaskMonitor from './pages/manager/TaskMonitor'
 
 function Placeholder({ title }: { title: string }) {
@@ -121,11 +122,11 @@ export default function App() {
           />
           <Route
             path="/manage/tools/new"
-            element={<ProtectedLayout requiredRole="manager"><Placeholder title="MW-06 工具上传" /></ProtectedLayout>}
+            element={<ProtectedLayout requiredRole="manager"><ToolEditor /></ProtectedLayout>}
           />
           <Route
             path="/manage/tools/:toolId"
-            element={<ProtectedLayout requiredRole="manager"><Placeholder title="MW-06 工具编辑" /></ProtectedLayout>}
+            element={<ProtectedLayout requiredRole="manager"><ToolEditor /></ProtectedLayout>}
           />
           <Route
             path="/manage/departments"

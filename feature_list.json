@@ -1140,7 +1140,7 @@
       "Step 3: 验证可以选择工具类型（API/Webhook/Python脚本）",
       "Step 4: 验证有工具名称输入框"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 88,
@@ -1156,7 +1156,7 @@
       "Step 7: 点击保存",
       "Step 8: 验证成功消息并跳转到工具详情"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 89,
@@ -1172,7 +1172,7 @@
       "Step 7: 点击保存",
       "Step 8: 验证工具创建成功"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 90,
@@ -1189,7 +1189,7 @@
       "Step 8: 保存参数",
       "Step 9: 验证参数出现在参数列表中"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 91,
@@ -1202,7 +1202,7 @@
       "Step 4: 点击保存",
       "Step 5: 验证权限设置生效（无权限用户的工具列表不显示该工具）"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 92,

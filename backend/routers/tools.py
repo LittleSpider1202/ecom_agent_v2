@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
+from pydantic import BaseModel
 from datetime import datetime, timezone
-from typing import Optional
+from typing import Optional, List, Any
 import os
 
 from database import get_db
@@ -10,6 +11,24 @@ from models import Tool, ToolExecution, User
 from auth import require_current_user as get_current_user
 
 router = APIRouter(prefix="/api/tools", tags=["tools"])
+
+
+class ToolCreateRequest(BaseModel):
+    name: str
+    description: Optional[str] = None
+    tool_type: str = "api"
+    allowed_roles: List[str] = ["executor", "manager"]
+    config: Optional[Any] = None
+    params: Optional[List[Any]] = None
+
+
+class ToolUpdateRequest(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    tool_type: Optional[str] = None
+    allowed_roles: Optional[List[str]] = None
+    config: Optional[Any] = None
+    params: Optional[List[Any]] = None
 
 
 @router.get("")
@@ -119,6 +138,101 @@ def toggle_tool(
     db.commit()
     db.refresh(tool)
     return {"id": tool.id, "enabled": tool.enabled}
+
+
+@router.post("")
+def create_tool(
+    req: ToolCreateRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Create a new tool (manager only)."""
+    if current_user.role != "manager":
+        raise HTTPException(status_code=403, detail="Manager only")
+    tool = Tool(
+        name=req.name,
+        description=req.description,
+        tool_type=req.tool_type,
+        allowed_roles=",".join(req.allowed_roles),
+        config=req.config,
+        params=req.params or [],
+        enabled=True,
+    )
+    db.add(tool)
+    db.commit()
+    db.refresh(tool)
+    return {
+        "id": tool.id,
+        "name": tool.name,
+        "description": tool.description,
+        "tool_type": tool.tool_type,
+        "allowed_roles": [r.strip() for r in tool.allowed_roles.split(",")],
+        "config": tool.config,
+        "params": tool.params,
+        "enabled": tool.enabled,
+    }
+
+
+@router.get("/{tool_id}")
+def get_tool(
+    tool_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Get a single tool by ID."""
+    tool = db.query(Tool).filter(Tool.id == tool_id).first()
+    if not tool:
+        raise HTTPException(status_code=404, detail="Tool not found")
+    return {
+        "id": tool.id,
+        "name": tool.name,
+        "description": tool.description,
+        "tool_type": tool.tool_type,
+        "allowed_roles": [r.strip() for r in tool.allowed_roles.split(",")],
+        "config": tool.config,
+        "params": tool.params or [],
+        "enabled": tool.enabled,
+        "call_count": tool.call_count,
+    }
+
+
+@router.put("/{tool_id}")
+def update_tool(
+    tool_id: int,
+    req: ToolUpdateRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Update a tool (manager only)."""
+    if current_user.role != "manager":
+        raise HTTPException(status_code=403, detail="Manager only")
+    tool = db.query(Tool).filter(Tool.id == tool_id).first()
+    if not tool:
+        raise HTTPException(status_code=404, detail="Tool not found")
+    if req.name is not None:
+        tool.name = req.name
+    if req.description is not None:
+        tool.description = req.description
+    if req.tool_type is not None:
+        tool.tool_type = req.tool_type
+    if req.allowed_roles is not None:
+        tool.allowed_roles = ",".join(req.allowed_roles)
+    if req.config is not None:
+        tool.config = req.config
+    if req.params is not None:
+        tool.params = req.params
+    db.commit()
+    db.refresh(tool)
+    return {
+        "id": tool.id,
+        "name": tool.name,
+        "description": tool.description,
+        "tool_type": tool.tool_type,
+        "allowed_roles": [r.strip() for r in tool.allowed_roles.split(",")],
+        "config": tool.config,
+        "params": tool.params or [],
+        "enabled": tool.enabled,
+    }
 
 
 @router.get("/executions/{execution_id}")

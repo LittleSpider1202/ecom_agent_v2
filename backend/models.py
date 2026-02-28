@@ -153,6 +153,10 @@ class Tool(Base):
     # comma-separated roles that can use this tool
     allowed_roles = Column(String(200), nullable=False, default="executor,manager")
     call_count = Column(Integer, nullable=False, default=0)
+    # JSON config: url, method, headers for api/webhook; script_filename for script
+    config = Column(JSON, nullable=True)
+    # JSON array: [{name, type, required, description}]
+    params = Column(JSON, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 

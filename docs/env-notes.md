@@ -138,3 +138,11 @@
 - **`getByText()` strict mode violation**：侧边栏导航中也有相同文字（如"知识贡献"出现在 nav 和 h1 中）→ 改用 `getByRole('heading', { name: '...' })` 定位页面标题
 - **`getByText()` 多元素**：列表中多个 item 都有相同文字（如多条"待审核"状态 badge）→ 加 `.first()` 或用 `.nth(i)` 取特定元素
 - **`data-testid` 前缀冲突**：`[data-testid^="entry-"]` 会匹配 `data-testid="entry-list"` 容器 → 容器用不同前缀（如 `knowledge-list`），或只给 item 加 `data-testid`
+- **filter locator 在 toggle 后失效**：`row.filter({has: locator('已启用')})` 在 toggle 后该 filter 不再匹配，导致子元素 "element(s) not found" → 改用 page 级别 `page.locator('[data-testid="xxx"]')` 直接查
+
+## 数据库 Schema 迁移
+
+- `Base.metadata.create_all()` 只建表，**不添加新列**到已有表
+  - 结论：新增列须手动运行 `ALTER TABLE ... ADD COLUMN IF NOT EXISTS ...`
+  - 示例：`conn.execute(text('ALTER TABLE tools ADD COLUMN IF NOT EXISTS config JSONB'))`
+- uvicorn 启动时若表中缺列会立即报 `sqlalchemy.exc.ProgrammingError: column xxx does not exist` → 查 log 排查
