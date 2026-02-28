@@ -24,6 +24,7 @@ import DepartmentManagement from './pages/manager/DepartmentManagement'
 import RoleManagement from './pages/manager/RoleManagement'
 import MemberManagement from './pages/manager/MemberManagement'
 import TaskMonitor from './pages/manager/TaskMonitor'
+import ManagerTaskDetail from './pages/manager/ManagerTaskDetail'
 
 function Placeholder({ title }: { title: string }) {
   return (
@@ -149,7 +150,7 @@ export default function App() {
           />
           <Route
             path="/manage/tasks/:taskId"
-            element={<ProtectedLayout requiredRole="manager"><Placeholder title="MW-11 任务实例详情" /></ProtectedLayout>}
+            element={<ProtectedLayout requiredRole="manager"><ManagerTaskDetail /></ProtectedLayout>}
           />
           <Route
             path="/manage/analytics"

@@ -96,6 +96,8 @@ class TaskDagNode(Base):
     pos_y = Column(Integer, nullable=False, default=0)
     source_keys = Column(JSON, nullable=False, default=list)  # 前驱节点 key 列表
     error_msg = Column(Text, nullable=True)            # 失败错误信息
+    started_at = Column(DateTime(timezone=True), nullable=True)   # 节点开始执行时间
+    finished_at = Column(DateTime(timezone=True), nullable=True)  # 节点完成时间
 
 
 class AISuggestion(Base):

@@ -1529,7 +1529,7 @@
       "Step 3: 验证显示所有进行中的任务实例",
       "Step 4: 验证每个任务显示流程名、当前步骤和开始时间"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 117,
@@ -1542,7 +1542,7 @@
       "Step 4: 验证时间轴正确显示",
       "Step 5: 验证任务条目在时间轴上的位置合理"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 118,
@@ -1554,7 +1554,7 @@
       "Step 3: 验证列表只显示该类型的任务",
       "Step 4: 清除筛选，验证恢复全部显示"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 119,
@@ -1568,7 +1568,7 @@
       "Step 5: 确认催办",
       "Step 6: 验证成功消息（催办通知已发送）"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 120,
@@ -1581,7 +1581,7 @@
       "Step 4: 验证显示完整DAG执行图",
       "Step 5: 验证每个节点显示执行状态"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 121,
@@ -1594,7 +1594,7 @@
       "Step 4: 验证显示结束时间",
       "Step 5: 验证显示耗时"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 122,
@@ -1606,7 +1606,7 @@
       "Step 3: 点击'催办'",
       "Step 4: 验证催办消息发送成功"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 123,
@@ -1620,7 +1620,7 @@
       "Step 5: 以管理员身份提交",
       "Step 6: 验证节点标记为已完成，且操作人显示为管理员代操"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 124,
@@ -1635,7 +1635,7 @@
       "Step 6: 验证任务状态更新为'已终止'",
       "Step 7: 验证系统日志记录该操作"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 125,

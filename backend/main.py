@@ -38,6 +38,12 @@ with engine.connect() as _conn:
     _conn.execute(text(
         "ALTER TABLE users ADD COLUMN IF NOT EXISTS feishu_id VARCHAR(100)"
     ))
+    _conn.execute(text(
+        "ALTER TABLE task_dag_nodes ADD COLUMN IF NOT EXISTS started_at TIMESTAMP WITH TIME ZONE"
+    ))
+    _conn.execute(text(
+        "ALTER TABLE task_dag_nodes ADD COLUMN IF NOT EXISTS finished_at TIMESTAMP WITH TIME ZONE"
+    ))
     _conn.commit()
 
 logging.basicConfig(

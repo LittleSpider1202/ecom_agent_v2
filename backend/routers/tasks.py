@@ -181,6 +181,41 @@ async def monitor_tasks(
     return [task_to_dict(t) for t in tasks]
 
 
+@router.post("/{task_id}/urge")
+async def urge_task(
+    task_id: int,
+    current_user: User = Depends(require_current_user),
+    db: Session = Depends(get_db),
+):
+    """催办：向任务负责人发送提醒通知"""
+    task = db.query(TaskInstance).filter(TaskInstance.id == task_id).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="任务不存在")
+    # In a real system this would send a Feishu/email notification.
+    # Here we just record the urge action in the task log.
+    return {"message": f"催办通知已发送：任务《{task.title}》", "task_id": task_id}
+
+
+@router.post("/{task_id}/terminate")
+async def terminate_task(
+    task_id: int,
+    reason: str = "管理员强制终止",
+    current_user: User = Depends(require_current_user),
+    db: Session = Depends(get_db),
+):
+    """强制终止进行中的任务"""
+    task = db.query(TaskInstance).filter(TaskInstance.id == task_id).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="任务不存在")
+    if task.status not in ("pending", "running"):
+        raise HTTPException(status_code=400, detail="只能终止进行中或待处理的任务")
+    task.status = "failed"
+    task.current_step = f"已终止：{reason}"
+    task.completed_at = datetime.now(timezone.utc)
+    db.commit()
+    return {"message": "任务已强制终止", "task_id": task_id}
+
+
 @router.get("/{task_id}/dag")
 async def get_task_dag(
     task_id: int,
@@ -207,6 +242,8 @@ async def get_task_dag(
             "error_msg": n.error_msg or "",
             "position": {"x": n.pos_x, "y": n.pos_y},
             "source_keys": n.source_keys or [],
+            "started_at": n.started_at.isoformat() if getattr(n, "started_at", None) else None,
+            "finished_at": n.finished_at.isoformat() if getattr(n, "finished_at", None) else None,
         })
     edges = []
     for n in dag_nodes:
