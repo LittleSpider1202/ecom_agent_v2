@@ -1,54 +1,45 @@
-# Session 15 进度记录
+# Session 16 进度记录
 
-## 本次完成（214 total passing，+20）
+## 本次完成（224 total passing，+10）
 
-### 批次 1: #195-199（响应式+监控+分配+流程列表+知识审核）
-- #195: 1920px宽屏响应式验证（style test）
-- #196: TaskMonitor 人工等待时间 + 超时告警（橙/红色）
-- #197: TaskMonitor 按负责人筛选（assignee-filter）
-- #198: FlowList 点击流程名称进入编辑器
-- #199: KnowledgeReview 管理员审核知识贡献（新页面+后端API）
+### 批次 1: #215-219（顺序节点+失败告警+实时状态+部门筛选+控制台检查）
+- #215: 工作流引擎：多个顺序自动节点完整链式执行
+- #216: 工作流引擎：自动节点失败后任务进入失败状态并告警
+- #217: 工具执行：长时间运行工具的状态实时更新（前端添加轮询）
+- #218: MW-09 成员管理：按部门筛选成员列表（后端+前端实现）
+- #219: 整体页面：浏览器控制台无JavaScript报错
 
-### 批次 2: #200-204（飞书通知节点+E2E场景）
-- #200: FlowEditor 添加 FeishuNotify 节点（绿色主题）
-- #201-204: E2E 长流程场景测试（人工步骤完整链路、触发&监控、知识库问答、工具执行）
+### 批次 2: #220-224（DAG视觉+角色E2E+多部门协作+工具故障+定时流程）
+- #220: EW-03 DAG图完整视觉——节点布局不重叠，连线弯曲合理
+- #221: E2E 管理员完整配置角色权限到执行者使用功能验证
+- #222: E2E 多部门协作流程——跨部门人工节点转交和处理
+- #223: E2E 工具故障恢复——工具执行失败后管理员排查并重新触发
+- #224: E2E 定时流程从配置到自动执行验证
 
-### 批次 3: #205-209（超时催办+知识审核+邀请+回滚+工具）
-- #205: 任务超时告警和催办完整流程
-- #206: 知识贡献从提交到管理员审核发布
-- #207: 新成员邀请配置权限（修复 MemberManagement API_URL）
-- #208: 流程版本回滚（修复 FlowVersions rollback-dialog 遮罩问题）
-- #209: 自定义工具创建到工作流集成
+## 下一步（从 #225 开始，共 7 个）
 
-### 批次 4: #210-214（全局监控视觉+并发任务）
-- #210: 管理员全局监控：甘特图、流程过滤、催办
-- #211: EW-04 人工步骤视觉验证
-- #212: FlowEditor 视觉验证（节点、画布、工具栏）
-- #213: MW-01 决策驾驶舱视觉验证
-- #214: 并发人工任务：看板显示多任务
-
-## 下一步（从 #215 开始）
-
-查 feature_list.json index 215-231（共17个），下个 session 继续。
+- #225: E2E 飞书Bot深链接完整验证——BOT-02卡片到EW-04页面
+- #226: E2E 数据分析看板展示真实任务执行效率数据
+- #227: E2E 知识库AI问答引用SOP内容指导执行者操作
+- #228: E2E 任务驳回后管理员代处理完整流程
+- #229: E2E 完整组织架构配置——公司→部门→角色→成员
+- #230: E2E 飞书平台完整集成——配置连接→发送通知→接收回复
+- #231: E2E 权限边界验证——执行者无法访问管理功能的完整测试
 
 ## 关键变更记录
 
-### 新文件
-- frontend/src/pages/manager/KnowledgeReview.tsx
-- tests/feature-195.spec.ts ~ feature-214.spec.ts
+### 代码修复
+- `frontend/src/pages/Login.tsx` — navigate 从 render 移入 useEffect（修复 React Warning）
+- `frontend/src/pages/manager/RoleManagement.tsx` — API_URL 从 'http://localhost:8001' 改为 ''（走proxy）
+- `frontend/src/pages/executor/ToolExecutionDetail.tsx` — 添加 polling（2秒interval，当status='running'时）
+- `frontend/src/pages/manager/MemberManagement.tsx` — 添加部门筛选下拉器
+- `backend/routers/members.py` — GET /api/members 添加 department_id 过滤参数
 
-### 修改文件
-- frontend/src/pages/manager/TaskMonitor.tsx — 人工等待时间+超时告警+assignee过滤
-- frontend/src/pages/manager/FlowList.tsx — 点击流程名进入编辑器
-- frontend/src/pages/manager/FlowVersions.tsx — confirm-rollback testid 移到模态框
-- frontend/src/pages/manager/MemberManagement.tsx — API_URL '' (空字符串走proxy)
-- frontend/src/pages/manager/FlowEditor.tsx — FeishuNotify 节点
-- backend/routers/knowledge.py — 知识审核API（pending/approve/reject）
-- frontend/src/App.tsx — 路由 /manage/knowledge-review
+### 新文件
+- tests/feature-215.spec.ts ~ feature-224.spec.ts（共10个测试文件）
 
 ## 环境状态
 - 小主机：192.168.0.112
 - 后端：port 8002，nginx port 80（前端）
-- 前端 vite proxy：指向 http://192.168.0.112:8002
 - 分支：dev
 - API_URL in tests：http://192.168.0.112:8002
