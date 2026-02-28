@@ -1228,7 +1228,7 @@
       "Step 4: 验证问题气泡和回答气泡样式不同",
       "Step 5: 验证输入框在底部，清晰可见"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 94,
@@ -1241,7 +1241,7 @@
       "Step 4: 验证段落间有合适间距",
       "Step 5: 如有代码块，验证有语法高亮或等宽字体"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 95,
@@ -1254,7 +1254,7 @@
       "Step 4: 验证工具名称字体较大较突出",
       "Step 5: 验证触发按钮清晰可见"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 96,
@@ -1278,7 +1278,7 @@
       "Step 3: 验证自动节点颜色为蓝色系",
       "Step 4: 验证人工节点颜色为橙色系或与自动节点明显不同"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 98,
@@ -1290,7 +1290,7 @@
       "Step 3: 验证API工具、Webhook工具、Python脚本有不同图标",
       "Step 4: 验证禁用工具视觉上变灰"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 99,
@@ -1303,7 +1303,7 @@
       "Step 4: 验证每个分区内容排列整洁",
       "Step 5: 验证必填字段有星号标记"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 100,
@@ -1316,7 +1316,7 @@
       "Step 4: 验证选中的分类有高亮或加粗样式",
       "Step 5: 验证未选中分类颜色较浅"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 101,
