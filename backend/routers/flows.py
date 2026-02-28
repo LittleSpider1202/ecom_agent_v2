@@ -159,6 +159,43 @@ def get_versions(flow_id: int, db: Session = Depends(get_db), user=Depends(requi
     ]
 
 
+@router.get("/{flow_id}/versions/{version_num}")
+def get_version_detail(flow_id: int, version_num: int, db: Session = Depends(get_db), user=Depends(require_current_user)):
+    v = db.query(FlowVersion).filter(FlowVersion.flow_id == flow_id, FlowVersion.version == version_num).first()
+    if not v:
+        raise HTTPException(status_code=404, detail="Version not found")
+    return {
+        "id": v.id,
+        "version": v.version,
+        "nodes": v.nodes,
+        "edges": v.edges,
+        "created_at": v.created_at.isoformat() if v.created_at else None,
+    }
+
+
+@router.post("/{flow_id}/versions/{version_num}/rollback")
+def rollback_version(flow_id: int, version_num: int, db: Session = Depends(get_db), user=Depends(require_current_user)):
+    flow = db.query(Flow).filter(Flow.id == flow_id).first()
+    if not flow:
+        raise HTTPException(status_code=404, detail="Flow not found")
+    target = db.query(FlowVersion).filter(FlowVersion.flow_id == flow_id, FlowVersion.version == version_num).first()
+    if not target:
+        raise HTTPException(status_code=404, detail="Version not found")
+
+    # Create new version as rollback copy
+    new_version_num = flow.version + 1
+    fv = FlowVersion(flow_id=flow_id, version=new_version_num, nodes=target.nodes, edges=target.edges)
+    db.add(fv)
+    flow.version = new_version_num
+    db.commit()
+    db.refresh(flow)
+    return {
+        "new_version": new_version_num,
+        "rolled_back_from": version_num,
+        "flow_id": flow_id,
+    }
+
+
 @router.patch("/{flow_id}/toggle")
 def toggle_flow(flow_id: int, db: Session = Depends(get_db), user=Depends(require_current_user)):
     flow = db.query(Flow).filter(Flow.id == flow_id).first()

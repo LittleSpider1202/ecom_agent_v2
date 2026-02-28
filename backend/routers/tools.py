@@ -103,6 +103,24 @@ def execute_tool(
     }
 
 
+@router.patch("/{tool_id}/toggle")
+def toggle_tool(
+    tool_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Enable or disable a tool (manager only)."""
+    if current_user.role != "manager":
+        raise HTTPException(status_code=403, detail="Manager only")
+    tool = db.query(Tool).filter(Tool.id == tool_id).first()
+    if not tool:
+        raise HTTPException(status_code=404, detail="Tool not found")
+    tool.enabled = not tool.enabled
+    db.commit()
+    db.refresh(tool)
+    return {"id": tool.id, "enabled": tool.enabled}
+
+
 @router.get("/executions/{execution_id}")
 def get_execution(
     execution_id: int,

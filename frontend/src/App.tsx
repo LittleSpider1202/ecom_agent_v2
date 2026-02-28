@@ -18,6 +18,7 @@ import SuggestionDetail from './pages/manager/SuggestionDetail'
 import FlowEditor from './pages/manager/FlowEditor'
 import FlowList from './pages/manager/FlowList'
 import FlowVersions from './pages/manager/FlowVersions'
+import ToolManagement from './pages/manager/ToolManagement'
 import TaskMonitor from './pages/manager/TaskMonitor'
 
 function Placeholder({ title }: { title: string }) {
@@ -116,7 +117,7 @@ export default function App() {
           />
           <Route
             path="/manage/tools"
-            element={<ProtectedLayout requiredRole="manager"><Placeholder title="MW-05 工具库管理" /></ProtectedLayout>}
+            element={<ProtectedLayout requiredRole="manager"><ToolManagement /></ProtectedLayout>}
           />
           <Route
             path="/manage/tools/new"
