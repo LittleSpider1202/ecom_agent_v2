@@ -2434,7 +2434,7 @@
       "Step 4: 验证三个页面的主色调（按钮、链接、高亮）一致",
       "Step 5: 验证无随机颜色出现"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 186,
@@ -2447,7 +2447,7 @@
       "Step 4: 验证正文字号适中（14-16px）",
       "Step 5: 验证各层级字重（加粗程度）有明显区分"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 187,
@@ -2460,7 +2460,7 @@
       "Step 4: 验证次要按钮（取消、返回）为空心或灰色",
       "Step 5: 验证危险操作按钮（删除、终止）为红色"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 188,
@@ -2473,7 +2473,7 @@
       "Step 4: 验证下拉菜单下拉图标一致",
       "Step 5: 验证复选框和单选框大小适中"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 189,
@@ -2485,7 +2485,7 @@
       "Step 3: 验证显示骨架屏或加载动画",
       "Step 4: 验证页面不显示空白或错误"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 190,
