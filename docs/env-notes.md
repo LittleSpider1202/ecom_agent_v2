@@ -242,6 +242,17 @@
 - 修复：把 `navigate` 调用移入 `useEffect(() => { if (user) navigate(...) }, [user, ...])`
 - 保留 `if (user) return null` 作为渲染优化（不调用 navigate，只避免渲染表单）
 
+## RoleManagement.tsx API_URL 错误
+
+- 原来 `const API_URL = 'http://localhost:8001'`（写死了本地旧端口）→ 页面加载后 role-list 为空
+- 修复：改为 `const API_URL = ''`（走 Vite proxy）
+- 规律：**所有管理页面的 API_URL 必须用 `''` 走 proxy**，不能写死端口
+
+## Playwright monitor-task-row 多元素 strict mode
+
+- `[data-testid="monitor-task-row"].filter({ hasText: '66' })` → 命中4个元素（"66"出现在多行文本中）
+- 修复：用正则 `/^#66\b/` 精确匹配 task ID 前缀，或用 `.filter({ hasText: /#66\b/ })`
+
 ## Playwright route interception + networkidle 时序
 
 - `page.route()` 拦截后，若用 `waitUntil: 'networkidle'`，Playwright 会等所有网络请求静止
