@@ -170,3 +170,12 @@ class ToolExecution(Base):
     output_file = Column(String(300), nullable=True)
     started_at = Column(DateTime(timezone=True), server_default=func.now())
     finished_at = Column(DateTime(timezone=True), nullable=True)
+
+
+class Department(Base):
+    __tablename__ = "departments"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(100), nullable=False)
+    parent_id = Column(Integer, ForeignKey("departments.id"), nullable=True)
+    member_count = Column(Integer, nullable=False, default=0)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())

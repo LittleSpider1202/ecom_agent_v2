@@ -1328,7 +1328,7 @@
       "Step 3: 验证显示组织树结构",
       "Step 4: 验证根节点（公司）和子节点（部门）层级关系正确"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 102,
@@ -1342,7 +1342,7 @@
       "Step 5: 点击展开图标",
       "Step 6: 验证子节点重新显示"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 103,
@@ -1356,7 +1356,7 @@
       "Step 5: 点击确认创建",
       "Step 6: 验证新部门出现在组织树中正确位置"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 104,
@@ -1370,7 +1370,7 @@
       "Step 5: 确认保存",
       "Step 6: 验证组织树中部门名称已更新"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 105,
@@ -1384,7 +1384,7 @@
       "Step 5: 确认删除",
       "Step 6: 验证部门从组织树移除"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 106,

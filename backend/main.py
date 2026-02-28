@@ -7,7 +7,7 @@ import time
 import uuid
 import logging
 from database import engine, get_db
-from models import Base, User, TaskInstance, TaskStep, TaskDagNode, AISuggestion, Flow, FlowVersion, KnowledgeEntry, KnowledgeSubmission, Tool, ToolExecution
+from models import Base, User, TaskInstance, TaskStep, TaskDagNode, AISuggestion, Flow, FlowVersion, KnowledgeEntry, KnowledgeSubmission, Tool, ToolExecution, Department
 from auth import get_password_hash
 from routers import auth as auth_router
 from routers import tasks as tasks_router
@@ -15,6 +15,7 @@ from routers import dashboard as dashboard_router
 from routers import flows as flows_router
 from routers import knowledge as knowledge_router
 from routers import tools as tools_router
+from routers import departments as departments_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -70,6 +71,7 @@ app.include_router(dashboard_router.router)
 app.include_router(flows_router.router)
 app.include_router(knowledge_router.router)
 app.include_router(tools_router.router)
+app.include_router(departments_router.router)
 
 
 @app.on_event("startup")
@@ -777,6 +779,20 @@ async def seed_data():
             ]
             for t in seed_tools:
                 db.add(t)
+            db.commit()
+
+        # Seed departments
+        if db.query(Department).count() == 0:
+            root = Department(name="总公司", parent_id=None, member_count=0)
+            db.add(root)
+            db.flush()
+            dept1 = Department(name="运营部", parent_id=root.id, member_count=3)
+            dept2 = Department(name="采购部", parent_id=root.id, member_count=2)
+            dept3 = Department(name="客服部", parent_id=root.id, member_count=4)
+            db.add_all([dept1, dept2, dept3])
+            db.flush()
+            dept4 = Department(name="直播运营组", parent_id=dept1.id, member_count=0)
+            db.add(dept4)
             db.commit()
     finally:
         db.close()

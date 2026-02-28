@@ -20,6 +20,7 @@ import FlowList from './pages/manager/FlowList'
 import FlowVersions from './pages/manager/FlowVersions'
 import ToolManagement from './pages/manager/ToolManagement'
 import ToolEditor from './pages/manager/ToolEditor'
+import DepartmentManagement from './pages/manager/DepartmentManagement'
 import TaskMonitor from './pages/manager/TaskMonitor'
 
 function Placeholder({ title }: { title: string }) {
@@ -130,7 +131,7 @@ export default function App() {
           />
           <Route
             path="/manage/departments"
-            element={<ProtectedLayout requiredRole="manager"><Placeholder title="MW-07 部门管理" /></ProtectedLayout>}
+            element={<ProtectedLayout requiredRole="manager"><DepartmentManagement /></ProtectedLayout>}
           />
           <Route
             path="/manage/roles"
