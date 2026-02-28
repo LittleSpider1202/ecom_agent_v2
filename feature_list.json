@@ -1982,7 +1982,7 @@
       "Step 4: 验证包含任务负责人信息",
       "Step 5: 验证包含任务开始时间"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 152,
@@ -1996,7 +1996,7 @@
       "Step 5: 验证卡片显示AI建议内容",
       "Step 6: 验证卡片有'采纳'和'查看详情'按钮"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 153,
@@ -2009,7 +2009,7 @@
       "Step 4: 导航到任务详情页",
       "Step 5: 验证人工步骤已标记为已完成"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 154,
@@ -2021,7 +2021,7 @@
       "Step 3: 验证跳转到 /task/{taskId}/step/{stepId}",
       "Step 4: 验证EW-04页面正确加载该步骤的内容"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 155,
@@ -2033,7 +2033,7 @@
       "Step 3: 验证管理员收到BOT-03告警卡片",
       "Step 4: 验证卡片显示任务名称和异常原因"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 156,
@@ -2045,7 +2045,7 @@
       "Step 3: 验证系统发送催办通知给负责人",
       "Step 4: 验证飞书Bot回复催办已发送"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 157,
@@ -2057,7 +2057,7 @@
       "Step 3: 验证跳转到 /manage/task/{taskId}",
       "Step 4: 验证管理员可在该页面执行代处理操作"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 158,
@@ -2070,7 +2070,7 @@
       "Step 4: 验证日报包含当日任务完成数量",
       "Step 5: 验证包含人工节点平均处理时间"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 159,
@@ -2082,7 +2082,7 @@
       "Step 3: 验证卡片显示建议摘要文字",
       "Step 4: 验证卡片有'采纳'和'查看详情'按钮"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 160,
@@ -2095,7 +2095,7 @@
       "Step 4: 导航到任务监控，验证对应任务已创建",
       "Step 5: 验证建议状态更新为'已采纳'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 161,

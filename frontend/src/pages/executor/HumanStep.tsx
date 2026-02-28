@@ -237,6 +237,18 @@ export default function HumanStep() {
       </section>
 
       {/* 操作按钮 */}
+      {/* 一键采纳 — quick approve without modification */}
+      <div className="mb-3">
+        <button
+          onClick={handleAcceptAI}
+          data-testid="quick-approve-btn"
+          className="w-full px-6 py-3 bg-green-600 text-white rounded-xl text-sm font-semibold hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
+        >
+          <span>✓</span>
+          一键采纳
+        </button>
+      </div>
+
       <div
         className="flex flex-col sm:flex-row gap-3"
         data-testid="action-buttons"

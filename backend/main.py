@@ -22,6 +22,7 @@ from routers import analytics as analytics_router
 from routers import suggestions as suggestions_router
 from routers import integrations as integrations_router
 from routers import logs as logs_router
+from routers import bot as bot_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -108,6 +109,7 @@ app.include_router(analytics_router.router)
 app.include_router(suggestions_router.router)
 app.include_router(integrations_router.router)
 app.include_router(logs_router.router)
+app.include_router(bot_router.router)
 
 
 @app.on_event("startup")

@@ -7,6 +7,7 @@ from pydantic import BaseModel
 from database import get_db
 from auth import require_current_user
 from models import TaskInstance, TaskStep, TaskDagNode, User
+from routers.bot import add_bot_notification
 
 router = APIRouter(prefix="/api/tasks", tags=["tasks"])
 
@@ -191,8 +192,13 @@ async def urge_task(
     task = db.query(TaskInstance).filter(TaskInstance.id == task_id).first()
     if not task:
         raise HTTPException(status_code=404, detail="任务不存在")
-    # In a real system this would send a Feishu/email notification.
-    # Here we just record the urge action in the task log.
+    add_bot_notification(
+        type="task_alert",
+        title="催办通知",
+        content=f"管理员已对任务「{task.title}」发起催办，请相关负责人尽快处理。",
+        task_id=task_id,
+        target_user="executor",
+    )
     return {"message": f"催办通知已发送：任务《{task.title}》", "task_id": task_id}
 
 
@@ -213,6 +219,13 @@ async def terminate_task(
     task.current_step = f"已终止：{reason}"
     task.completed_at = datetime.now(timezone.utc)
     db.commit()
+    add_bot_notification(
+        type="task_alert",
+        title="任务异常告警",
+        content=f"任务「{task.title}」已被强制终止，原因：{reason}",
+        task_id=task_id,
+        target_user="manager",
+    )
     return {"message": "任务已强制终止", "task_id": task_id}
 
 
