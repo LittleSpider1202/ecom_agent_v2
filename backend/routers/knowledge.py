@@ -149,6 +149,94 @@ def mark_helpful(
     return {"helpful_count": entry.helpful_count}
 
 
+# ── Manager: List all pending submissions ─────────────────────────────────────
+
+@router.get("/submissions/pending")
+def list_pending_submissions(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_current_user),
+):
+    """管理员查看所有待审核的知识贡献"""
+    if current_user.role not in ("manager", "admin"):
+        raise HTTPException(status_code=403, detail="无权限")
+    subs = (
+        db.query(KnowledgeSubmission)
+        .filter(KnowledgeSubmission.status == "pending")
+        .order_by(KnowledgeSubmission.created_at.desc())
+        .all()
+    )
+    return [
+        {
+            "id": s.id,
+            "type": s.type,
+            "title": s.title,
+            "content": s.content,
+            "category": s.category,
+            "status": s.status,
+            "submitter_id": s.submitter_id,
+            "entry_id": s.entry_id,
+            "correction_reason": s.correction_reason,
+            "created_at": s.created_at.isoformat() if s.created_at else None,
+        }
+        for s in subs
+    ]
+
+
+@router.post("/submissions/{sub_id}/approve")
+def approve_submission(
+    sub_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_current_user),
+):
+    """管理员批准知识贡献，自动创建/更新知识词条"""
+    if current_user.role not in ("manager", "admin"):
+        raise HTTPException(status_code=403, detail="无权限")
+    sub = db.query(KnowledgeSubmission).filter(KnowledgeSubmission.id == sub_id).first()
+    if not sub:
+        raise HTTPException(status_code=404, detail="投稿不存在")
+    if sub.status != "pending":
+        raise HTTPException(status_code=400, detail="该投稿已处理")
+
+    if sub.type == "new":
+        entry = KnowledgeEntry(
+            title=sub.title or "未命名词条",
+            content=sub.content,
+            category=sub.category or "运营规则",
+            status="active",
+        )
+        db.add(entry)
+        db.flush()
+        sub.entry_id = entry.id
+    elif sub.type == "correction" and sub.entry_id:
+        entry = db.query(KnowledgeEntry).filter(KnowledgeEntry.id == sub.entry_id).first()
+        if entry:
+            entry.content = sub.content
+            entry.updated_at = datetime.utcnow()
+
+    sub.status = "approved"
+    db.commit()
+    return {"message": "审核通过，词条已发布", "status": "approved", "entry_id": sub.entry_id}
+
+
+@router.post("/submissions/{sub_id}/reject")
+def reject_submission(
+    sub_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_current_user),
+):
+    """管理员驳回知识贡献"""
+    if current_user.role not in ("manager", "admin"):
+        raise HTTPException(status_code=403, detail="无权限")
+    sub = db.query(KnowledgeSubmission).filter(KnowledgeSubmission.id == sub_id).first()
+    if not sub:
+        raise HTTPException(status_code=404, detail="投稿不存在")
+    if sub.status != "pending":
+        raise HTTPException(status_code=400, detail="该投稿已处理")
+    sub.status = "rejected"
+    db.commit()
+    return {"message": "已驳回", "status": "rejected"}
+
+
 # ── Submissions ───────────────────────────────────────────────────────────────
 
 @router.post("/submissions")

@@ -9,9 +9,36 @@ interface Task {
   status: string
   current_step: string | null
   has_human_step: boolean
+  assigned_to: number | null
   created_at: string
   updated_at: string | null
   completed_at: string | null
+}
+
+interface Member {
+  id: number
+  username: string
+  display_name: string
+  role: string
+}
+
+const WARN_THRESHOLD_MS = 2 * 60 * 60 * 1000   // 2 小时：橙色预警
+const ALERT_THRESHOLD_MS = 24 * 60 * 60 * 1000 // 24 小时：红色告警
+
+function getWaitInfo(task: Task, now: number): { label: string; cls: string } | null {
+  if (task.status !== 'running' || !task.has_human_step) return null
+  const ref = task.updated_at ?? task.created_at
+  if (!ref) return null
+  const elapsed = now - new Date(ref).getTime()
+  if (elapsed < 0) return null
+
+  const hours = Math.floor(elapsed / 3600000)
+  const mins = Math.floor((elapsed % 3600000) / 60000)
+  const label = hours > 0 ? `${hours}小时${mins}分` : `${mins}分钟`
+
+  if (elapsed >= ALERT_THRESHOLD_MS) return { label, cls: 'text-red-600 font-semibold' }
+  if (elapsed >= WARN_THRESHOLD_MS)  return { label, cls: 'text-orange-500 font-semibold' }
+  return { label, cls: 'text-gray-500' }
 }
 
 const STATUS_LABEL: Record<string, { text: string; cls: string }> = {
@@ -30,8 +57,11 @@ export default function TaskMonitor() {
   const [loading, setLoading] = useState(true)
   const [view, setView] = useState<ViewMode>('list')
   const [flowFilter, setFlowFilter] = useState<string>('')
+  const [assigneeFilter, setAssigneeFilter] = useState<string>('')
+  const [members, setMembers] = useState<Member[]>([])
   const [urgeTaskId, setUrgeTaskId] = useState<number | null>(null)
   const [urgeMsg, setUrgeMsg] = useState<string | null>(null)
+  const [now, setNow] = useState(Date.now())
 
   const load = () => {
     const token = localStorage.getItem('auth_token')
@@ -48,10 +78,28 @@ export default function TaskMonitor() {
     return () => clearInterval(t)
   }, [])
 
+  useEffect(() => {
+    const token = localStorage.getItem('auth_token')
+    axios
+      .get('/api/members', { headers: { Authorization: `Bearer ${token}` } })
+      .then(res => setMembers(res.data))
+      .catch(() => setMembers([]))
+  }, [])
+
+  // 每分钟更新 now，刷新等待时间显示
+  useEffect(() => {
+    const t = setInterval(() => setNow(Date.now()), 60000)
+    return () => clearInterval(t)
+  }, [])
+
   // Unique flow names for filter
   const flowNames = Array.from(new Set(tasks.map(t => t.flow_name))).filter(Boolean)
 
-  const filtered = flowFilter ? tasks.filter(t => t.flow_name === flowFilter) : tasks
+  const filtered = tasks.filter(t => {
+    if (flowFilter && t.flow_name !== flowFilter) return false
+    if (assigneeFilter && String(t.assigned_to) !== assigneeFilter) return false
+    return true
+  })
 
   const handleUrgeConfirm = async () => {
     if (urgeTaskId == null) return
@@ -69,7 +117,6 @@ export default function TaskMonitor() {
   }
 
   // Compute Gantt time range
-  const now = Date.now()
   const starts = tasks.map(t => new Date(t.created_at).getTime()).filter(Boolean)
   const ganttMin = starts.length ? Math.min(...starts) : now - 86400000
   const ganttMax = now
@@ -110,6 +157,18 @@ export default function TaskMonitor() {
               <option key={fn} value={fn}>{fn}</option>
             ))}
           </select>
+          {/* Assignee filter */}
+          <select
+            data-testid="assignee-filter"
+            value={assigneeFilter}
+            onChange={e => setAssigneeFilter(e.target.value)}
+            className="text-sm border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+          >
+            <option value="">全部负责人</option>
+            {members.map(m => (
+              <option key={m.id} value={String(m.id)} data-testid={`assignee-option-${m.id}`}>{m.display_name}</option>
+            ))}
+          </select>
           <button
             onClick={load}
             className="px-3 py-1.5 text-sm text-blue-600 border border-blue-300 rounded hover:bg-blue-50"
@@ -144,8 +203,10 @@ export default function TaskMonitor() {
                 <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase">任务名称</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase">所属流程</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase">状态</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase">负责人</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase">当前步骤</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase">开始时间</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase">人工等待时间</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase">操作</th>
               </tr>
             </thead>
@@ -169,8 +230,31 @@ export default function TaskMonitor() {
                         {s.text}
                       </span>
                     </td>
+                    <td className="px-4 py-3 text-gray-500" data-testid={`task-assignee-${task.id}`}>
+                      {members.find(m => m.id === task.assigned_to)?.display_name ?? '-'}
+                    </td>
                     <td className="px-4 py-3 text-gray-500">{task.current_step ?? '-'}</td>
                     <td className="px-4 py-3 text-gray-400 text-xs">{date}</td>
+                    <td className="px-4 py-3">
+                      {(() => {
+                        const wait = getWaitInfo(task, now)
+                        if (!wait) return <span className="text-gray-300 text-xs">—</span>
+                        return (
+                          <span
+                            data-testid={`wait-time-${task.id}`}
+                            className={`text-xs flex items-center gap-1 ${wait.cls}`}
+                          >
+                            {wait.cls.includes('red') && (
+                              <span data-testid={`timeout-alert-${task.id}`} title="严重超时">🔴</span>
+                            )}
+                            {wait.cls.includes('orange') && (
+                              <span data-testid={`timeout-warn-${task.id}`} title="等待超时预警">🟠</span>
+                            )}
+                            {wait.label}
+                          </span>
+                        )
+                      })()}
+                    </td>
                     <td className="px-4 py-3">
                       {isStalled && (
                         <button

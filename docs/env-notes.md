@@ -178,6 +178,24 @@
 - bot告警：type="alert"，target_user="manager"
 - condition节点同时有 should_fail 不处理（skip优先）
 
+## global.setup.ts 预热登录
+
+- 旧版用 UI form 登录（`page.fill`），在新 session 中偶发 timeout（proxy 未bypass）
+- **正确做法**：在 `globalSetup` 中用 programmatic API 登录（`page.request.post` + `page.evaluate`），与测试中一致
+- chromium launch 需传 `args: ['--proxy-bypass-list=localhost,127.0.0.1']`
+
+## React state 变量名冲突
+
+- 在组件中既有 `const [now, setNow] = useState(Date.now())` 又有 `const now = Date.now()`（原有代码），编译报 `Identifier 'now' has already been declared`
+- 结论：添加 state 前先搜索文件中是否已有同名 `const`，如有则删除原有的 const（使用 state 值代替）
+
+## 知识贡献审核（KnowledgeReview）
+
+- 后端 `knowledge.py` 已有 `KnowledgeSubmission` model，status=pending/approved/rejected
+- 新增3个端点：GET `/api/knowledge/submissions/pending`，POST `/{id}/approve`，POST `/{id}/reject`
+- approve 时自动创建 KnowledgeEntry（type=new）或更新现有词条（type=correction）
+- 前端页面：`/manage/knowledge-review`，需要在 App.tsx 中注册路由
+
 ## Vite proxy 切换历史
 
 - Session 14 开始：vite.config.ts proxy target 改为 `http://192.168.0.112:8002`（本地后端无法稳定启动）

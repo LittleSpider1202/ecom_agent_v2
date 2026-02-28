@@ -2564,7 +2564,7 @@
       "Step 4: 验证内容区域宽度合理（不过度拉伸）",
       "Step 5: 验证流程编辑器画布充分利用空间"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 196,
@@ -2576,7 +2576,7 @@
       "Step 3: 验证显示等待时间",
       "Step 4: 验证超过阈值的任务有警告标识（红色或橙色）"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 197,
@@ -2588,7 +2588,7 @@
       "Step 3: 选择一个负责人",
       "Step 4: 验证列表只显示该负责人的任务"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 198,
@@ -2601,7 +2601,7 @@
       "Step 4: 验证编辑器中加载了该流程的节点和连线",
       "Step 5: 修改一个节点名称并保存"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 199,
@@ -2616,7 +2616,7 @@
       "Step 6: 验证词条状态更新为已发布",
       "Step 7: 执行者在知识库中可以看到该词条"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 200,

@@ -152,7 +152,11 @@ export default function FlowList() {
                     />
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="font-semibold text-gray-800">{flow.name}</span>
+                        <span
+                          className="font-semibold text-gray-800 hover:text-blue-600 hover:underline cursor-pointer"
+                          data-testid={`flow-name-${flow.id}`}
+                          onClick={e => { e.stopPropagation(); navigate(`/manage/flows/${flow.id}`) }}
+                        >{flow.name}</span>
                         <span className="text-xs text-gray-400">v{flow.version}</span>
                         <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">
                           {triggerLabel(flow.trigger_type)}

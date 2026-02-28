@@ -29,6 +29,7 @@ import AnalyticsDashboard from './pages/manager/AnalyticsDashboard'
 import SuggestionList from './pages/manager/SuggestionList'
 import IntegrationConfig from './pages/manager/IntegrationConfig'
 import SystemLogs from './pages/manager/SystemLogs'
+import KnowledgeReview from './pages/manager/KnowledgeReview'
 
 
 function ProtectedLayout({ children, requiredRole }: { children: React.ReactNode; requiredRole?: 'manager' }) {
@@ -161,6 +162,10 @@ export default function App() {
           <Route
             path="/manage/logs"
             element={<ProtectedLayout requiredRole="manager"><SystemLogs /></ProtectedLayout>}
+          />
+          <Route
+            path="/manage/knowledge-review"
+            element={<ProtectedLayout requiredRole="manager"><KnowledgeReview /></ProtectedLayout>}
           />
 
           <Route path="*" element={<Navigate to="/executor/dashboard" replace />} />
