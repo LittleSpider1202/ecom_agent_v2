@@ -420,8 +420,13 @@ function FlowEditorInner() {
       }
       setSaveStatus('saved')
       setTimeout(() => setSaveStatus('idle'), 2500)
+      // Trigger global toast
+      const showToast = (window as unknown as Record<string, (msg: string, type: string) => void>).__showToast
+      if (showToast) showToast('流程已保存', 'success')
     } catch {
       setSaveStatus('error')
+      const showToast = (window as unknown as Record<string, (msg: string, type: string) => void>).__showToast
+      if (showToast) showToast('保存失败，请重试', 'error')
     }
   }
 

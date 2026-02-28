@@ -53,7 +53,10 @@ export default function AppLayout({ children }: Props) {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<SearchResult[]>([])
   const [showSearch, setShowSearch] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [toast, setToast] = useState<{ msg: string; type: 'success' | 'error' } | null>(null)
   const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const isManager = user && user.role !== 'executor'
   const isManagerPath = location.pathname.startsWith('/manage/')
@@ -99,6 +102,18 @@ export default function AppLayout({ children }: Props) {
     logout()
     navigate('/login', { replace: true })
   }
+
+  const showToast = useCallback((msg: string, type: 'success' | 'error' = 'success') => {
+    setToast({ msg, type })
+    if (toastTimer.current) clearTimeout(toastTimer.current)
+    toastTimer.current = setTimeout(() => setToast(null), 3000)
+  }, [])
+
+  // Expose showToast globally so child pages can trigger toasts
+  useEffect(() => {
+    (window as unknown as Record<string, unknown>).__showToast = showToast
+    return () => { delete (window as unknown as Record<string, unknown>).__showToast }
+  }, [showToast])
 
   const markAllRead = () => {
     setNotifications(prev => prev.map(n => ({ ...n, read: true })))
@@ -238,35 +253,94 @@ export default function AppLayout({ children }: Props) {
       <div className="flex flex-1">
         {/* Sidebar */}
         <nav
-          className="w-48 bg-white border-r border-gray-200 flex-shrink-0 py-4"
+          className={`${sidebarCollapsed ? 'w-12' : 'w-48'} bg-white border-r border-gray-200 flex-shrink-0 py-4 transition-all duration-200`}
           data-testid={isManager && isManagerPath ? 'manager-sidebar' : 'executor-sidebar'}
         >
-          <ul className="space-y-0.5 px-2">
-            {sidebarItems.map(item => {
-              const isActive = location.pathname === item.path ||
-                (item.path !== '/executor/dashboard' && location.pathname.startsWith(item.path))
-              return (
-                <li key={item.path}>
-                  <Link
-                    to={item.path}
-                    data-testid={item.testid}
-                    className={`flex items-center px-3 py-2 rounded-lg text-sm transition-colors ${
-                      isActive
-                        ? 'bg-blue-50 text-blue-700 font-medium'
-                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                    }`}
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              )
-            })}
-          </ul>
+          {/* Collapse toggle */}
+          <button
+            data-testid="sidebar-toggle"
+            onClick={() => setSidebarCollapsed(v => !v)}
+            className="w-full flex items-center justify-center mb-2 px-2 py-1 text-gray-400 hover:text-gray-600"
+            aria-label={sidebarCollapsed ? '展开侧边栏' : '折叠侧边栏'}
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d={sidebarCollapsed ? 'M13 5l7 7-7 7M5 5l7 7-7 7' : 'M11 19l-7-7 7-7m8 14l-7-7 7-7'} />
+            </svg>
+          </button>
+          {!sidebarCollapsed && (
+            <ul className="space-y-0.5 px-2">
+              {sidebarItems.map(item => {
+                const isActive = location.pathname === item.path ||
+                  (item.path !== '/executor/dashboard' && location.pathname.startsWith(item.path))
+                return (
+                  <li key={item.path}>
+                    <Link
+                      to={item.path}
+                      data-testid={item.testid}
+                      className={`flex items-center px-3 py-2 rounded-lg text-sm transition-colors ${
+                        isActive
+                          ? 'bg-blue-50 text-blue-700 font-medium'
+                          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                      }`}
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                )
+              })}
+            </ul>
+          )}
+          {sidebarCollapsed && (
+            <ul className="space-y-0.5 px-1">
+              {sidebarItems.map(item => {
+                const isActive = location.pathname === item.path ||
+                  (item.path !== '/executor/dashboard' && location.pathname.startsWith(item.path))
+                return (
+                  <li key={item.path}>
+                    <Link
+                      to={item.path}
+                      data-testid={item.testid}
+                      title={item.label}
+                      className={`flex items-center justify-center w-8 h-8 rounded-lg text-sm transition-colors mx-auto ${
+                        isActive ? 'bg-blue-50 text-blue-700' : 'text-gray-500 hover:bg-gray-50'
+                      }`}
+                    >
+                      {item.label.charAt(0)}
+                    </Link>
+                  </li>
+                )
+              })}
+            </ul>
+          )}
         </nav>
 
         {/* Main content */}
         <main className="flex-1 min-w-0">{children}</main>
       </div>
+
+      {/* Global Toast */}
+      {toast && (
+        <div
+          data-testid="global-toast"
+          className={`fixed top-4 right-4 z-[100] px-4 py-3 rounded-xl shadow-lg text-sm font-medium flex items-center gap-2 ${
+            toast.type === 'success'
+              ? 'bg-green-50 border border-green-200 text-green-700'
+              : 'bg-red-50 border border-red-200 text-red-700'
+          }`}
+        >
+          {toast.type === 'success' ? (
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+          ) : (
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          )}
+          {toast.msg}
+        </div>
+      )}
     </div>
   )
 }

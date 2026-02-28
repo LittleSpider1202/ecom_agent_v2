@@ -2498,7 +2498,7 @@
       "Step 4: 验证有说明文字（如'暂无数据'）",
       "Step 5: 验证有引导操作按钮（如'新建任务'）"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 191,
@@ -2511,7 +2511,7 @@
       "Step 4: 验证错误消息文字为红色",
       "Step 5: 验证错误字段边框变红"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 192,
@@ -2524,7 +2524,7 @@
       "Step 4: 验证Toast为绿色或成功色",
       "Step 5: 验证Toast在3-5秒后自动消失"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 193,
@@ -2538,7 +2538,7 @@
       "Step 5: 验证折叠后只显示图标不显示文字",
       "Step 6: 点击展开，验证恢复显示文字"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 194,
@@ -2551,7 +2551,7 @@
       "Step 4: 验证所有页面无横向滚动条",
       "Step 5: 验证内容不截断"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 195,
