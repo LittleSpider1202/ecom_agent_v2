@@ -56,7 +56,6 @@ export default function AppLayout({ children }: Props) {
   const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const isManager = user && user.role !== 'executor'
-  const navItems = isManager ? MANAGER_NAV : EXECUTOR_NAV
   const isManagerPath = location.pathname.startsWith('/manage/')
 
   // Show manager nav if on manager path AND user is manager

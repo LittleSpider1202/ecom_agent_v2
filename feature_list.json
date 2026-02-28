@@ -2224,7 +2224,7 @@
       "Step 4: 验证结果中包含任务、流程或知识词条条目",
       "Step 5: 点击一个结果，验证跳转到对应详情页"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 171,
@@ -2237,7 +2237,7 @@
       "Step 4: 验证测试执行者收到飞书通知",
       "Step 5: 验证通知内容包含任务名称和步骤说明"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 172,
@@ -2254,7 +2254,7 @@
       "Step 8: 等待第二步完成，验证飞书通知发送",
       "Step 9: 验证整个任务状态为已完成"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 173,
@@ -2268,7 +2268,7 @@
       "Step 5: 再次触发，传入False条件值",
       "Step 6: 验证执行了False路径的后续步骤"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 174,
@@ -2283,7 +2283,7 @@
       "Step 6: 执行者完成人工步骤",
       "Step 7: 验证流程继续执行后续自动步骤"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 175,
