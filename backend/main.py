@@ -18,6 +18,8 @@ from routers import tools as tools_router
 from routers import departments as departments_router
 from routers import roles as roles_router
 from routers import members as members_router
+from routers import analytics as analytics_router
+from routers import suggestions as suggestions_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -94,6 +96,8 @@ app.include_router(tools_router.router)
 app.include_router(departments_router.router)
 app.include_router(roles_router.router)
 app.include_router(members_router.router)
+app.include_router(analytics_router.router)
+app.include_router(suggestions_router.router)
 
 
 @app.on_event("startup")

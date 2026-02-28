@@ -25,6 +25,8 @@ import RoleManagement from './pages/manager/RoleManagement'
 import MemberManagement from './pages/manager/MemberManagement'
 import TaskMonitor from './pages/manager/TaskMonitor'
 import ManagerTaskDetail from './pages/manager/ManagerTaskDetail'
+import AnalyticsDashboard from './pages/manager/AnalyticsDashboard'
+import SuggestionList from './pages/manager/SuggestionList'
 
 function Placeholder({ title }: { title: string }) {
   return (
@@ -154,11 +156,11 @@ export default function App() {
           />
           <Route
             path="/manage/analytics"
-            element={<ProtectedLayout requiredRole="manager"><Placeholder title="MW-12 数据分析看板" /></ProtectedLayout>}
+            element={<ProtectedLayout requiredRole="manager"><AnalyticsDashboard /></ProtectedLayout>}
           />
           <Route
             path="/manage/suggestions"
-            element={<ProtectedLayout requiredRole="manager"><Placeholder title="MW-13 AI决策建议" /></ProtectedLayout>}
+            element={<ProtectedLayout requiredRole="manager"><SuggestionList /></ProtectedLayout>}
           />
           <Route
             path="/manage/suggestions/:id"
