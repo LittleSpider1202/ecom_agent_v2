@@ -2631,7 +2631,7 @@
       "Step 6: 保存配置",
       "Step 7: 验证节点显示配置摘要"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 201,
@@ -2651,7 +2651,7 @@
       "Step 11: 等待最后自动节点完成",
       "Step 12: 验证整个任务状态为已完成，出现在任务历史中"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 202,
@@ -2670,7 +2670,7 @@
       "Step 10: 验证任务实例创建并出现在全局任务监控中",
       "Step 11: 在任务详情页观察DAG执行进度"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 203,
@@ -2690,7 +2690,7 @@
       "Step 11: 验证本次任务出现在分析数据中",
       "Step 12: 系统日志中记录了整个流程的操作"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 204,
@@ -2709,7 +2709,7 @@
       "Step 10: 验证新任务实例创建",
       "Step 11: 决策记录出现在MW-13历史记录中"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 205,

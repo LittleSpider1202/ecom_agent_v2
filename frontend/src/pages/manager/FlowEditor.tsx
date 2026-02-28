@@ -76,6 +76,37 @@ function HumanNode({ data, selected }: NodeProps) {
   )
 }
 
+function FeishuNotifyNode({ data, selected }: NodeProps) {
+  const cfg = data.config as Record<string, string> | undefined
+  return (
+    <div
+      data-testid="node-feishu_notify"
+      data-node-type="feishu_notify"
+      className={`px-4 py-3 rounded-lg bg-green-50 border-2 min-w-[140px] ${
+        selected ? 'border-green-500 shadow-lg' : 'border-green-300'
+      }`}
+    >
+      <Handle type="target" position={Position.Top} />
+      <div className="flex items-center gap-2">
+        <span className="text-green-500 text-lg">🔔</span>
+        <div>
+          <div className="text-[10px] text-green-400 font-medium uppercase tracking-wide">飞书通知</div>
+          <div className="text-sm font-semibold text-green-800">{data.label as string}</div>
+        </div>
+      </div>
+      {cfg?.receiver_role && (
+        <div className="mt-1 text-[10px] text-green-600">接收人：{cfg.receiver_role}</div>
+      )}
+      {cfg?.message_template && (
+        <div className="mt-0.5 text-[10px] text-green-500 truncate max-w-[130px]" title={cfg.message_template}>
+          {cfg.message_template}
+        </div>
+      )}
+      <Handle type="source" position={Position.Bottom} />
+    </div>
+  )
+}
+
 function ConditionNode({ data, selected }: NodeProps) {
   return (
     <div
@@ -100,7 +131,7 @@ function ConditionNode({ data, selected }: NodeProps) {
   )
 }
 
-const nodeTypes: NodeTypes = { auto: AutoNode, human: HumanNode, condition: ConditionNode }
+const nodeTypes: NodeTypes = { auto: AutoNode, human: HumanNode, condition: ConditionNode, feishu_notify: FeishuNotifyNode }
 
 // ── Config panel ────────────────────────────────────────────────────────────
 
@@ -253,6 +284,40 @@ function ConfigPanel({ node, onUpdate, onClose }: ConfigPanelProps) {
             <p className="text-[10px] text-gray-400 mt-1">True → 下方，False → 右侧</p>
           </div>
         )}
+
+        {data.nodeType === 'feishu_notify' && (
+          <>
+            <div>
+              <label className="block text-xs font-medium text-gray-600 mb-1">接收人（角色）</label>
+              <select
+                className="w-full border border-gray-300 rounded px-3 py-1.5 text-sm"
+                value={(cfg.receiver_role as string) || ''}
+                onChange={e => setCfg({ ...cfg, receiver_role: e.target.value })}
+                data-testid="config-receiver-role"
+              >
+                <option value="">请选择角色</option>
+                <option value="所有成员">所有成员</option>
+                <option value="运营主管">运营主管</option>
+                <option value="采购主管">采购主管</option>
+                <option value="财务审核">财务审核</option>
+                <option value="manager">管理员</option>
+                <option value="executor">执行者</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-600 mb-1">消息模板</label>
+              <textarea
+                className="w-full border border-gray-300 rounded px-3 py-1.5 text-sm resize-none"
+                rows={4}
+                placeholder="支持变量插值，如：&#10;任务《{{task.name}}》需要您处理&#10;详情：{{task.description}}"
+                value={(cfg.message_template as string) || ''}
+                onChange={e => setCfg({ ...cfg, message_template: e.target.value })}
+                data-testid="config-message-template"
+              />
+              <p className="text-[10px] text-gray-400 mt-1">支持 {'{{'} task.name {'}}'}、{'{{'} task.status {'}}'}等变量</p>
+            </div>
+          </>
+        )}
       </div>
       <div className="p-4 border-t">
         <button
@@ -270,13 +335,14 @@ function ConfigPanel({ node, onUpdate, onClose }: ConfigPanelProps) {
 // ── Node panel item types ───────────────────────────────────────────────────
 
 const PANEL_NODES = [
-  { type: 'auto',      label: 'API调用',  icon: '⚡', desc: '自动执行API请求', color: 'blue' },
-  { type: 'human',     label: '人工确认', icon: '👤', desc: '需人工操作的步骤', color: 'orange' },
-  { type: 'condition', label: '条件分支', icon: '◇',  desc: '根据条件决定分支', color: 'purple' },
+  { type: 'auto',          label: 'API调用',  icon: '⚡', desc: '自动执行API请求', color: 'blue' },
+  { type: 'human',         label: '人工确认', icon: '👤', desc: '需人工操作的步骤', color: 'orange' },
+  { type: 'condition',     label: '条件分支', icon: '◇',  desc: '根据条件决定分支', color: 'purple' },
+  { type: 'feishu_notify', label: '飞书通知', icon: '🔔', desc: '发送飞书消息通知',  color: 'green' },
 ]
 
 const DEFAULT_LABELS: Record<string, string> = {
-  auto: '新API调用', human: '人工确认', condition: '条件判断',
+  auto: '新API调用', human: '人工确认', condition: '条件判断', feishu_notify: '飞书通知',
 }
 
 // ── Inner editor (uses useReactFlow hook which requires ReactFlowProvider) ──
@@ -565,6 +631,8 @@ function FlowEditorInner() {
                     ? 'bg-blue-50 border-blue-200 hover:border-blue-400 hover:bg-blue-100'
                     : n.color === 'orange'
                     ? 'bg-orange-50 border-orange-200 hover:border-orange-400 hover:bg-orange-100'
+                    : n.color === 'green'
+                    ? 'bg-green-50 border-green-200 hover:border-green-400 hover:bg-green-100'
                     : 'bg-purple-50 border-purple-200 hover:border-purple-400 hover:bg-purple-100'
                 }`}
               >
@@ -573,7 +641,7 @@ function FlowEditorInner() {
                   <div>
                     <div
                       className={`text-sm font-semibold ${
-                        n.color === 'blue' ? 'text-blue-700' : n.color === 'orange' ? 'text-orange-700' : 'text-purple-700'
+                        n.color === 'blue' ? 'text-blue-700' : n.color === 'orange' ? 'text-orange-700' : n.color === 'green' ? 'text-green-700' : 'text-purple-700'
                       }`}
                     >
                       {n.label}

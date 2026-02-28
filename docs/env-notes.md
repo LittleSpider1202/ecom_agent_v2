@@ -178,6 +178,18 @@
 - bot告警：type="alert"，target_user="manager"
 - condition节点同时有 should_fail 不处理（skip优先）
 
+## FlowEditor 节点点击行为
+
+- `onNodeClick` → 仅设置 `selectedNode`，不打开配置面板
+- `onNodeDoubleClick` → 设置 `selectedNode` + `setConfigOpen(true)`
+- Playwright 触发双击：`page.evaluate(() => el.dispatchEvent(new MouseEvent('dblclick', { bubbles: true })))`
+- 节点选择器：`[data-testid="node-{type}"]`（type: auto/human/condition/feishu_notify）
+
+## FlowEditor 节点类型扩展
+
+- 添加新节点类型需要：1) 新建 `XxxNode` 组件，2) 加入 `nodeTypes` 映射，3) 加入 `PANEL_NODES`，4) 加入 `DEFAULT_LABELS`，5) 在 ConfigPanel 中加 `{data.nodeType === 'xxx' && (...)}`
+- 节点面板颜色 `color: 'green'` 需要同时更新面板卡片的 className 条件（blue/orange/green/purple）
+
 ## global.setup.ts 预热登录
 
 - 旧版用 UI form 登录（`page.fill`），在新 session 中偶发 timeout（proxy 未bypass）
