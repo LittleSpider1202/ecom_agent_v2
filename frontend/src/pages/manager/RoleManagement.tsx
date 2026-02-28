@@ -118,12 +118,11 @@ function PermMatrix({
         <tbody>
           {MODULES.map(mod => {
             const actions = ACTIONS[mod.key]
-            const allActionKeys = ['view', 'create', 'contribute', 'use', 'edit', 'manage', 'delete']
             return (
               <tr key={mod.key} data-testid={`perm-row-${mod.key}`} className="hover:bg-gray-50">
                 <td className="px-3 py-2 border border-gray-200 font-medium text-gray-700">{mod.label}</td>
                 {[0, 1, 2, 3].map(col => {
-                  const colActions = actions.filter((a, i) => {
+                  const colActions = actions.filter((a) => {
                     if (col === 0) return a.key === 'view'
                     if (col === 1) return ['create', 'contribute', 'use'].includes(a.key)
                     if (col === 2) return ['edit', 'manage'].includes(a.key)
