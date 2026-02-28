@@ -25,7 +25,7 @@ export default function PrivateRoute({ children, requiredRole }: Props) {
 
   if (requiredRole && requiredRole === 'manager' && user.role === 'executor') {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center" data-testid="access-denied">
         <div className="text-center">
           <div className="text-5xl mb-4">🚫</div>
           <h2 className="text-xl font-semibold text-gray-700">权限不足</h2>

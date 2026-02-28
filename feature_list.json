@@ -2162,7 +2162,7 @@
       "Step 3: 验证显示权限不足错误页面或重定向到执行者首页",
       "Step 4: 验证管理工作台菜单项不在导航中"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 166,
@@ -2174,7 +2174,7 @@
       "Step 3: 导航到管理工作台各页面，验证可访问",
       "Step 4: 验证没有权限拦截错误"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 167,
@@ -2186,7 +2186,7 @@
       "Step 3: 点击每个菜单项，验证导航正确",
       "Step 4: 验证当前页面菜单项高亮"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 168,
@@ -2198,7 +2198,7 @@
       "Step 3: 点击每个菜单项，验证导航正确",
       "Step 4: 验证当前页面菜单项高亮"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 169,
@@ -2211,7 +2211,7 @@
       "Step 4: 点击通知图标",
       "Step 5: 验证显示通知列表"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 170,
