@@ -27,6 +27,8 @@ import TaskMonitor from './pages/manager/TaskMonitor'
 import ManagerTaskDetail from './pages/manager/ManagerTaskDetail'
 import AnalyticsDashboard from './pages/manager/AnalyticsDashboard'
 import SuggestionList from './pages/manager/SuggestionList'
+import IntegrationConfig from './pages/manager/IntegrationConfig'
+import SystemLogs from './pages/manager/SystemLogs'
 
 function Placeholder({ title }: { title: string }) {
   return (
@@ -168,11 +170,11 @@ export default function App() {
           />
           <Route
             path="/manage/integrations"
-            element={<ProtectedLayout requiredRole="manager"><Placeholder title="MW-14 平台集成配置" /></ProtectedLayout>}
+            element={<ProtectedLayout requiredRole="manager"><IntegrationConfig /></ProtectedLayout>}
           />
           <Route
             path="/manage/logs"
-            element={<ProtectedLayout requiredRole="manager"><Placeholder title="MW-15 系统日志" /></ProtectedLayout>}
+            element={<ProtectedLayout requiredRole="manager"><SystemLogs /></ProtectedLayout>}
           />
 
           <Route path="*" element={<Navigate to="/executor/dashboard" replace />} />

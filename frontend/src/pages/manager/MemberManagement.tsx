@@ -199,8 +199,18 @@ export default function MemberManagement() {
               {members.map(m => (
                 <tr key={m.id} data-testid={`member-row-${m.id}`} className="border-b hover:bg-gray-50">
                   <td className="px-4 py-3 font-medium text-gray-800">
-                    {m.display_name}
-                    {m.feishu_id && <span className="text-xs text-gray-400 ml-1">({m.feishu_id})</span>}
+                    <div className="flex items-center gap-2">
+                      <div
+                        data-testid={`member-avatar-${m.id}`}
+                        className="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-sm font-semibold flex-shrink-0"
+                      >
+                        {(m.display_name || m.username).charAt(0).toUpperCase()}
+                      </div>
+                      <span>
+                        {m.display_name}
+                        {m.feishu_id && <span className="text-xs text-gray-400 ml-1">({m.feishu_id})</span>}
+                      </span>
+                    </div>
                   </td>
                   <td className="px-4 py-3 text-gray-600">{m.username}</td>
                   <td className="px-4 py-3">

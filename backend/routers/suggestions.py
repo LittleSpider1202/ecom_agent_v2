@@ -17,6 +17,8 @@ def suggestion_to_dict(s: AISuggestion) -> dict:
         "category": s.category,
         "status": s.status,
         "created_at": s.created_at.isoformat() if s.created_at else None,
+        "decided_at": s.decided_at.isoformat() if getattr(s, "decided_at", None) else None,
+        "decided_by": getattr(s, "decided_by", None),
     }
 
 
@@ -101,6 +103,8 @@ async def accept_suggestion(
         raise HTTPException(status_code=400, detail="该建议已处理")
 
     s.status = "accepted"
+    s.decided_at = datetime.now(timezone.utc)
+    s.decided_by = current_user.id
 
     # Trigger a task instance for this suggestion
     # Try to find a matching flow, otherwise create a generic task
@@ -139,6 +143,8 @@ async def ignore_suggestion(
         raise HTTPException(status_code=400, detail="该建议已处理")
 
     s.status = "ignored"
+    s.decided_at = datetime.now(timezone.utc)
+    s.decided_by = current_user.id
     db.commit()
 
     return {"message": "建议已忽略", "suggestion_id": suggestion_id}

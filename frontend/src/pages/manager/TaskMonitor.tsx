@@ -205,9 +205,10 @@ export default function TaskMonitor() {
               const s = STATUS_LABEL[task.status] ?? { text: task.status, cls: '' }
               return (
                 <div key={task.id} className="flex items-center gap-3" data-testid={`gantt-row-${task.id}`}>
-                  <div className="w-40 text-xs text-gray-600 truncate flex-shrink-0">{task.title}</div>
+                  <div className="w-40 text-xs text-gray-600 truncate flex-shrink-0" data-testid={`gantt-task-label-${task.id}`}>{task.title}</div>
                   <div className="flex-1 relative h-6 bg-gray-100 rounded">
                     <div
+                      data-testid={`gantt-task-bar-${task.id}`}
                       className={`absolute h-full rounded text-xs flex items-center px-1 text-white overflow-hidden ${
                         task.status === 'completed' ? 'bg-green-500' :
                         task.status === 'running' ? 'bg-blue-500' :

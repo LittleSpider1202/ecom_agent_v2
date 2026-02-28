@@ -1724,7 +1724,7 @@
       "Step 3: 验证显示所有已处理的建议历史",
       "Step 4: 验证每条记录显示决策类型、决策时间和操作人"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 132,
@@ -1735,7 +1735,7 @@
       "Step 2: 验证页面显示各集成平台（飞书、ERP、电商平台）",
       "Step 3: 验证每个平台显示连接状态（已连接/未连接）"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 133,
@@ -1749,7 +1749,7 @@
       "Step 5: 点击'测试连接'",
       "Step 6: 验证显示连接成功或失败的反馈"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 134,
@@ -1763,7 +1763,7 @@
       "Step 5: 点击保存",
       "Step 6: 验证配置保存成功"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 135,
@@ -1777,7 +1777,7 @@
       "Step 5: 保存配置",
       "Step 6: 验证配置保存成功"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 136,
@@ -1789,7 +1789,7 @@
       "Step 3: 验证显示操作记录列表",
       "Step 4: 验证每条记录显示操作用户、操作类型、时间戳"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 137,
@@ -1801,7 +1801,7 @@
       "Step 3: 验证列表只显示该用户的操作记录",
       "Step 4: 清除筛选，验证恢复全部显示"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 138,
@@ -1812,7 +1812,7 @@
       "Step 2: 在操作类型筛选器选择'任务强制终止'",
       "Step 3: 验证列表只显示该类型操作记录"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 139,
@@ -1824,7 +1824,7 @@
       "Step 3: 应用筛选",
       "Step 4: 验证只显示该时间段内的日志"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 140,
@@ -1837,7 +1837,7 @@
       "Step 4: 验证文件下载开始",
       "Step 5: 验证下载的文件为 .csv 格式"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 141,
@@ -1850,7 +1850,7 @@
       "Step 4: 验证有展开/折叠按钮（三角形或箭头）",
       "Step 5: 验证节点有图标区分类型"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 142,
@@ -1864,7 +1864,7 @@
       "Step 5: 验证复选框大小适中，易于点击",
       "Step 6: 验证行高合适，内容不拥挤"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 143,
@@ -1877,7 +1877,7 @@
       "Step 4: 验证角色用徽章样式显示",
       "Step 5: 验证部门文字清晰"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 144,
@@ -1890,7 +1890,7 @@
       "Step 4: 验证进行中任务条和停滞任务条颜色不同",
       "Step 5: 验证任务条上有任务名称标签"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 145,
@@ -1904,7 +1904,7 @@
       "Step 5: 验证失败节点为红色",
       "Step 6: 验证待执行节点为灰色"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 146,

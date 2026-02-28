@@ -20,6 +20,8 @@ from routers import roles as roles_router
 from routers import members as members_router
 from routers import analytics as analytics_router
 from routers import suggestions as suggestions_router
+from routers import integrations as integrations_router
+from routers import logs as logs_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -45,6 +47,12 @@ with engine.connect() as _conn:
     ))
     _conn.execute(text(
         "ALTER TABLE task_dag_nodes ADD COLUMN IF NOT EXISTS finished_at TIMESTAMP WITH TIME ZONE"
+    ))
+    _conn.execute(text(
+        "ALTER TABLE ai_suggestions ADD COLUMN IF NOT EXISTS decided_at TIMESTAMP WITH TIME ZONE"
+    ))
+    _conn.execute(text(
+        "ALTER TABLE ai_suggestions ADD COLUMN IF NOT EXISTS decided_by INTEGER REFERENCES users(id)"
     ))
     _conn.commit()
 
@@ -98,6 +106,8 @@ app.include_router(roles_router.router)
 app.include_router(members_router.router)
 app.include_router(analytics_router.router)
 app.include_router(suggestions_router.router)
+app.include_router(integrations_router.router)
+app.include_router(logs_router.router)
 
 
 @app.on_event("startup")

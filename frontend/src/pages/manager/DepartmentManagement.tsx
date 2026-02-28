@@ -63,6 +63,7 @@ function DeptTreeNode({
         ) : (
           <span className="w-5 h-5 inline-block" />
         )}
+        <span className="text-base" data-testid={`dept-icon-${node.id}`}>{node.parent_id ? '📂' : '🏢'}</span>
         <span className="text-gray-800 font-medium" data-testid={`dept-name-${node.id}`}>
           {node.name}
         </span>

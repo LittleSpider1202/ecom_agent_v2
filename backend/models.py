@@ -111,6 +111,8 @@ class AISuggestion(Base):
     # pending | accepted | ignored
     status = Column(String(20), nullable=False, default="pending")
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+    decided_at = Column(DateTime(timezone=True), nullable=True)
+    decided_by = Column(Integer, ForeignKey("users.id"), nullable=True)
 
 
 class KnowledgeEntry(Base):

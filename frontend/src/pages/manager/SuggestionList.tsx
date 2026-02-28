@@ -9,6 +9,8 @@ interface Suggestion {
   category: string
   status: string
   created_at: string | null
+  decided_at: string | null
+  decided_by: number | null
 }
 
 const CATEGORY_COLOR: Record<string, string> = {
@@ -95,7 +97,7 @@ export default function SuggestionList() {
 
       {/* Tabs */}
       <div className="flex gap-1 mb-6 border-b border-gray-200">
-        {([['pending', '活跃建议'], ['history', '历史记录']] as [TabKey, string][]).map(([key, label]) => (
+        {([['pending', '活跃建议'], ['history', '决策记录']] as [TabKey, string][]).map(([key, label]) => (
           <button
             key={key}
             data-testid={`tab-${key}`}
@@ -150,8 +152,17 @@ export default function SuggestionList() {
                     {s.title}
                   </h3>
                   <p className="text-sm text-gray-500 line-clamp-2" data-testid={`suggestion-summary-${s.id}`}>{s.summary}</p>
-                  <div className="mt-2 text-xs text-gray-400">
-                    生成时间：{s.created_at ? new Date(s.created_at).toLocaleString('zh-CN') : '-'}
+                  <div className="mt-2 text-xs text-gray-400 space-y-0.5">
+                    <div>生成时间：{s.created_at ? new Date(s.created_at).toLocaleString('zh-CN') : '-'}</div>
+                    {s.decided_at && (
+                      <div data-testid={`decided-at-${s.id}`}>
+                        决策时间：{new Date(s.decided_at).toLocaleString('zh-CN')}
+                        　决策类型：
+                        <span className={s.status === 'accepted' ? 'text-green-600' : 'text-gray-500'}>
+                          {s.status === 'accepted' ? '已采纳' : '已忽略'}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
 
