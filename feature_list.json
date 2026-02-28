@@ -2822,7 +2822,7 @@
       "Step 10: 点击催办按钮，发送提醒",
       "Step 11: 验证催办记录出现在系统日志中"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 211,
@@ -2838,7 +2838,7 @@
       "Step 7: 验证页面背景颜色与整体风格一致",
       "Step 8: 验证AI建议区域有视觉边框或背景色区分"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 212,
@@ -2854,7 +2854,7 @@
       "Step 7: 验证工具栏按钮图标语义清晰（保存图标、触发图标）",
       "Step 8: 验证节点面板分类标题清晰（自动节点/人工节点）"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 213,
@@ -2869,7 +2869,7 @@
       "Step 6: 验证整体页面使用三列或两列布局，信息密度合理",
       "Step 7: 验证无文字溢出或截断"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 214,
@@ -2885,7 +2885,7 @@
       "Step 7: 完成第二个任务",
       "Step 8: 验证看板待办区域清空（或显示空状态）"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 215,
