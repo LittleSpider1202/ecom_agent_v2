@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState, useRef, useCallback } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
 import api from '../hooks/useApi'
@@ -13,6 +13,14 @@ interface Notification {
   title: string
   content: string
   read: boolean
+}
+
+interface SearchResult {
+  type: string
+  id: number
+  title: string
+  subtitle: string
+  url: string
 }
 
 const EXECUTOR_NAV = [
@@ -42,6 +50,10 @@ export default function AppLayout({ children }: Props) {
 
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [showNotifPanel, setShowNotifPanel] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([])
+  const [showSearch, setShowSearch] = useState(false)
+  const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const isManager = user && user.role !== 'executor'
   const navItems = isManager ? MANAGER_NAV : EXECUTOR_NAV
@@ -51,6 +63,28 @@ export default function AppLayout({ children }: Props) {
   const sidebarItems = isManager && isManagerPath ? MANAGER_NAV : EXECUTOR_NAV
 
   const unreadCount = notifications.filter(n => !n.read).length
+
+  const handleSearchInput = useCallback((q: string) => {
+    setSearchQuery(q)
+    if (searchTimer.current) clearTimeout(searchTimer.current)
+    if (!q.trim()) { setSearchResults([]); setShowSearch(false); return }
+    searchTimer.current = setTimeout(() => {
+      api.get(`/api/search?q=${encodeURIComponent(q)}`)
+        .then(r => {
+          const data = r.data as { results: SearchResult[] }
+          setSearchResults(data.results ?? [])
+          setShowSearch(true)
+        })
+        .catch(() => { setSearchResults([]) })
+    }, 300)
+  }, [])
+
+  const handleSearchSelect = (url: string) => {
+    setSearchQuery('')
+    setSearchResults([])
+    setShowSearch(false)
+    navigate(url)
+  }
 
   useEffect(() => {
     if (!user) return
@@ -89,6 +123,43 @@ export default function AppLayout({ children }: Props) {
         </div>
         {user && (
           <div className="flex items-center gap-3">
+            {/* Global search */}
+            <div className="relative">
+              <input
+                data-testid="global-search-input"
+                type="text"
+                placeholder="搜索任务、流程、知识..."
+                value={searchQuery}
+                onChange={e => handleSearchInput(e.target.value)}
+                onFocus={() => searchQuery && setShowSearch(true)}
+                onBlur={() => setTimeout(() => setShowSearch(false), 200)}
+                className="w-48 text-xs border border-gray-200 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-400 bg-gray-50"
+              />
+              {showSearch && searchResults.length > 0 && (
+                <div
+                  data-testid="search-results-dropdown"
+                  className="absolute right-0 top-full mt-1 w-72 bg-white border border-gray-200 rounded-xl shadow-xl z-50"
+                >
+                  {searchResults.map((r, i) => (
+                    <button
+                      key={i}
+                      data-testid={`search-result-${r.type}-${r.id}`}
+                      onClick={() => handleSearchSelect(r.url)}
+                      className="w-full text-left px-4 py-2.5 hover:bg-gray-50 flex items-center gap-3 border-b border-gray-50 last:border-0"
+                    >
+                      <span className="text-xs px-1.5 py-0.5 rounded bg-blue-50 text-blue-600 font-medium flex-shrink-0">
+                        {r.type === 'task' ? '任务' : r.type === 'flow' ? '流程' : '知识'}
+                      </span>
+                      <div className="min-w-0">
+                        <p className="text-sm text-gray-800 truncate">{r.title}</p>
+                        {r.subtitle && <p className="text-xs text-gray-400 truncate">{r.subtitle}</p>}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
             {/* Notification bell */}
             <div className="relative">
               <button

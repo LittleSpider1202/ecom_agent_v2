@@ -2,10 +2,12 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from database import get_db
-from models import Flow, FlowVersion, TaskInstance
+from models import Flow, FlowVersion, TaskInstance, TaskStep, TaskDagNode
 from auth import require_current_user
 from pydantic import BaseModel
 from typing import Optional, Any
+from datetime import datetime, timezone
+from routers.bot import add_bot_notification
 
 router = APIRouter(prefix="/api/flows", tags=["flows"])
 
@@ -207,19 +209,128 @@ def toggle_flow(flow_id: int, db: Session = Depends(get_db), user=Depends(requir
     return {"id": flow.id, "status": flow.status, "is_enabled": flow.status != "inactive"}
 
 
+class TriggerFlowRequest(BaseModel):
+    input: dict = {}
+
+
 @router.post("/{flow_id}/trigger")
-def trigger_flow(flow_id: int, db: Session = Depends(get_db), user=Depends(require_current_user)):
+def trigger_flow(
+    flow_id: int,
+    body: TriggerFlowRequest = None,
+    db: Session = Depends(get_db),
+    user=Depends(require_current_user),
+):
     flow = db.query(Flow).filter(Flow.id == flow_id).first()
     if not flow:
         raise HTTPException(status_code=404, detail="Flow not found")
+
+    input_data = (body.input if body else {}) or {}
+    nodes = flow.nodes or []
+    edges = flow.edges or []
+
+    def get_node_type(n: dict) -> str:
+        return n.get("type") or n.get("data", {}).get("nodeType", "auto")
+
+    has_human = any(get_node_type(n) == "human" for n in nodes)
+
     task = TaskInstance(
         title=f"[手动触发] {flow.name}",
         flow_name=flow.name,
-        status="pending",
-        has_human_step=False,
+        status="running",
+        has_human_step=has_human,
         assigned_to=user.id,
     )
     db.add(task)
+    db.flush()  # get task.id
+
+    # Build a map of node_id → node for condition resolution
+    node_map = {n.get("id", ""): n for n in nodes}
+
+    # Evaluate condition nodes to decide which branch nodes are active
+    skipped_ids: set = set()
+    for n in nodes:
+        if get_node_type(n) != "condition":
+            continue
+        condition_expr = n.get("data", {}).get("condition", "") or "True"
+        try:
+            # Safe substitution: replace input.key with value
+            expr = condition_expr
+            for k, v in input_data.items():
+                expr = expr.replace(f"input.{k}", str(v))
+            result = bool(eval(expr, {"__builtins__": {}}, {}))  # noqa: S307
+        except Exception:
+            result = True
+
+        nid = n.get("id", "")
+        true_targets = [e["target"] for e in edges if e.get("source") == nid and e.get("sourceHandle") == "true"]
+        false_targets = [e["target"] for e in edges if e.get("source") == nid and e.get("sourceHandle") == "false"]
+        # Mark inactive branch as skipped
+        skip_targets = false_targets if result else true_targets
+        skipped_ids.update(skip_targets)
+
+    # Create TaskDagNode for each node
+    for n in nodes:
+        nid = n.get("id", "")
+        node_type = get_node_type(n)
+        label = n.get("data", {}).get("label", "节点")
+        pos = n.get("position", {})
+        src_keys = [e["source"] for e in edges if e.get("target") == nid]
+
+        if nid in skipped_ids:
+            status = "skipped"
+        elif node_type == "human":
+            status = "pending"
+        else:
+            status = "completed"
+
+        dag_node = TaskDagNode(
+            task_id=task.id,
+            node_key=nid,
+            label=label,
+            node_type=node_type,
+            status=status,
+            pos_x=int(pos.get("x", 0)),
+            pos_y=int(pos.get("y", 0)),
+            source_keys=src_keys,
+            started_at=datetime.now(timezone.utc) if status == "completed" else None,
+            finished_at=datetime.now(timezone.utc) if status == "completed" else None,
+        )
+        db.add(dag_node)
+
+        # Create TaskStep for human nodes
+        if node_type == "human" and nid not in skipped_ids:
+            step_name = label or "人工确认"
+            ai_suggestion = n.get("data", {}).get("config", {}).get("ai_suggestion", "")
+            db.add(TaskStep(
+                task_id=task.id,
+                step_name=step_name,
+                instructions=n.get("data", {}).get("config", {}).get("instructions", ""),
+                ai_suggestion=ai_suggestion,
+                status="pending",
+            ))
+
+    if not has_human:
+        task.status = "completed"
+        task.completed_at = datetime.now(timezone.utc)
+
     db.commit()
     db.refresh(task)
+
+    # Bot notifications
+    add_bot_notification(
+        type="task_start",
+        title="任务启动通知",
+        content=f"流程「{flow.name}」已手动触发，任务已创建",
+        task_id=task.id,
+        target_user="manager",
+    )
+    if has_human:
+        add_bot_notification(
+            type="human_step",
+            title="人工确认请求",
+            content=f"任务「{flow.name}」到达人工节点，请相关负责人确认",
+            task_id=task.id,
+            target_user="executor",
+        )
+
     return {"message": "触发成功", "task_id": task.id}
