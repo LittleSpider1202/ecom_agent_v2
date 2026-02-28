@@ -23,6 +23,12 @@ const TYPE_COLORS: Record<string, string> = {
   script: 'bg-green-100 text-green-700',
 }
 
+const TYPE_ICONS: Record<string, string> = {
+  api: '🔗',
+  webhook: '⚡',
+  script: '🐍',
+}
+
 export default function ToolList() {
   const { token } = useAuth()
   const navigate = useNavigate()
@@ -79,13 +85,20 @@ export default function ToolList() {
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="font-semibold text-gray-800 text-lg">{tool.name}</span>
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${TYPE_COLORS[tool.tool_type] || 'bg-gray-100 text-gray-600'}`}>
-                      {TYPE_LABELS[tool.tool_type] || tool.tool_type}
+                    <span data-testid={`tool-icon-${tool.id}`} className="text-2xl flex-shrink-0">
+                      {TYPE_ICONS[tool.tool_type] || '🔧'}
                     </span>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-semibold text-gray-800 text-lg">{tool.name}</span>
+                        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${TYPE_COLORS[tool.tool_type] || 'bg-gray-100 text-gray-600'}`}>
+                          {TYPE_LABELS[tool.tool_type] || tool.tool_type}
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-500 mt-1">{tool.description}</p>
+                    </div>
                   </div>
-                  <p className="text-sm text-gray-500 mb-3">{tool.description}</p>
-                  <div className="text-xs text-gray-400">
+                  <div className="text-xs text-gray-400 ml-11">
                     累计调用：{tool.call_count} 次
                   </div>
                 </div>

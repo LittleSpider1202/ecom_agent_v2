@@ -22,6 +22,12 @@ const TYPE_COLORS: Record<string, string> = {
   script: 'bg-green-100 text-green-700',
 }
 
+const TYPE_ICONS: Record<string, string> = {
+  api: '🔗',
+  webhook: '⚡',
+  script: '🐍',
+}
+
 export default function ToolManagement() {
   const [tools, setTools] = useState<Tool[]>([])
   const [loading, setLoading] = useState(true)
@@ -78,15 +84,20 @@ export default function ToolManagement() {
             </thead>
             <tbody className="divide-y divide-gray-100">
               {tools.map(tool => (
-                <tr key={tool.id} data-testid={`manage-tool-${tool.id}`} className="hover:bg-gray-50 transition-colors">
+                <tr key={tool.id} data-testid={`manage-tool-${tool.id}`} className={`hover:bg-gray-50 transition-colors ${!tool.enabled ? 'opacity-50' : ''}`}>
                   <td className="px-5 py-4">
                     <div className="font-medium text-gray-800">{tool.name}</div>
                     <div className="text-xs text-gray-400 mt-0.5 max-w-xs truncate">{tool.description}</div>
                   </td>
                   <td className="px-5 py-4">
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${TYPE_COLORS[tool.tool_type] || 'bg-gray-100 text-gray-600'}`}>
-                      {TYPE_LABELS[tool.tool_type] || tool.tool_type}
-                    </span>
+                    <div className="flex items-center gap-1.5">
+                      <span data-testid={`tool-type-icon-${tool.id}`} className="text-base">
+                        {TYPE_ICONS[tool.tool_type] || '🔧'}
+                      </span>
+                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${TYPE_COLORS[tool.tool_type] || 'bg-gray-100 text-gray-600'}`}>
+                        {TYPE_LABELS[tool.tool_type] || tool.tool_type}
+                      </span>
+                    </div>
                   </td>
                   <td className="px-5 py-4">
                     <span data-testid={`call-count-${tool.id}`} className="text-sm text-gray-700 font-mono">

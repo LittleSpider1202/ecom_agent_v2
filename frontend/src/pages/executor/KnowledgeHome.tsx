@@ -27,6 +27,7 @@ export default function KnowledgeHome() {
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(true)
   const [question, setQuestion] = useState('')
+  const [askedQuestion, setAskedQuestion] = useState('')
   const [asking, setAsking] = useState(false)
   const [askResult, setAskResult] = useState<AskResult | null>(null)
 
@@ -65,6 +66,7 @@ export default function KnowledgeHome() {
   const handleAsk = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!question.trim()) return
+    setAskedQuestion(question.trim())
     setAsking(true)
     setAskResult(null)
     try {
@@ -86,48 +88,86 @@ export default function KnowledgeHome() {
     <div className="p-6 max-w-5xl mx-auto">
       <h1 className="text-2xl font-bold text-gray-800 mb-6">知识库</h1>
 
-      {/* AI Q&A */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100 p-5 mb-6">
-        <h2 className="text-lg font-semibold text-blue-800 mb-3">AI 智能问答</h2>
-        <form onSubmit={handleAsk} className="flex gap-2">
-          <input
-            data-testid="qa-input"
-            type="text"
-            value={question}
-            onChange={e => setQuestion(e.target.value)}
-            placeholder="请输入您的问题，如：退货处理的SOP是什么？"
-            className="flex-1 px-4 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
-          />
-          <button
-            type="submit"
-            disabled={asking || !question.trim()}
-            className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors font-medium"
-          >
-            {asking ? '查询中...' : '发送'}
-          </button>
-        </form>
+      {/* AI Q&A — chat bubble layout */}
+      <div className="bg-white rounded-xl border border-blue-100 overflow-hidden mb-6">
+        <div className="px-5 py-3 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100">
+          <h2 className="text-lg font-semibold text-blue-800">AI 智能问答</h2>
+        </div>
 
-        {askResult && (
-          <div data-testid="qa-result" className="mt-4">
-            <p className="text-gray-700 whitespace-pre-wrap mb-3">{askResult.answer}</p>
-            {askResult.references.length > 0 && (
-              <div>
-                <p className="text-sm font-medium text-blue-700 mb-2">引用词条：</p>
-                <div className="flex flex-wrap gap-2">
-                  {askResult.references.map(ref => (
-                    <button
-                      key={ref.id}
-                      onClick={() => navigate(`/executor/knowledge/${ref.id}`)}
-                      className="px-3 py-1 text-sm bg-white border border-blue-200 text-blue-600 rounded-full hover:bg-blue-50 transition-colors"
-                    >
-                      {ref.title}
-                    </button>
-                  ))}
+        {/* Chat messages area */}
+        <div className="px-5 py-4 min-h-[80px]">
+          {/* User question bubble — right aligned, blue */}
+          {askedQuestion && (
+            <div className="flex justify-end mb-3">
+              <div
+                data-testid="qa-question-bubble"
+                className="max-w-xs px-4 py-2 bg-blue-600 text-white rounded-2xl rounded-tr-sm text-sm"
+              >
+                {askedQuestion}
+              </div>
+            </div>
+          )}
+
+          {/* Loading indicator */}
+          {asking && (
+            <div className="flex justify-start mb-3">
+              <div className="px-4 py-2 bg-gray-100 text-gray-500 rounded-2xl rounded-tl-sm text-sm italic">
+                AI 正在思考...
+              </div>
+            </div>
+          )}
+
+          {/* AI answer bubble — left aligned, gray */}
+          {askResult && (
+            <div className="flex justify-start">
+              <div
+                data-testid="qa-answer-bubble"
+                className="max-w-lg px-4 py-3 bg-gray-100 text-gray-800 rounded-2xl rounded-tl-sm text-sm"
+              >
+                <div data-testid="qa-result">
+                  <p className="whitespace-pre-wrap mb-2">{askResult.answer}</p>
+                  {askResult.references.length > 0 && (
+                    <div>
+                      <p className="text-xs font-medium text-blue-700 mb-1">引用词条：</p>
+                      <div className="flex flex-wrap gap-1">
+                        {askResult.references.map(ref => (
+                          <button
+                            key={ref.id}
+                            onClick={() => navigate(`/executor/knowledge/${ref.id}`)}
+                            className="px-2 py-0.5 text-xs bg-white border border-blue-200 text-blue-600 rounded-full hover:bg-blue-50 transition-colors"
+                          >
+                            {ref.title}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
-            )}
-          </div>
-        )}
+            </div>
+          )}
+        </div>
+
+        {/* Input at bottom */}
+        <div data-testid="qa-input-bar" className="px-5 py-3 border-t border-gray-100 bg-gray-50">
+          <form onSubmit={handleAsk} className="flex gap-2">
+            <input
+              data-testid="qa-input"
+              type="text"
+              value={question}
+              onChange={e => setQuestion(e.target.value)}
+              placeholder="请输入您的问题，如：退货处理的SOP是什么？"
+              className="flex-1 px-4 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white text-sm"
+            />
+            <button
+              type="submit"
+              disabled={asking || !question.trim()}
+              className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors font-medium text-sm"
+            >
+              {asking ? '查询中...' : '发送'}
+            </button>
+          </form>
+        </div>
       </div>
 
       {/* Category Browse */}

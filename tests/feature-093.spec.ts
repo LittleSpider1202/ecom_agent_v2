@@ -37,35 +37,69 @@ test('#93 EW-06 知识库首页：AI问答输入框和对话气泡布局清晰',
   await expect(page.locator('[data-testid="qa-input"]')).toBeVisible({ timeout: 10000 })
 
   // Submit a question
-  await page.locator('[data-testid="qa-input"]').fill('什么是生意参谋？')
-  await page.getByRole('button', { name: '发送' }).click()
+  await page.locator('[data-testid="qa-input"]').fill('退货处理的SOP是什么？')
+  await Promise.all([
+    page.waitForResponse(r => r.url().includes('/api/knowledge/ask')),
+    page.getByRole('button', { name: '发送' }).click(),
+  ])
 
   // Wait for answer bubble
-  await page.locator('[data-testid="qa-result"]').waitFor({ timeout: 10000 })
-  await expect(page.locator('[data-testid="qa-result"]')).toBeVisible()
-
-  // Input and result are both visible on screen
-  const inputBox = page.locator('[data-testid="qa-input"]')
-  const resultBox = page.locator('[data-testid="qa-result"]')
-  await expect(inputBox).toBeVisible()
-  await expect(resultBox).toBeVisible()
+  await page.locator('[data-testid="qa-answer-bubble"]').waitFor({ timeout: 10000 })
 
   await page.screenshot({ path: 'verification/feature-093-qa-layout.png' })
+
+  // Question bubble should be visible (blue)
+  const questionBubble = page.locator('[data-testid="qa-question-bubble"]')
+  await expect(questionBubble).toBeVisible()
+  const qClass = await questionBubble.getAttribute('class')
+  expect(qClass).toContain('bg-blue-600')
+
+  // Answer bubble should be visible (gray — different from question)
+  const answerBubble = page.locator('[data-testid="qa-answer-bubble"]')
+  await expect(answerBubble).toBeVisible()
+  const aClass = await answerBubble.getAttribute('class')
+  expect(aClass).toContain('bg-gray-100')
+
+  // qa-result (answer text + refs) is inside answer bubble
+  await expect(page.locator('[data-testid="qa-result"]')).toBeVisible()
+
+  // Input is inside bottom bar
+  await expect(page.locator('[data-testid="qa-input-bar"]')).toBeVisible()
 })
 
 test('#94 EW-07 知识词条详情：内容区域排版清晰（标题层级、段落间距、代码块高亮）', async ({ page }) => {
   await loginAsExecutor(page)
-  // Navigate to first entry
   await page.goto(`${BASE_URL}/executor/knowledge/1`)
   await expect(page.locator('[data-testid="entry-title"]')).toBeVisible({ timeout: 10000 })
   await expect(page.locator('[data-testid="entry-content"]')).toBeVisible()
 
-  // Content area exists
-  const content = page.locator('[data-testid="entry-content"]')
-  const text = await content.textContent()
-  expect(text && text.length > 10).toBeTruthy()
-
   await page.screenshot({ path: 'verification/feature-094-content-layout.png' })
+
+  // Page title has text-2xl (larger than body)
+  const titleClass = await page.locator('[data-testid="entry-title"]').getAttribute('class')
+  expect(titleClass).toContain('text-2xl')
+
+  // Content has h2 headings with bold styling (larger than body text)
+  const h2Els = page.locator('[data-testid="entry-content"] h2')
+  const h2Count = await h2Els.count()
+  expect(h2Count).toBeGreaterThan(0)
+  const h2Class = await h2Els.first().getAttribute('class')
+  expect(h2Class).toContain('font-bold')
+
+  // h3 sub-headings also present
+  const h3Count = await page.locator('[data-testid="entry-content"] h3').count()
+  expect(h3Count).toBeGreaterThan(0)
+
+  // Paragraph spacing (mb-3 in content HTML)
+  const html = await page.locator('[data-testid="entry-content"]').innerHTML()
+  expect(html).toContain('mb-3')
+
+  // If code exists, it should use font-mono
+  const codeCount = await page.locator('[data-testid="entry-content"] code, [data-testid="entry-content"] pre').count()
+  if (codeCount > 0) {
+    const codeClass = await page.locator('[data-testid="entry-content"] code, [data-testid="entry-content"] pre').first().getAttribute('class')
+    expect(codeClass).toContain('font-mono')
+  }
 })
 
 test('#95 EW-09 工具列表：工具卡片视觉包含图标、名称、描述和触发按钮', async ({ page }) => {
@@ -73,39 +107,59 @@ test('#95 EW-09 工具列表：工具卡片视觉包含图标、名称、描述�
   await page.goto(`${BASE_URL}/executor/tools`)
   await page.locator('[data-testid="tool-list"]').waitFor({ timeout: 10000 })
 
-  // Each tool card has name, description, and trigger button
-  const firstTool = page.locator('[data-testid^="tool-"]').first()
-  const text = await firstTool.textContent()
-  expect(text).toBeTruthy()
+  await page.screenshot({ path: 'verification/feature-095-tool-cards.png' })
+
+  // Tool icon visible
+  const firstIcon = page.locator('[data-testid^="tool-icon-"]').first()
+  await expect(firstIcon).toBeVisible()
+  const iconText = await firstIcon.textContent()
+  expect(iconText?.trim().length).toBeGreaterThan(0)
+
+  // Tool name is prominent (text-lg)
+  const toolCards = page.locator('[data-testid="tool-list"] [data-testid^="tool-"]')
+  const nameEl = toolCards.first().locator('.text-lg')
+  await expect(nameEl).toBeVisible()
 
   // Trigger button visible
   await expect(page.locator('[data-testid^="trigger-btn-"]').first()).toBeVisible()
 
-  // Type badge visible (icon-like label)
+  // Type badge visible
   const typeText = await page.locator('[data-testid="tool-list"]').textContent()
   expect(typeText).toMatch(/API|Webhook|脚本/)
-
-  await page.screenshot({ path: 'verification/feature-095-tool-cards.png' })
 })
 
 test('#97 MW-03 流程编辑器：自动节点和人工节点颜色区分', async ({ page }) => {
   await loginAsManager(page)
-  // Get a flow with mixed node types
-  const token = await page.evaluate(() => localStorage.getItem('auth_token'))
-  const res = await page.request.get(`${API_URL}/api/flows`, {
-    headers: { Authorization: `Bearer ${token}` },
-  })
-  const flows = await res.json()
-  const flowId = flows[0]?.id ?? 1
+  await page.goto(`${BASE_URL}/manage/flows/new`, { waitUntil: 'networkidle' })
+  await page.locator('[data-testid="flow-canvas"]').waitFor({ timeout: 12000 })
+  await page.waitForTimeout(500)
 
-  await page.goto(`${BASE_URL}/manage/flows/${flowId}`)
-  await page.waitForSelector('[data-testid="rf__wrapper"]', { timeout: 10000 })
+  // Add auto node via panel
+  await page.click('[data-testid="panel-node-auto"]')
+  await page.waitForTimeout(300)
 
-  // Take screenshot showing the node colors
+  // Add human node via panel
+  await page.click('[data-testid="panel-node-human"]')
+  await page.waitForTimeout(300)
+
   await page.screenshot({ path: 'verification/feature-097-node-colors.png' })
 
-  // Verify canvas exists and has nodes
-  await expect(page.locator('[data-testid="rf__wrapper"]')).toBeVisible()
+  // Auto node should have blue classes
+  const autoNode = page.locator('[data-testid="node-auto"]').first()
+  await expect(autoNode).toBeVisible()
+  const autoClass = await autoNode.getAttribute('class')
+  expect(autoClass).toContain('bg-blue-50')
+  expect(autoClass).toContain('border-blue-')
+
+  // Human node should have orange classes
+  const humanNode = page.locator('[data-testid="node-human"]').first()
+  await expect(humanNode).toBeVisible()
+  const humanClass = await humanNode.getAttribute('class')
+  expect(humanClass).toContain('bg-orange-50')
+  expect(humanClass).toContain('border-orange-')
+
+  // The two node types must be visually different
+  expect(autoClass).not.toEqual(humanClass)
 })
 
 test('#98 MW-05 工具库管理：工具列表视觉区分不同类型（图标标识）', async ({ page }) => {
@@ -113,12 +167,25 @@ test('#98 MW-05 工具库管理：工具列表视觉区分不同类型（图标�
   await page.goto(`${BASE_URL}/manage/tools`)
   await page.locator('[data-testid="tool-management-list"]').waitFor({ timeout: 10000 })
 
-  // Different tool types should have distinct badges
-  const listText = await page.locator('[data-testid="tool-management-list"]').textContent()
-  expect(listText).toMatch(/API调用|Webhook|Python脚本/)
-
-  // Screenshot shows visual differentiation
   await page.screenshot({ path: 'verification/feature-098-tool-types.png' })
+
+  // Type icons should be visible and differ across tool types
+  const allIcons = page.locator('[data-testid^="tool-type-icon-"]')
+  const iconCount = await allIcons.count()
+  expect(iconCount).toBeGreaterThan(0)
+
+  // Collect icon texts to verify multiple distinct icons
+  const iconTexts = new Set<string>()
+  for (let i = 0; i < Math.min(iconCount, 6); i++) {
+    const txt = await allIcons.nth(i).textContent()
+    if (txt?.trim()) iconTexts.add(txt.trim())
+  }
+  expect(iconTexts.size).toBeGreaterThan(1)
+
+  // Disabled tools should have opacity-50 class
+  const disabledRows = page.locator('[data-testid^="manage-tool-"].opacity-50')
+  const disabledCount = await disabledRows.count()
+  expect(disabledCount).toBeGreaterThan(0)
 })
 
 test('#99 MW-06 工具配置表单：表单分区清晰（基本信息、配置、参数、权限各一区）', async ({ page }) => {

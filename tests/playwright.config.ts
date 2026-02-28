@@ -12,6 +12,9 @@ export default defineConfig({
     baseURL: 'http://localhost:3000',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
+    launchOptions: {
+      args: ['--proxy-bypass-list=localhost,127.0.0.1'],
+    },
   },
   projects: [
     {

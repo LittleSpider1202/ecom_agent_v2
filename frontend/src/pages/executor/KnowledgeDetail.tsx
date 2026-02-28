@@ -15,7 +15,15 @@ interface KnowledgeEntryDetail {
 }
 
 function renderMarkdown(text: string): string {
-  return text
+  // Protect code blocks first
+  const codeBlocks: string[] = []
+  let processed = text.replace(/```[\w]*\n?([\s\S]*?)```/g, (_, code) => {
+    const idx = codeBlocks.length
+    codeBlocks.push(`<pre class="bg-gray-100 rounded-lg px-4 py-3 overflow-x-auto my-3 font-mono text-sm text-gray-800 whitespace-pre-wrap">${code.trim()}</pre>`)
+    return `@@CODE_BLOCK_${idx}@@`
+  })
+  return processed
+    .replace(/`([^`\n]+)`/g, '<code class="bg-gray-100 px-1.5 py-0.5 rounded font-mono text-sm text-gray-800">$1</code>')
     .replace(/^### (.+)$/gm, '<h3 class="text-base font-semibold text-gray-700 mt-4 mb-2">$1</h3>')
     .replace(/^## (.+)$/gm, '<h2 class="text-lg font-bold text-gray-800 mt-5 mb-2">$1</h2>')
     .replace(/^# (.+)$/gm, '<h1 class="text-xl font-bold text-gray-800 mt-2 mb-3">$1</h1>')
@@ -29,8 +37,9 @@ function renderMarkdown(text: string): string {
       const tag = isHeader ? 'th' : 'td'
       return `<tr>${cells.map(c => `<${tag} class="border border-gray-300 px-3 py-1 text-sm">${c.trim()}</${tag}>`).join('')}</tr>`
     })
-    .replace(/\n\n/g, '</p><p class="text-gray-700 mb-2">')
+    .replace(/\n\n/g, '</p><p class="text-gray-700 mb-3">')
     .replace(/\n/g, '<br/>')
+    .replace(/@@CODE_BLOCK_(\d+)@@/g, (_, idx) => codeBlocks[parseInt(idx)] || '')
 }
 
 export default function KnowledgeDetail() {
