@@ -81,11 +81,11 @@ def delete_department(dept_id: int, db: Session = Depends(get_db), current_user=
     if not dept:
         raise HTTPException(status_code=404, detail="Department not found")
     if dept.member_count > 0:
-        raise HTTPException(status_code=400, detail="Cannot delete department with members")
+        raise HTTPException(status_code=400, detail="该部门有成员，无法删除")
     # Check children
     children = db.query(Department).filter(Department.parent_id == dept_id).count()
     if children > 0:
-        raise HTTPException(status_code=400, detail="Cannot delete department with sub-departments")
+        raise HTTPException(status_code=400, detail="该部门下有子部门，无法删除")
     db.delete(dept)
     db.commit()
     return {"ok": True}

@@ -1397,7 +1397,7 @@
       "Step 4: 验证显示错误提示（'该部门有成员，无法删除'）",
       "Step 5: 验证部门仍然存在于组织树中"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 107,
@@ -1409,7 +1409,7 @@
       "Step 3: 验证选中一个角色显示权限矩阵",
       "Step 4: 验证权限矩阵包含功能模块和操作类型"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 108,
@@ -1423,7 +1423,7 @@
       "Step 5: 点击保存",
       "Step 6: 验证新角色出现在角色列表中"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 109,
@@ -1437,7 +1437,7 @@
       "Step 5: 验证保存成功消息",
       "Step 6: 重新加载页面，验证更改已持久化"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 110,
@@ -1452,7 +1452,7 @@
       "Step 6: 保存",
       "Step 7: 验证配置已保存"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 111,

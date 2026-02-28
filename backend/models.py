@@ -172,6 +172,18 @@ class ToolExecution(Base):
     finished_at = Column(DateTime(timezone=True), nullable=True)
 
 
+class Role(Base):
+    __tablename__ = "roles"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(100), nullable=False)
+    description = Column(Text, nullable=True)
+    # JSON: {"tasks": {"view": true, "edit": false, ...}, "flows": {...}, ...}
+    permissions = Column(JSON, nullable=True, default={})
+    # JSON array: ["data_confirm", "review_judge", ...]
+    node_types = Column(JSON, nullable=True, default=[])
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
 class Department(Base):
     __tablename__ = "departments"
     id = Column(Integer, primary_key=True, index=True)

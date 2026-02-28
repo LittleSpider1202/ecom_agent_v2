@@ -7,7 +7,7 @@ import time
 import uuid
 import logging
 from database import engine, get_db
-from models import Base, User, TaskInstance, TaskStep, TaskDagNode, AISuggestion, Flow, FlowVersion, KnowledgeEntry, KnowledgeSubmission, Tool, ToolExecution, Department
+from models import Base, User, TaskInstance, TaskStep, TaskDagNode, AISuggestion, Flow, FlowVersion, KnowledgeEntry, KnowledgeSubmission, Tool, ToolExecution, Department, Role
 from auth import get_password_hash
 from routers import auth as auth_router
 from routers import tasks as tasks_router
@@ -16,6 +16,7 @@ from routers import flows as flows_router
 from routers import knowledge as knowledge_router
 from routers import tools as tools_router
 from routers import departments as departments_router
+from routers import roles as roles_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -72,6 +73,7 @@ app.include_router(flows_router.router)
 app.include_router(knowledge_router.router)
 app.include_router(tools_router.router)
 app.include_router(departments_router.router)
+app.include_router(roles_router.router)
 
 
 @app.on_event("startup")
@@ -779,6 +781,38 @@ async def seed_data():
             ]
             for t in seed_tools:
                 db.add(t)
+            db.commit()
+
+        # Seed roles
+        if db.query(Role).count() == 0:
+            default_perms = {
+                "tasks": {"view": True, "create": True, "edit": True, "delete": False},
+                "flows": {"view": True, "create": False, "edit": False, "delete": False},
+                "tools": {"view": True, "use": True, "manage": False},
+                "knowledge": {"view": True, "contribute": True, "manage": False},
+            }
+            manager_perms = {
+                "tasks": {"view": True, "create": True, "edit": True, "delete": True},
+                "flows": {"view": True, "create": True, "edit": True, "delete": True},
+                "tools": {"view": True, "use": True, "manage": True},
+                "knowledge": {"view": True, "contribute": True, "manage": True},
+            }
+            readonly_perms = {
+                "tasks": {"view": True, "create": False, "edit": False, "delete": False},
+                "flows": {"view": True, "create": False, "edit": False, "delete": False},
+                "tools": {"view": True, "use": False, "manage": False},
+                "knowledge": {"view": True, "contribute": False, "manage": False},
+            }
+            seed_roles = [
+                Role(name="管理员", description="拥有所有权限", permissions=manager_perms,
+                     node_types=["data_confirm", "review_judge", "approval"]),
+                Role(name="执行者", description="执行日常任务", permissions=default_perms,
+                     node_types=["data_confirm"]),
+                Role(name="只读", description="仅查看权限", permissions=readonly_perms,
+                     node_types=[]),
+            ]
+            for r in seed_roles:
+                db.add(r)
             db.commit()
 
         # Seed departments
