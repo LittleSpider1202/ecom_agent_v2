@@ -228,3 +228,26 @@
 - 用宽泛的 `button[type="submit"]` 选择器会命中错误按钮，导致 click 超时
 - 结论：知识库搜索直接用 `keyboard.press('Enter')` 代替点击按钮
 
+## Bot 通知 API 路由
+
+- 路由前缀是 `/api/bot`（单数），**不是** `/api/bots`（复数）
+- `GET /api/bot/notifications` 返回 `{"notifications": [...], "total": ...}`（对象），不是平铺数组
+- 用 `(botsRes.notifications || [])` 取数组
+- 此接口需要认证；在测试中用 `page.evaluate` + `fetch` 在浏览器上下文调用（附带 localStorage token）
+
+## Login.tsx React anti-pattern 修复
+
+- 原代码在 render 期间直接调用 `navigate()` → React Warning: "Cannot update a component while rendering a different component"
+- Playwright 的 console error 监听会捕获 React Warning（console.error level）
+- 修复：把 `navigate` 调用移入 `useEffect(() => { if (user) navigate(...) }, [user, ...])`
+- 保留 `if (user) return null` 作为渲染优化（不调用 navigate，只避免渲染表单）
+
+## Playwright route interception + networkidle 时序
+
+- `page.route()` 拦截后，若用 `waitUntil: 'networkidle'`，Playwright 会等所有网络请求静止
+- 如果测试需要先看到「进行中」状态再等「成功」：
+  - 注册 route 返回「running」（前几次）+ 「success」（之后）
+  - 用 `waitUntil: 'load'` 代替 `networkidle`，避免等到轮询完成才继续
+  - 然后 `await expect(status).toHaveText('进行中')` 快速捕获第一状态
+  - 再等 `await expect(status).toHaveText('成功', { timeout: 10000 })`
+
