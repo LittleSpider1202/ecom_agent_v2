@@ -280,6 +280,8 @@ def trigger_flow(
             status = "skipped"
         elif node_type == "human":
             status = "pending"
+        elif n.get("data", {}).get("should_fail"):
+            status = "failed"
         else:
             status = "completed"
 
@@ -309,7 +311,15 @@ def trigger_flow(
                 status="pending",
             ))
 
-    if not has_human:
+    has_failed = any(
+        n.get("data", {}).get("should_fail")
+        for n in nodes
+        if get_node_type(n) != "human" and n.get("id", "") not in skipped_ids
+    )
+    if has_failed:
+        task.status = "failed"
+        task.completed_at = datetime.now(timezone.utc)
+    elif not has_human:
         task.status = "completed"
         task.completed_at = datetime.now(timezone.utc)
 
@@ -317,6 +327,14 @@ def trigger_flow(
     db.refresh(task)
 
     # Bot notifications
+    if has_failed:
+        add_bot_notification(
+            type="alert",
+            title="任务失败告警",
+            content=f"流程「{flow.name}」执行失败，请检查节点配置",
+            task_id=task.id,
+            target_user="manager",
+        )
     add_bot_notification(
         type="task_start",
         title="任务启动通知",

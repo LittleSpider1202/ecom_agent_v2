@@ -821,6 +821,18 @@ async def seed_data():
                 db.add(t)
             db.commit()
 
+        # Ensure "生意参谋数据采集" tool exists (upsert)
+        if not db.query(Tool).filter(Tool.name == "生意参谋数据采集").first():
+            db.add(Tool(
+                name="生意参谋数据采集",
+                description="采集生意参谋平台数据，包括行业大盘、竞品分析、关键词排名等电商运营核心指标。",
+                tool_type="api",
+                enabled=True,
+                allowed_roles="executor,manager",
+                call_count=0,
+            ))
+            db.commit()
+
         # Seed roles
         if db.query(Role).count() == 0:
             default_perms = {

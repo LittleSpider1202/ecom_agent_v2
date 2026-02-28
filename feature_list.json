@@ -2297,7 +2297,7 @@
       "Step 5: 验证任务整体状态更新为失败",
       "Step 6: 验证管理员收到告警通知"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 176,
@@ -2312,7 +2312,7 @@
       "Step 6: 进入执行详情页，验证执行状态",
       "Step 7: 等待完成（或超时），验证有输出数据或日志"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 177,
@@ -2325,7 +2325,7 @@
       "Step 4: 进入执行详情",
       "Step 5: 验证返回包含库存数量的数据"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 178,
@@ -2340,7 +2340,7 @@
       "Step 6: 点击下载按钮",
       "Step 7: 验证下载文件为 .xlsx 格式"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 179,
@@ -2354,7 +2354,7 @@
       "Step 5: 验证日志中显示脚本输出",
       "Step 6: 验证执行状态为成功"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 180,

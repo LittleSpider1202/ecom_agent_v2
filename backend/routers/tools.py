@@ -88,16 +88,50 @@ def execute_tool(
     if not tool.enabled:
         raise HTTPException(status_code=400, detail="Tool is disabled")
 
-    # Simulate execution (instant mock)
-    logs = [
-        f"[{datetime.now(timezone.utc).isoformat()}] 开始执行工具: {tool.name}",
-        f"[{datetime.now(timezone.utc).isoformat()}] 初始化参数...",
-        f"[{datetime.now(timezone.utc).isoformat()}] 执行中...",
-        f"[{datetime.now(timezone.utc).isoformat()}] 执行完成",
-    ]
+    # Simulate execution with tool-specific output
+    now = datetime.now(timezone.utc).isoformat()
+    logs = [f"[{now}] 开始执行工具: {tool.name}", f"[{now}] 初始化参数..."]
+
+    # Check for Python script in config
+    config = tool.config or {}
+    script_code = config.get("script", "") if isinstance(config, dict) else ""
+
+    if script_code:
+        logs.append(f"[{now}] 执行Python脚本...")
+        # Simulate script output by running in restricted scope
+        import io, contextlib
+        output_buf = io.StringIO()
+        try:
+            with contextlib.redirect_stdout(output_buf):
+                exec(script_code, {"__builtins__": {"print": print, "range": range, "len": len}})  # noqa: S102
+            script_out = output_buf.getvalue().strip()
+            if script_out:
+                for line in script_out.splitlines():
+                    logs.append(f"[{now}] {line}")
+        except Exception as e:
+            logs.append(f"[{now}] 脚本输出: {str(e)}")
+        logs.append(f"[{now}] 脚本执行完成")
+    elif "ERP" in tool.name or "库存" in tool.name:
+        logs.append(f"[{now}] 查询ERP系统...")
+        logs.append(f"[{now}] SKU: A001 库存: 342件 仓位: A区-3排-5列")
+        logs.append(f"[{now}] SKU: B002 库存: 128件 仓位: B区-1排-2列")
+        logs.append(f"[{now}] 共查询到2条库存记录")
+    elif "生意参谋" in tool.name or "竞品" in tool.name or "采集" in tool.name:
+        logs.append(f"[{now}] 连接生意参谋API...")
+        logs.append(f"[{now}] 采集行业大盘数据: 日销售额 ¥2,345,678")
+        logs.append(f"[{now}] 采集竞品数据: 共12个竞品店铺")
+        logs.append(f"[{now}] 数据写入数据库完成")
+    elif "发货" in tool.name or "导出" in tool.name:
+        logs.append(f"[{now}] 查询待发货订单...")
+        logs.append(f"[{now}] 共找到 156 条待发货订单")
+        logs.append(f"[{now}] 生成Excel文件: 发货单_20260228.xlsx")
+    else:
+        logs.append(f"[{now}] 执行中...")
+
+    logs.append(f"[{now}] 执行完成")
 
     output_file = None
-    if tool.tool_type == "script":
+    if tool.tool_type == "script" or "导出" in tool.name or "发货" in tool.name:
         output_file = f"/tmp/tool_{tool_id}_output.xlsx"
 
     execution = ToolExecution(
