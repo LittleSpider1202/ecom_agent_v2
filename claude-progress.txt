@@ -1,66 +1,54 @@
-# Session 14 进度记录
+# Session 15 进度记录
 
-## 本次完成（194 total passing）
+## 本次完成（214 total passing，+20）
 
-### 批次 1: BOT通知 + 权限/导航 (#151-169) — 已 commit（本session从context carry-over开始）
-- 恢复后端连接（小主机DB曾有包丢失问题）
-- BOT features #151-160：飞书通知、机器人推送（bot.py）
-- #165-169：PrivateRoute权限拦截、AppLayout侧边栏、通知铃铛
+### 批次 1: #195-199（响应式+监控+分配+流程列表+知识审核）
+- #195: 1920px宽屏响应式验证（style test）
+- #196: TaskMonitor 人工等待时间 + 超时告警（橙/红色）
+- #197: TaskMonitor 按负责人筛选（assignee-filter）
+- #198: FlowList 点击流程名称进入编辑器
+- #199: KnowledgeReview 管理员审核知识贡献（新页面+后端API）
 
-### 批次 2: 全局搜索+工作流引擎 (#170-174)
-- 后端：search.py（/api/search?q=）搜索任务/流程/知识
-- 后端：flows.py trigger_flow 增强：auto节点即完成，human节点暂停，condition节点评估
-- 前端：AppLayout全局搜索输入框+下拉结果
+### 批次 2: #200-204（飞书通知节点+E2E场景）
+- #200: FlowEditor 添加 FeishuNotify 节点（绿色主题）
+- #201-204: E2E 长流程场景测试（人工步骤完整链路、触发&监控、知识库问答、工具执行）
 
-### 批次 3: 工作流失败+工具执行 (#175-179)
-- 后端：flows.py 支持 should_fail 节点，task状态=failed，bot告警
-- 后端：tools.py 增强执行日志（ERP/生意参谋/发货单/Python脚本）
-- 后端：main.py upsert "生意参谋数据采集" 工具
-- 后端：tools.py exec() 执行Python脚本（restrict builtins）
+### 批次 3: #205-209（超时催办+知识审核+邀请+回滚+工具）
+- #205: 任务超时告警和催办完整流程
+- #206: 知识贡献从提交到管理员审核发布
+- #207: 新成员邀请配置权限（修复 MemberManagement API_URL）
+- #208: 流程版本回滚（修复 FlowVersions rollback-dialog 遮罩问题）
+- #209: 自定义工具创建到工作流集成
 
-### 批次 4: 知识库QA+数据持久化+CRUD接口 (#180-184)
-- 后端：tasks.py 添加 POST /api/tasks、PATCH /api/tasks/{id}
-- 验证：知识库AI问答、任务/流程持久化、CRUD接口
+### 批次 4: #210-214（全局监控视觉+并发任务）
+- #210: 管理员全局监控：甘特图、流程过滤、催办
+- #211: EW-04 人工步骤视觉验证
+- #212: FlowEditor 视觉验证（节点、画布、工具栏）
+- #213: MW-01 决策驾驶舱视觉验证
+- #214: 并发人工任务：看板显示多任务
 
-### 批次 5: 全局配色+排版+按钮+表单+加载状态 (#185-189)
-- Style测试：通过Tailwind类名验证配色/排版/按钮/表单控件一致性
-- 加载状态：intercept API + 验证body有内容
+## 下一步（从 #215 开始）
 
-### 批次 6: 空状态+表单验证+Toast+侧边栏折叠+响应式 (#190-194)
-- 前端：Login.tsx 添加内联字段验证（username-error, password-error）
-- 前端：AppLayout.tsx 添加 sidebarCollapsed toggle（sidebar-toggle按钮）
-- 前端：AppLayout.tsx 添加全局Toast（data-testid="global-toast"，右上角，3秒后消失）
-- 前端：FlowEditor.tsx 保存成功/失败触发 window.__showToast
-- Style测试：响应式（scrollWidth <= clientWidth + 5px）
-
-## 下一步（37个features待完成）
-- #195 响应式布局：1920px宽屏
-- #196 MW-10 全局任务监控：超时预警
-- #197 EW-02 任务列表：按负责人筛选
-- #198 MW-02 流程定义列表：进入编辑模式
-- #199 知识库管理：审核贡献
-- #200 MW-03 飞书通知节点配置
-- #201-231 E2E场景测试（长流程验证）
+查 feature_list.json index 215-231（共17个），下个 session 继续。
 
 ## 关键变更记录
 
 ### 新文件
-- backend/routers/search.py — /api/search 全局搜索
-- backend/routers/bot.py — bot通知（已有）
-- tests/feature-151.spec.ts ~ feature-190.spec.ts
+- frontend/src/pages/manager/KnowledgeReview.tsx
+- tests/feature-195.spec.ts ~ feature-214.spec.ts
 
 ### 修改文件
-- frontend/src/components/AppLayout.tsx — 侧边栏+通知铃铛+全局搜索+Toast+折叠
-- frontend/src/pages/Login.tsx — 内联字段验证
-- frontend/src/pages/manager/FlowEditor.tsx — 保存触发Toast
-- backend/routers/flows.py — trigger_flow增强（auto/human/condition/should_fail）
-- backend/routers/tools.py — 工具执行日志增强+Python exec
-- backend/routers/tasks.py — POST /api/tasks, PATCH /api/tasks/{id}
-- backend/main.py — upsert 生意参谋数据采集工具
+- frontend/src/pages/manager/TaskMonitor.tsx — 人工等待时间+超时告警+assignee过滤
+- frontend/src/pages/manager/FlowList.tsx — 点击流程名进入编辑器
+- frontend/src/pages/manager/FlowVersions.tsx — confirm-rollback testid 移到模态框
+- frontend/src/pages/manager/MemberManagement.tsx — API_URL '' (空字符串走proxy)
+- frontend/src/pages/manager/FlowEditor.tsx — FeishuNotify 节点
+- backend/routers/knowledge.py — 知识审核API（pending/approve/reject）
+- frontend/src/App.tsx — 路由 /manage/knowledge-review
 
 ## 环境状态
-- 小主机：192.168.0.112（DHCP，有时192.168.0.112可能变化）
-- 后端：port 8002（小主机），nginx port 80（前端）
-- 前端vite proxy：指向 http://192.168.0.112:8002
+- 小主机：192.168.0.112
+- 后端：port 8002，nginx port 80（前端）
+- 前端 vite proxy：指向 http://192.168.0.112:8002
 - 分支：dev
 - API_URL in tests：http://192.168.0.112:8002
