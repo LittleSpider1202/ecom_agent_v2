@@ -38,7 +38,7 @@ def list_tools(db: Session = Depends(get_db), current_user: User = Depends(get_c
     result = []
     for t in tools:
         roles = [r.strip() for r in t.allowed_roles.split(",")]
-        if current_user.role in roles:
+        if current_user.role in roles or current_user.role == "admin":
             result.append({
                 "id": t.id,
                 "name": t.name,
@@ -53,7 +53,7 @@ def list_tools(db: Session = Depends(get_db), current_user: User = Depends(get_c
 @router.get("/all")
 def list_all_tools(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     """List all tools regardless of permission (manager only)."""
-    if current_user.role != "manager":
+    if current_user.role not in ("manager", "admin"):
         raise HTTPException(status_code=403, detail="Manager only")
     tools = db.query(Tool).all()
     return [
@@ -82,7 +82,7 @@ def execute_tool(
         raise HTTPException(status_code=404, detail="Tool not found")
 
     roles = [r.strip() for r in tool.allowed_roles.split(",")]
-    if current_user.role not in roles:
+    if current_user.role not in roles and current_user.role != "admin":
         raise HTTPException(status_code=403, detail="No permission to execute this tool")
 
     if not tool.enabled:
@@ -163,7 +163,7 @@ def toggle_tool(
     current_user: User = Depends(get_current_user),
 ):
     """Enable or disable a tool (manager only)."""
-    if current_user.role != "manager":
+    if current_user.role not in ("manager", "admin"):
         raise HTTPException(status_code=403, detail="Manager only")
     tool = db.query(Tool).filter(Tool.id == tool_id).first()
     if not tool:
@@ -181,7 +181,7 @@ def create_tool(
     current_user: User = Depends(get_current_user),
 ):
     """Create a new tool (manager only)."""
-    if current_user.role != "manager":
+    if current_user.role not in ("manager", "admin"):
         raise HTTPException(status_code=403, detail="Manager only")
     tool = Tool(
         name=req.name,
@@ -238,7 +238,7 @@ def update_tool(
     current_user: User = Depends(get_current_user),
 ):
     """Update a tool (manager only)."""
-    if current_user.role != "manager":
+    if current_user.role not in ("manager", "admin"):
         raise HTTPException(status_code=403, detail="Manager only")
     tool = db.query(Tool).filter(Tool.id == tool_id).first()
     if not tool:
