@@ -295,6 +295,39 @@
 - `GET /api/logs` 返回 `{total, logs, users, actions}`（对象），不是平铺数组
 - 取日志列表用 `data.logs || []`
 
+## 内存状态与 reset-db 同步（关键）
+
+- `bot.py` 的 `_notifications` 和 `logs.py` 的 `_system_logs` 是**模块级全局变量**，不在 DB 中
+- `reset-db` 只截断 DB 表，不清内存 → 多次测试运行后内存中积累额外条目
+- 修复：在 `reset-db` endpoint 结尾加：
+  ```python
+  import routers.bot as _bot_module
+  import routers.logs as _logs_module
+  _bot_module._notifications.clear()
+  _bot_module._next_id = 1
+  _logs_module._system_logs.clear()
+  ```
+- **注意**：必须用 `import module as alias`，然后操作 `alias.variable`
+  直接 `from module import var` 只导入值的引用，clear() 不影响原模块全局
+
+## FlowVersion 种子数据
+
+- `seed_data()` 创建 Flow 记录时默认 version=N，但不创建对应 FlowVersion 行
+- `reset-db` 截断 `flow_versions` 表后如果没有重新 seed，回滚测试 (#83) 会因找不到版本而失败
+- 修复：在 seed_data 中为第一个 Flow 创建 version 1..N 的 FlowVersion 记录
+
+## TaskHistory.tsx API URL 硬编码坑
+
+- `TaskHistory.tsx` 曾有 `const API = 'http://localhost:8001'`，导致所有历史 API 调用打到不存在的端口
+- 前端组件的 API base URL 应该是 `''`（空字符串），依赖 Vite proxy 转发 `/api` 请求
+- 症状：history 页面始终显示"暂无历史记录"，无 console 错误（connection refused 被浏览器静默忽略）
+
+## 测试顺序污染 — human step 消耗问题
+
+- feature-017 的测试 #21/#22/#23 依次从 dashboard 进入 human step 并提交，消耗 task1/task2/task3 的 step
+- 后续测试如 feature-043 #46 直接访问 `/task/1/step/current` 会因 step 已消耗而得到 404
+- 解决：在需要 pending step 的测试开头加 `POST /api/tasks/{id}/steps/{step_id}/reset`，保持幂等性
+
 ## Playwright route interception + networkidle 时序
 
 - `page.route()` 拦截后，若用 `waitUntil: 'networkidle'`，Playwright 会等所有网络请求静止
