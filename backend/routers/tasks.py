@@ -369,7 +369,41 @@ async def submit_step(
         task.status = "completed"
 
     db.commit()
+
+    # Mark related bot notification as processed
+    from routers.bot import mark_notification_processed
+    mark_notification_processed(task_id, step_id)
+
     return {"success": True, "message": "提交成功"}
+
+
+@router.post("/{task_id}/steps/{step_id}/reset")
+async def reset_step_for_test(
+    task_id: int,
+    step_id: int,
+    current_user: User = Depends(require_current_user),
+    db: Session = Depends(get_db),
+):
+    """Reset a step to pending for E2E test idempotency (test utility)"""
+    step = db.query(TaskStep).filter(TaskStep.id == step_id, TaskStep.task_id == task_id).first()
+    if not step:
+        raise HTTPException(status_code=404, detail="步骤不存在")
+    step.status = "pending"
+    step.final_content = None
+    step.completed_by = None
+    step.completed_at = None
+    step.reject_reason = None
+    task = db.query(TaskInstance).filter(TaskInstance.id == task_id).first()
+    if task:
+        task.has_human_step = True
+        task.status = "pending"
+    db.commit()
+    # Reset bot notification processed state for this task/step
+    from routers.bot import _notifications
+    for n in _notifications:
+        if n.get("type") == "human_step" and n.get("task_id") == task_id and n.get("step_id") == step_id:
+            n["card_processed"] = False
+    return {"success": True, "message": "步骤已重置"}
 
 
 class TaskCreateRequest(BaseModel):

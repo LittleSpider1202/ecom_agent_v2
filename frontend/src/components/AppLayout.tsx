@@ -12,6 +12,11 @@ interface Notification {
   type: string
   title: string
   content: string
+  task_id?: number | null
+  step_id?: number | null
+  background_info?: string | null
+  ai_suggestion?: string | null
+  card_processed?: boolean
   read: boolean
 }
 
@@ -214,8 +219,39 @@ export default function AppLayout({ children }: Props) {
                           data-testid={`notification-item-${n.id}`}
                           className="px-4 py-3 border-b border-gray-50 hover:bg-gray-50 last:border-0"
                         >
-                          <p className="text-xs font-medium text-gray-800">{n.title}</p>
+                          <div className="flex items-center justify-between">
+                            <p className="text-xs font-medium text-gray-800">{n.title}</p>
+                            {n.type === 'human_step' && n.card_processed && (
+                              <span data-testid={`notification-processed-${n.id}`} className="text-xs text-green-600 font-medium">已处理</span>
+                            )}
+                          </div>
                           <p className="text-xs text-gray-500 mt-0.5 line-clamp-2">{n.content}</p>
+                          {n.type === 'human_step' && (
+                            <div className="mt-1.5 space-y-1">
+                              {n.background_info && (
+                                <p data-testid={`notification-background-${n.id}`} className="text-xs text-gray-600 bg-gray-50 rounded px-2 py-1 line-clamp-2">
+                                  <span className="font-medium">背景：</span>{n.background_info}
+                                </p>
+                              )}
+                              {n.ai_suggestion && (
+                                <p data-testid={`notification-ai-${n.id}`} className="text-xs text-blue-700 bg-blue-50 rounded px-2 py-1 line-clamp-2">
+                                  <span className="font-medium">AI建议：</span>{n.ai_suggestion}
+                                </p>
+                              )}
+                              {n.task_id && n.step_id && !n.card_processed && (
+                                <button
+                                  data-testid={`notification-goto-${n.id}`}
+                                  onClick={() => {
+                                    setShowNotifPanel(false)
+                                    navigate(`/task/${n.task_id}/step/${n.step_id}`)
+                                  }}
+                                  className="text-xs text-white bg-blue-600 hover:bg-blue-700 rounded px-2 py-1 mt-1"
+                                >
+                                  前往工作台
+                                </button>
+                              )}
+                            </div>
+                          )}
                         </li>
                       ))}
                     </ul>

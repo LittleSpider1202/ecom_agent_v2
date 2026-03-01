@@ -343,12 +343,19 @@ def trigger_flow(
         target_user="manager",
     )
     if has_human:
+        # Get the first pending human step for deep link and card content
+        first_human_step = db.query(TaskStep).filter(
+            TaskStep.task_id == task.id, TaskStep.status == "pending"
+        ).first()
         add_bot_notification(
             type="human_step",
             title="人工确认请求",
             content=f"任务「{flow.name}」到达人工节点，请相关负责人确认",
             task_id=task.id,
+            step_id=first_human_step.id if first_human_step else None,
             target_user="executor",
+            background_info=first_human_step.background_info if first_human_step else None,
+            ai_suggestion=first_human_step.ai_suggestion if first_human_step else None,
         )
 
     return {"message": "触发成功", "task_id": task.id}

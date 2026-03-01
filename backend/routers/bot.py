@@ -18,6 +18,8 @@ def add_bot_notification(
     task_id: Optional[int] = None,
     step_id: Optional[int] = None,
     target_user: str = "manager",
+    background_info: Optional[str] = None,
+    ai_suggestion: Optional[str] = None,
 ):
     """Add a simulated bot notification (called from other routers)"""
     global _next_id
@@ -29,6 +31,9 @@ def add_bot_notification(
         "task_id": task_id,
         "step_id": step_id,
         "target_user": target_user,
+        "background_info": background_info,
+        "ai_suggestion": ai_suggestion,
+        "card_processed": False,
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "read": False,
     })
@@ -59,10 +64,13 @@ def _ensure_seed_notifications():
                 "id": 2,
                 "type": "human_step",
                 "title": "人工确认请求",
-                "content": "任务「供应商对账单审核」需要您的人工确认，请查看AI建议后决策。",
-                "task_id": 2,
+                "content": "任务「双十一备货采购清单审核」需要您的人工确认，请查看AI建议后决策。",
+                "task_id": 1,
                 "step_id": 1,
                 "target_user": "executor",
+                "background_info": "AI已完成竞品价格分析，识别出15款热销商品需要补货。当前库存预警：手机壳（剩余32件）、充电宝（剩余18件）、蓝牙耳机（剩余5件）。",
+                "ai_suggestion": "建议采购：手机壳A款500件、充电宝20000mAh 300件、蓝牙耳机Pro版200件。总金额约¥156,000，在Q4预算范围内。",
+                "card_processed": False,
                 "timestamp": (now - timedelta(hours=1)).isoformat(),
                 "read": False,
             },
@@ -149,3 +157,23 @@ async def trigger_ai_suggestion(
         target_user=current_user.username,
     )
     return {"message": "AI建议已推送", "type": "ai_suggestion"}
+
+
+def mark_notification_processed(task_id: int, step_id: int):
+    """Mark human_step notifications for a given task/step as card_processed=True"""
+    for n in _notifications:
+        if n.get("type") == "human_step" and n.get("task_id") == task_id and n.get("step_id") == step_id:
+            n["card_processed"] = True
+
+
+@router.post("/notifications/{notification_id}/process")
+async def process_notification(
+    notification_id: int,
+    current_user: User = Depends(require_current_user),
+):
+    """Mark a notification's card as processed"""
+    for n in _notifications:
+        if n["id"] == notification_id:
+            n["card_processed"] = True
+            return {"success": True}
+    return {"success": False, "detail": "not found"}

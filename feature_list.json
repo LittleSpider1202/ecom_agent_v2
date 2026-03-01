@@ -3061,7 +3061,7 @@
       "Step 10: 返回飞书，卡片状态更新为已处理",
       "Step 11: 流程继续执行下一步"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 226,
