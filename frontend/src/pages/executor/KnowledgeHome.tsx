@@ -133,6 +133,7 @@ export default function KnowledgeHome() {
                         {askResult.references.map(ref => (
                           <button
                             key={ref.id}
+                            data-testid={`qa-ref-${ref.id}`}
                             onClick={() => navigate(`/executor/knowledge/${ref.id}`)}
                             className="px-2 py-0.5 text-xs bg-white border border-blue-200 text-blue-600 rounded-full hover:bg-blue-50 transition-colors"
                           >

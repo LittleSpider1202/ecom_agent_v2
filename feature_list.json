@@ -3099,7 +3099,7 @@
       "Step 10: 填写修正内容并提交",
       "Step 11: 验证修正记录提交成功，等待审核"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "index": 228,
