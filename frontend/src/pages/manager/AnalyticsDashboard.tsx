@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import api from '../../hooks/useApi'
 
 interface TrendPoint {
@@ -26,6 +27,8 @@ interface Bottleneck {
 interface BottleneckData {
   days: number
   bottlenecks: Bottleneck[]
+  avg_human_step_sec: number
+  avg_human_step_label: string
 }
 
 const RANGE_OPTIONS = [
@@ -35,17 +38,21 @@ const RANGE_OPTIONS = [
 ]
 
 export default function AnalyticsDashboard() {
+  const navigate = useNavigate()
   const [days, setDays] = useState(30)
+  const [flowFilter, setFlowFilter] = useState('')
+  const [flowNames, setFlowNames] = useState<string[]>([])
   const [trend, setTrend] = useState<TrendData | null>(null)
   const [bottleneck, setBottleneck] = useState<BottleneckData | null>(null)
   const [loading, setLoading] = useState(true)
 
-  const load = async (d: number) => {
+  const load = async (d: number, fn?: string) => {
     setLoading(true)
     try {
+      const flowParam = fn ? `&flow_name=${encodeURIComponent(fn)}` : ''
       const [tRes, bRes] = await Promise.all([
-        api.get(`/api/analytics/trend?days=${d}`),
-        api.get(`/api/analytics/bottlenecks?days=${d}`),
+        api.get(`/api/analytics/trend?days=${d}${flowParam}`),
+        api.get(`/api/analytics/bottlenecks?days=${d}${flowParam}`),
       ])
       setTrend(tRes.data)
       setBottleneck(bRes.data)
@@ -56,7 +63,12 @@ export default function AnalyticsDashboard() {
     }
   }
 
-  useEffect(() => { load(days) }, [days])
+  useEffect(() => {
+    api.get('/api/analytics/flow-names').then(r => setFlowNames(r.data.flow_names || [])).catch(() => {})
+    load(days)
+  }, [])
+
+  useEffect(() => { load(days, flowFilter || undefined) }, [days, flowFilter])
 
   const applyRange = (d: number) => setDays(d)
 
@@ -144,7 +156,7 @@ export default function AnalyticsDashboard() {
   return (
     <div className="p-6 max-w-5xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold text-gray-800" data-testid="analytics-title">数据分析</h1>
         {/* Date range filter */}
         <div className="flex items-center gap-2" data-testid="date-range-filter">
@@ -164,6 +176,30 @@ export default function AnalyticsDashboard() {
           ))}
         </div>
       </div>
+      {/* Flow type filter */}
+      <div className="flex items-center gap-2 mb-6" data-testid="flow-type-filter">
+        <span className="text-sm text-gray-500">按流程筛选：</span>
+        <select
+          data-testid="flow-name-select"
+          value={flowFilter}
+          onChange={e => setFlowFilter(e.target.value)}
+          className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 text-gray-700 bg-white"
+        >
+          <option value="">全部流程</option>
+          {flowNames.map(n => (
+            <option key={n} value={n}>{n}</option>
+          ))}
+        </select>
+        {flowFilter && (
+          <button
+            data-testid="clear-flow-filter"
+            onClick={() => setFlowFilter('')}
+            className="text-xs text-gray-400 hover:text-gray-600 underline"
+          >
+            清除筛选
+          </button>
+        )}
+      </div>
 
       {loading ? (
         <div className="text-center py-20 text-gray-400">加载中…</div>
@@ -171,7 +207,7 @@ export default function AnalyticsDashboard() {
         <>
           {/* Summary cards */}
           {trend && (
-            <div className="grid grid-cols-3 gap-4 mb-6">
+            <div className="grid grid-cols-4 gap-4 mb-6">
               <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
                 <div className="text-3xl font-bold text-blue-600" data-testid="total-completed">{trend.total_completed}</div>
                 <div className="text-sm text-gray-400 mt-1">已完成任务</div>
@@ -188,6 +224,14 @@ export default function AnalyticsDashboard() {
                 </div>
                 <div className="text-sm text-gray-400 mt-1">完成率</div>
               </div>
+              {bottleneck && (
+                <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
+                  <div className="text-2xl font-bold text-purple-600" data-testid="avg-human-step-time">
+                    {bottleneck.avg_human_step_label || '—'}
+                  </div>
+                  <div className="text-sm text-gray-400 mt-1">平均人工步骤处理</div>
+                </div>
+              )}
             </div>
           )}
 
@@ -220,7 +264,13 @@ export default function AnalyticsDashboard() {
               <div className="space-y-3" data-testid="bottleneck-list">
                 {bottleneck.bottlenecks.map((b, i) => (
                   <div key={i} className="flex items-center gap-3" data-testid={`bottleneck-item-${i}`}>
-                    <div className="w-36 text-sm text-gray-700 truncate flex-shrink-0">{b.step_name}</div>
+                    <button
+                      data-testid={`bottleneck-link-${i}`}
+                      onClick={() => navigate('/manage/flows')}
+                      className="w-36 text-sm text-blue-600 hover:underline truncate flex-shrink-0 text-left"
+                    >
+                      {b.step_name}
+                    </button>
                     <div className="flex-1 relative h-5 bg-gray-100 rounded-full overflow-hidden">
                       <div
                         className="absolute top-0 left-0 h-full bg-orange-400 rounded-full transition-all"

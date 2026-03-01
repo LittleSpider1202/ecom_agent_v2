@@ -9,34 +9,52 @@ from models import TaskInstance, TaskStep, User
 router = APIRouter(prefix="/api/analytics", tags=["analytics"])
 
 
+@router.get("/flow-names")
+async def get_flow_names(
+    current_user: User = Depends(require_current_user),
+    db: Session = Depends(get_db),
+):
+    """返回所有流程名称（用于筛选下拉）"""
+    rows = db.execute(text("""
+        SELECT DISTINCT flow_name FROM task_instances WHERE flow_name IS NOT NULL ORDER BY flow_name
+    """)).fetchall()
+    return {"flow_names": [r[0] for r in rows]}
+
+
 @router.get("/trend")
 async def get_efficiency_trend(
     days: int = Query(default=30, ge=1, le=365),
+    flow_name: str = Query(default=None),
     current_user: User = Depends(require_current_user),
     db: Session = Depends(get_db),
 ):
     """返回最近 N 天每日任务完成数和创建数的趋势"""
     since = datetime.now(timezone.utc) - timedelta(days=days)
 
+    flow_filter = "AND flow_name = :flow_name" if flow_name else ""
+    params: dict = {"since": since}
+    if flow_name:
+        params["flow_name"] = flow_name
+
     # Daily completed tasks
-    completed_rows = db.execute(text("""
+    completed_rows = db.execute(text(f"""
         SELECT DATE(completed_at AT TIME ZONE 'UTC') AS d,
                COUNT(*) AS cnt
         FROM task_instances
-        WHERE completed_at >= :since AND status = 'completed'
+        WHERE completed_at >= :since AND status = 'completed' {flow_filter}
         GROUP BY DATE(completed_at AT TIME ZONE 'UTC')
         ORDER BY d
-    """), {"since": since}).fetchall()
+    """), params).fetchall()
 
     # Daily created tasks
-    created_rows = db.execute(text("""
+    created_rows = db.execute(text(f"""
         SELECT DATE(created_at AT TIME ZONE 'UTC') AS d,
                COUNT(*) AS cnt
         FROM task_instances
-        WHERE created_at >= :since
+        WHERE created_at >= :since {flow_filter}
         GROUP BY DATE(created_at AT TIME ZONE 'UTC')
         ORDER BY d
-    """), {"since": since}).fetchall()
+    """), params).fetchall()
 
     # Build date range
     date_range = [(since + timedelta(days=i)).date() for i in range(days)]
@@ -63,26 +81,47 @@ async def get_efficiency_trend(
 @router.get("/bottlenecks")
 async def get_bottlenecks(
     days: int = Query(default=30, ge=1, le=365),
+    flow_name: str = Query(default=None),
     current_user: User = Depends(require_current_user),
     db: Session = Depends(get_db),
 ):
     """识别耗时最长的流程步骤（基于 task_steps 完成时间）"""
     since = datetime.now(timezone.utc) - timedelta(days=days)
 
-    rows = db.execute(text("""
+    flow_join = "JOIN task_instances ti ON ts.task_id = ti.id" if flow_name else ""
+    flow_filter = "AND ti.flow_name = :flow_name" if flow_name else ""
+    params: dict = {"since": since}
+    if flow_name:
+        params["flow_name"] = flow_name
+
+    rows = db.execute(text(f"""
         SELECT
-            step_name,
+            ts.step_name,
             COUNT(*) AS total,
-            AVG(EXTRACT(EPOCH FROM (completed_at - created_at))) AS avg_sec,
-            MAX(EXTRACT(EPOCH FROM (completed_at - created_at))) AS max_sec
-        FROM task_steps
-        WHERE completed_at IS NOT NULL
-          AND created_at >= :since
-          AND status = 'completed'
-        GROUP BY step_name
+            AVG(EXTRACT(EPOCH FROM (ts.completed_at - ts.created_at))) AS avg_sec,
+            MAX(EXTRACT(EPOCH FROM (ts.completed_at - ts.created_at))) AS max_sec
+        FROM task_steps ts
+        {flow_join}
+        WHERE ts.completed_at IS NOT NULL
+          AND ts.created_at >= :since
+          AND ts.status = 'completed'
+          {flow_filter}
+        GROUP BY ts.step_name
         ORDER BY avg_sec DESC
         LIMIT 10
-    """), {"since": since}).fetchall()
+    """), params).fetchall()
+
+    # Avg human step processing time
+    human_rows = db.execute(text(f"""
+        SELECT AVG(EXTRACT(EPOCH FROM (ts.completed_at - ts.created_at)))
+        FROM task_steps ts
+        {flow_join}
+        WHERE ts.completed_at IS NOT NULL
+          AND ts.created_at >= :since
+          AND ts.status = 'completed'
+          {flow_filter}
+    """), params).fetchone()
+    avg_human_sec = float(human_rows[0]) if human_rows and human_rows[0] else 0
 
     bottlenecks = []
     for r in rows:
@@ -119,7 +158,12 @@ async def get_bottlenecks(
     for b in bottlenecks:
         b["pct"] = round(b["avg_duration_sec"] / max_avg * 100, 1)
 
-    return {"days": days, "bottlenecks": bottlenecks}
+    return {
+        "days": days,
+        "bottlenecks": bottlenecks,
+        "avg_human_step_sec": round(avg_human_sec, 1),
+        "avg_human_step_label": _fmt_duration(avg_human_sec),
+    }
 
 
 def _fmt_duration(sec: float) -> str:
