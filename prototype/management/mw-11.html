@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>MW-11 · 任务实例详情 · 电商智能运营平台</title>
+<link rel="stylesheet" href="../_styles.css">
+</head>
+<body>
+<div class="page-nav">
+  <a href="../index.html">← 返回导航</a>
+  <span class="nav-center">MW-11 · 任务实例详情</span>
+  <div><a href="mw-10.html">‹ 上一页</a> &nbsp; <a href="mw-12.html">下一页 ›</a></div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-title">MW-11 · 管理工作台 · 任务实例详情</span>
+    <span class="page-desc">单任务完整 DAG 执行图，管理员可催办、代为处理、强制终止</span>
+  </div>
+  <div class="page-body">
+    <div class="topbar"><span class="topbar-logo">▣ 电商运营平台</span><div class="topbar-right"><span>老板▼</span></div></div>
+    <div class="col col-100" style="border-top:1px solid #ccc">
+      <div class="breadcrumb">监控 / 全局任务 / 冬季补货 #T-001</div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <strong style="font-size:15px">冬季补货 #T-001</strong>
+          <span class="tag" style="margin-left:8px">进行中</span>
+        </div>
+        <div style="display:flex;gap:8px">
+          <span class="btn">重新触发节点</span>
+          <span class="btn btn-danger">强制终止任务</span>
+        </div>
+      </div>
+      <div class="hint" style="margin-top:4px">触发来源：定时规则（每周一09:00）· 发起：2024-02-23 09:00</div>
+    </div>
+
+    <div class="row">
+      <div class="col col-55">
+        <div class="section-title">DAG 执行图</div>
+        <div style="line-height:2.6;padding:8px 0">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="dag-node dag-node-done" style="width:180px">✓ 获取库存数据</span>
+            <span class="hint">09:00:05 → 09:00:23 · 成功 · [展开]</span>
+          </div>
+          <div style="margin-left:20px;color:#aaa">↓</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="dag-node dag-node-done" style="width:180px">✓ AI 分析缺货 SKU</span>
+            <span class="hint">09:00:24 → 09:01:02 · 成功</span>
+          </div>
+          <div style="margin-left:20px;color:#aaa">↓</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="dag-node dag-node-done" style="width:180px">✓ 生成采购建议</span>
+            <span class="hint">09:01:03 → 09:05:44 · 成功</span>
+          </div>
+          <div style="margin-left:20px;color:#aaa">↓</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="dag-node dag-node-active" style="width:180px">⏸ 等待采购确认</span>
+            <div>
+              <span class="hint">09:05:45 → 等待中 · 已等待 <strong>1h20min</strong></span><br>
+              <span class="hint">负责人：张三 · 截止 18:00</span><br>
+              <span class="btn" style="padding:2px 6px;margin-top:4px">催办张三</span>
+              <span class="btn" style="padding:2px 6px">管理员代为处理</span>
+            </div>
+          </div>
+          <div style="margin-left:20px;color:#ccc">↓</div>
+          <div><span class="dag-node" style="width:180px;color:#aaa">○ 发送采购单</span></div>
+          <div style="margin-left:20px;color:#ccc">↓</div>
+          <div><span class="dag-node" style="width:180px;color:#aaa">○ 确认供应商收到</span></div>
+          <div style="margin-left:20px;color:#ccc">↓</div>
+          <div><span class="dag-node" style="width:180px;color:#aaa">○ 完成</span></div>
+        </div>
+      </div>
+      <div class="col col-45">
+        <div class="section-title">执行日志（完整时间线）</div>
+        <div style="max-height:360px;overflow-y:auto">
+          <div class="hint">09:00:05 &nbsp; 系统：定时规则触发流程</div>
+          <div class="hint">09:00:06 &nbsp; 工具：调用ERP接口 GET /inventory</div>
+          <div class="hint">09:00:23 &nbsp; 工具：返回 847 条库存记录 ✓</div>
+          <div class="hint">09:00:24 &nbsp; 节点：AI分析缺货SKU 开始</div>
+          <div class="hint">09:01:02 &nbsp; 节点：识别低库存 SKU 23 个 ✓</div>
+          <div class="hint">09:01:03 &nbsp; 节点：生成采购建议 开始</div>
+          <div class="hint">09:01:04 &nbsp; AI：调用 claude-sonnet 分析数据</div>
+          <div class="hint">09:05:44 &nbsp; AI：生成采购建议，共 23 条 ✓</div>
+          <div class="hint">09:05:45 &nbsp; 节点：进入人工节点 - 等待采购确认</div>
+          <div class="hint">09:05:46 &nbsp; 通知：飞书消息已发送给张三</div>
+          <div class="hint" style="color:#555"><strong>10:26:00 &nbsp; 监控：等待超时预警（超过1小时）</strong></div>
+          <div class="hint">10:26:01 &nbsp; 通知：超时告警已发送给老板</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

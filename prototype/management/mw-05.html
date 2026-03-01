@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>MW-05 · 工具库管理 · 电商智能运营平台</title>
+<link rel="stylesheet" href="../_styles.css">
+</head>
+<body>
+<div class="page-nav">
+  <a href="../index.html">← 返回导航</a>
+  <span class="nav-center">MW-05 · 工具库管理</span>
+  <div><a href="mw-04.html">‹ 上一页</a> &nbsp; <a href="mw-06.html">下一页 ›</a></div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-title">MW-05 · 管理工作台 · 工具库管理</span>
+    <span class="page-desc">集中管理所有自动化工具，控制启用状态和权限</span>
+  </div>
+  <div class="page-body">
+    <div class="topbar"><span class="topbar-logo">▣ 电商运营平台</span><div class="topbar-nav"><span>总览</span><span>流程定义</span><span class="active">工具库</span><span>组织</span><span>监控</span><span>分析</span></div><div class="topbar-right"><span>老板▼</span></div></div>
+    <div class="col col-100" style="border-top:1px solid #ccc">
+      <div style="display:flex;gap:8px;align-items:center;padding:4px 0">
+        <span class="btn btn-primary">+ 上传新工具</span>
+        <span class="select">类型 ▼</span><span class="select">状态 ▼</span>
+        <input class="input" style="width:200px;margin:0" placeholder="搜索工具名...">
+        <span class="hint" style="margin-left:auto">共 12 个工具</span>
+      </div>
+    </div>
+    <div class="col col-100" style="border-top:1px solid #ccc">
+      <table class="table">
+        <tr><th>工具名称</th><th>类型</th><th>可用角色</th><th>调用次数</th><th>成功率</th><th>状态</th><th>操作</th></tr>
+        <tr>
+          <td><strong>库存盘点数据导出</strong></td><td>API</td><td>仓管 采购</td><td>234</td><td>100%</td>
+          <td><span class="tag tag-green">启用</span></td>
+          <td><span class="btn" style="padding:2px 6px">编辑</span> <span class="btn" style="padding:2px 6px">权限</span> <span class="btn" style="padding:2px 6px">记录</span></td>
+        </tr>
+        <tr>
+          <td><strong>退货快递单批量打印</strong></td><td>Webhook</td><td>仓管</td><td>890</td><td>99.4%</td>
+          <td><span class="tag tag-green">启用</span></td>
+          <td><span class="btn" style="padding:2px 6px">编辑</span> <span class="btn" style="padding:2px 6px">权限</span> <span class="btn" style="padding:2px 6px">记录</span></td>
+        </tr>
+        <tr>
+          <td><strong>采购单 PDF 生成</strong></td><td>脚本</td><td>采购</td><td>45</td><td>97.8%</td>
+          <td><span class="tag tag-green">启用</span></td>
+          <td><span class="btn" style="padding:2px 6px">编辑</span> <span class="btn" style="padding:2px 6px">权限</span> <span class="btn" style="padding:2px 6px">记录</span></td>
+        </tr>
+        <tr style="opacity:0.6">
+          <td><strong>旧版库存同步</strong></td><td>API</td><td>-</td><td>0</td><td>-</td>
+          <td><span class="tag tag-gray">禁用</span></td>
+          <td><span class="btn" style="padding:2px 6px">编辑</span> <span class="btn btn-primary" style="padding:2px 6px">启用</span></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

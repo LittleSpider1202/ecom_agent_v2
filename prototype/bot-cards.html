@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>BOT-01~05 · 飞书 Bot 卡片设计 · 电商智能运营平台</title>
+<link rel="stylesheet" href="_styles.css">
+</head>
+<body>
+<div class="page-nav">
+  <a href="index.html">← 返回导航</a>
+  <span class="nav-center">BOT-01~05 · 飞书 Bot 卡片设计</span>
+  <div><a href="sitemap.html">‹ 上一页</a> &nbsp; <a href="executor/ew-01.html">下一页 ›</a></div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-title">Bot · 飞书 / 钉钉 机器人交互设计</span>
+    <span class="page-desc">5 种消息卡片格式 + 深链接规范</span>
+  </div>
+  <div class="page-body">
+    <div class="row" style="border-top:none">
+      <div class="col col-50">
+        <div class="section-title">BOT-02 ★ 人工确认卡片（核心）</div>
+        <div class="bot-card">
+          <div class="bot-header">运营助手 · 今日 09:06 &nbsp; @张三</div>
+          <div class="bot-body">
+            <div class="bot-title">需要你处理</div>
+            <div class="hint">流程：冬季补货 · 第 4 步</div>
+            <div class="hint">任务：确认采购数量</div>
+            <div class="hint">截止：今日 18:00（还有 8h 54min）</div>
+            <div class="bot-section">
+              <div class="box-title">AI 建议摘要</div>
+              <div class="hint">· 羽绒服 A款：建议采购 100 件</div>
+              <div class="hint">· 毛衣 B款：建议采购 60 件</div>
+              <div class="hint">· 共 2 个 SKU，合计约 ¥45,000</div>
+              <div class="hint" style="margin-top:4px">依据：近30天销售趋势及促销预测</div>
+            </div>
+            <div class="bot-actions">
+              <div class="bot-btn bot-btn-primary">✓ 全部采纳，一键提交</div>
+              <div class="bot-btn">查看详情并调整 →（跳转工作台）</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-title" style="margin-top:16px">BOT-01 任务推送卡片（信息类）</div>
+        <div class="bot-card">
+          <div class="bot-header">运营助手 · 今日 09:05</div>
+          <div class="bot-body">
+            <div class="bot-title">任务已启动</div>
+            <div class="hint">流程：冬季补货</div>
+            <div class="hint">任务编号：#T-2024-0223-001</div>
+            <div class="hint">预计完成：今日 18:00</div>
+            <div class="hint" style="margin-top:6px">当前正在自动执行，无需操作</div>
+            <div class="bot-actions"><div class="bot-btn">查看任务进度</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col col-50">
+        <div class="section-title">BOT-03 异常告警卡片</div>
+        <div class="bot-card">
+          <div class="bot-header">运营助手 · 今日 11:30 &nbsp; @老板</div>
+          <div class="bot-body">
+            <div class="bot-title">⚠ 人工步骤超时告警</div>
+            <div class="hint">流程：冬季补货 #T-001</div>
+            <div class="hint">超时步骤：采购确认</div>
+            <div class="hint">负责人：张三</div>
+            <div class="hint"><strong>已等待：2 小时（应在10:00前完成）</strong></div>
+            <div class="bot-actions">
+              <div class="bot-btn bot-btn-primary">催办张三</div>
+              <div class="bot-btn">管理员代为处理</div>
+              <div class="bot-btn">查看任务</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-title" style="margin-top:16px">BOT-05 AI 决策建议卡片</div>
+        <div class="bot-card">
+          <div class="bot-header">运营助手 · 今日 09:30 &nbsp; @老板</div>
+          <div class="bot-body">
+            <div class="bot-title">AI 运营建议 <span class="tag tag-red">高优</span></div>
+            <div class="hint"><strong>建议提前备货：羽绒服 A款</strong></div>
+            <div class="bot-section">
+              <div class="hint">风险：当前库存预计 2.3 天后售罄</div>
+              <div class="hint">建议：25日前完成采购 ≥ 150 件</div>
+              <div class="hint">预估损失（若不处理）：¥12,000/天</div>
+            </div>
+            <div class="bot-actions">
+              <div class="bot-btn bot-btn-primary">采纳 - 立即触发补货流程</div>
+              <div class="bot-btn">查看详细依据</div>
+              <div class="bot-btn">暂不处理</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-title" style="margin-top:16px">BOT-04 日报摘要（定时推送老板）</div>
+        <div class="bot-card">
+          <div class="bot-header">运营助手 · 每日 18:00</div>
+          <div class="bot-body">
+            <div class="bot-title">今日运营日报 · 2024/02/23</div>
+            <div class="bot-section">
+              <div class="hint">✓ 完成任务：34 个 &nbsp; ✗ 异常：1 个</div>
+              <div class="hint">人工节点平均响应：1.1 小时</div>
+            </div>
+            <div class="bot-section">
+              <div class="box-title">今日亮点</div>
+              <div class="hint">· 冬季补货已完成，采购单已发出</div>
+              <div class="hint">· 退货处理效率提升 20%</div>
+            </div>
+            <div class="bot-section">
+              <div class="box-title">需关注</div>
+              <div class="hint">· 客服响应本周持续偏高，建议检查</div>
+            </div>
+            <div class="bot-actions"><div class="bot-btn">查看完整报告</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col col-100">
+        <div class="section-title">深链接规范</div>
+        <table class="table">
+          <tr><th>来源</th><th>目标页面</th><th>URL 格式</th></tr>
+          <tr><td>BOT-01 任务推送</td><td>EW-03 任务自动详情</td><td>/task/{taskId}</td></tr>
+          <tr><td>BOT-02 人工确认</td><td>EW-04 人工步骤</td><td>/task/{taskId}/step/{stepId}</td></tr>
+          <tr><td>BOT-03 异常告警</td><td>MW-11 任务实例详情</td><td>/manage/task/{taskId}</td></tr>
+          <tr><td>BOT-05 AI 建议</td><td>MW-13 AI 决策建议</td><td>/manage/suggestions/{id}</td></tr>
+          <tr><td>BOT-04 日报</td><td>MW-12 数据分析看板</td><td>/manage/analytics?date={date}</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

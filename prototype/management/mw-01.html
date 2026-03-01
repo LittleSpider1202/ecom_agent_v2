@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>MW-01 · 决策驾驶舱 · 电商智能运营平台</title>
+<link rel="stylesheet" href="../_styles.css">
+</head>
+<body>
+<div class="page-nav">
+  <a href="../index.html">← 返回导航</a>
+  <span class="nav-center">MW-01 · 决策驾驶舱</span>
+  <div><a href="../executor/ew-10.html">‹ 上一页</a> &nbsp; <a href="mw-02.html">下一页 ›</a></div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-title">MW-01 · 管理工作台 · 决策驾驶舱</span>
+    <span class="page-desc">老板首页：全局健康度 + AI 建议 + 进行中任务快速监控</span>
+  </div>
+  <div class="page-body">
+    <div class="topbar">
+      <span class="topbar-logo">▣ 电商运营平台</span>
+      <div class="topbar-nav">
+        <span class="active">总览</span>
+        <span>流程定义</span>
+        <span>工具库</span>
+        <span>组织</span>
+        <span>监控</span>
+        <span>分析</span>
+      </div>
+      <div class="topbar-right"><span>🔔 <span class="badge">3</span></span><span>老板▼</span></div>
+    </div>
+    <div class="row" style="border-top:none">
+      <div class="col col-30">
+        <div class="section-title">今日摘要</div>
+        <div class="stat-row" style="flex-direction:column;gap:4px">
+          <div class="stat" style="display:flex;justify-content:space-between;text-align:left;padding:8px">
+            <span>任务进行中</span><strong>18</strong>
+          </div>
+          <div class="stat" style="display:flex;justify-content:space-between;text-align:left;padding:8px">
+            <span>今日已完成</span><strong>34</strong>
+          </div>
+          <div class="stat" style="display:flex;justify-content:space-between;text-align:left;padding:8px;border-color:#888">
+            <span>卡人工节点</span><strong style="color:#333">5</strong>
+          </div>
+          <div class="stat" style="display:flex;justify-content:space-between;text-align:left;padding:8px;border-color:#888">
+            <span>超时异常</span><strong style="color:#555">2</strong>
+          </div>
+          <div class="stat" style="display:flex;justify-content:space-between;text-align:left;padding:8px">
+            <span>AI 今日建议</span><strong>3</strong>
+          </div>
+        </div>
+        <span class="btn" style="width:100%;text-align:center;margin-top:8px;display:block">查看全部建议 →</span>
+      </div>
+      <div class="col col-70">
+        <div class="section-title">全局健康度</div>
+        <div class="box">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+            <span>任务完成率</span><strong>82%</strong>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:82%"></div></div>
+          <div style="display:flex;justify-content:space-between;margin-top:8px;margin-bottom:4px">
+            <span>人工节点平均响应</span><strong>1.2 小时</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+            <span>工具调用成功率</span><strong>99.1%</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between">
+            <span>知识库使用率</span><strong>↑ 23%（本周）</strong>
+          </div>
+        </div>
+
+        <div class="section-title">AI 决策建议（今日）</div>
+        <div class="card box-highlight">
+          <div style="display:flex;justify-content:space-between">
+            <div><span class="tag tag-red">高优</span> <strong>建议提前备货：羽绒服A款</strong></div>
+          </div>
+          <div class="hint" style="margin:4px 0">库存预计 2.3 天后售罄 · 历史补货周期 7 天 · 预计损失 ¥12,000/天</div>
+          <div class="card-footer">
+            <span class="btn btn-primary">采纳 - 立即触发补货流程</span>
+            <span class="btn">查看依据</span>
+          </div>
+        </div>
+        <div class="card">
+          <div><span class="tag">中优</span> <strong>客服响应效率下降：本周平均首响 4.2h（↑40%）</strong></div>
+          <div class="card-footer">
+            <span class="btn">查看详情</span>
+            <span class="btn">暂不处理</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col col-100">
+        <div class="section-title">进行中任务（快速监控）</div>
+        <table class="table">
+          <tr><th>任务名</th><th>流程</th><th>进度</th><th>当前节点</th><th>负责人</th><th>状态</th><th>操作</th></tr>
+          <tr>
+            <td>冬季补货 #T-001</td><td>冬季补货</td><td>4/7</td>
+            <td><span class="tag tag-red">等待采购确认</span> ⚠超时1h</td>
+            <td>张三</td><td>⏸ 等待</td>
+            <td><span class="btn" style="padding:2px 8px">查看</span> <span class="btn" style="padding:2px 8px">催办</span></td>
+          </tr>
+          <tr>
+            <td>日常发货 #T-034</td><td>日常发货</td><td>2/5</td>
+            <td>自动执行中</td><td>系统</td><td>⏳ 执行</td>
+            <td><span class="btn" style="padding:2px 8px">查看</span></td>
+          </tr>
+          <tr>
+            <td>退款处理 #T-033</td><td>退款流程</td><td>1/4</td>
+            <td>等待客服确认</td><td>王五</td><td>⏸ 等待</td>
+            <td><span class="btn" style="padding:2px 8px">查看</span></td>
+          </tr>
+        </table>
+        <div style="text-align:right;margin-top:8px"><span class="btn">查看全部 18 个任务 →</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

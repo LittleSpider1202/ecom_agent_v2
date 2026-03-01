@@ -1,0 +1,3180 @@
+[
+  {
+    "index": 1,
+    "category": "functional",
+    "description": "EW-01 我的看板：页面加载，显示待办、进行中任务和快捷入口",
+    "steps": [
+      "Step 1: 以执行者身份登录系统",
+      "Step 2: 导航到执行者工作台首页 /executor/dashboard",
+      "Step 3: 验证页面标题显示'我的看板'",
+      "Step 4: 验证存在'待办'任务区域",
+      "Step 5: 验证存在'进行中'任务区域",
+      "Step 6: 验证存在快捷入口区域"
+    ],
+    "passes": true
+  },
+  {
+    "index": 2,
+    "category": "functional",
+    "description": "EW-01 我的看板：待办任务列表展示任务标题、截止时间和状态徽章",
+    "steps": [
+      "Step 1: 登录并导航到执行者看板",
+      "Step 2: 在待办区域找到任务卡片",
+      "Step 3: 验证每个任务卡片显示任务标题",
+      "Step 4: 验证显示截止时间",
+      "Step 5: 验证显示状态徽章（如'待处理'）"
+    ],
+    "passes": true
+  },
+  {
+    "index": 3,
+    "category": "functional",
+    "description": "EW-01 我的看板：进行中任务区域展示当前执行任务",
+    "steps": [
+      "Step 1: 登录并导航到执行者看板",
+      "Step 2: 找到'进行中'区域",
+      "Step 3: 验证显示正在执行的任务列表",
+      "Step 4: 验证每个任务显示流程名称和当前步骤"
+    ],
+    "passes": true
+  },
+  {
+    "index": 4,
+    "category": "functional",
+    "description": "EW-01 我的看板：点击快捷入口导航到对应页面",
+    "steps": [
+      "Step 1: 登录并导航到执行者看板",
+      "Step 2: 找到快捷入口区域",
+      "Step 3: 点击'任务列表'快捷入口",
+      "Step 4: 验证跳转到任务列表页面 /executor/tasks"
+    ],
+    "passes": true
+  },
+  {
+    "index": 5,
+    "category": "functional",
+    "description": "EW-01 我的看板：任务数量角标显示正确数字",
+    "steps": [
+      "Step 1: 登录并导航到执行者看板",
+      "Step 2: 记录待办任务区域显示的数量",
+      "Step 3: 验证数量与实际待办任务条目数一致"
+    ],
+    "passes": true
+  },
+  {
+    "index": 6,
+    "category": "functional",
+    "description": "EW-02 任务列表：页面加载并展示任务列表",
+    "steps": [
+      "Step 1: 登录并导航到 /executor/tasks",
+      "Step 2: 验证页面标题显示'任务列表'",
+      "Step 3: 验证任务列表区域存在",
+      "Step 4: 验证至少显示一个任务条目（或空状态提示）"
+    ],
+    "passes": true
+  },
+  {
+    "index": 7,
+    "category": "functional",
+    "description": "EW-02 任务列表：状态Tab筛选任务（待处理/进行中/已完成）",
+    "steps": [
+      "Step 1: 导航到任务列表页面",
+      "Step 2: 点击'待处理' Tab",
+      "Step 3: 验证只显示待处理状态任务",
+      "Step 4: 点击'进行中' Tab",
+      "Step 5: 验证只显示进行中状态任务",
+      "Step 6: 点击'已完成' Tab",
+      "Step 7: 验证只显示已完成状态任务"
+    ],
+    "passes": true
+  },
+  {
+    "index": 8,
+    "category": "functional",
+    "description": "EW-02 任务列表：搜索框按任务名称过滤任务",
+    "steps": [
+      "Step 1: 导航到任务列表页面",
+      "Step 2: 在搜索框输入已知任务名称关键词",
+      "Step 3: 验证列表过滤为包含该关键词的任务",
+      "Step 4: 清空搜索框",
+      "Step 5: 验证列表恢复显示所有任务"
+    ],
+    "passes": true
+  },
+  {
+    "index": 9,
+    "category": "functional",
+    "description": "EW-02 任务列表：分页功能可跳转页面",
+    "steps": [
+      "Step 1: 导航到任务列表页面（确保有多页数据）",
+      "Step 2: 验证分页组件存在",
+      "Step 3: 点击第2页",
+      "Step 4: 验证列表内容切换到第2页数据",
+      "Step 5: 点击上一页",
+      "Step 6: 验证返回第1页"
+    ],
+    "passes": true
+  },
+  {
+    "index": 10,
+    "category": "functional",
+    "description": "EW-02 任务列表：按创建时间排序（升序/降序）",
+    "steps": [
+      "Step 1: 导航到任务列表页面",
+      "Step 2: 点击'创建时间'列标题",
+      "Step 3: 验证列表按时间升序排列",
+      "Step 4: 再次点击'创建时间'列标题",
+      "Step 5: 验证列表按时间降序排列"
+    ],
+    "passes": true
+  },
+  {
+    "index": 11,
+    "category": "functional",
+    "description": "EW-03 任务详情（自动）：通过任务列表点击进入自动任务详情页",
+    "steps": [
+      "Step 1: 导航到任务列表页面",
+      "Step 2: 找到一个'进行中'状态的自动任务",
+      "Step 3: 点击任务名称",
+      "Step 4: 验证跳转到 /executor/tasks/{taskId}",
+      "Step 5: 验证页面显示任务名称和流程信息",
+      "Step 6: 验证DAG进度图区域存在"
+    ],
+    "passes": true
+  },
+  {
+    "index": 12,
+    "category": "functional",
+    "description": "EW-03 任务详情：DAG进度图正确渲染节点和连线",
+    "steps": [
+      "Step 1: 进入一个有多个节点的自动任务详情页",
+      "Step 2: 验证DAG图中显示多个节点",
+      "Step 3: 验证节点之间有连线（边）",
+      "Step 4: 验证节点显示步骤名称"
+    ],
+    "passes": true
+  },
+  {
+    "index": 13,
+    "category": "functional",
+    "description": "EW-03 任务详情：已完成节点显示为绿色状态",
+    "steps": [
+      "Step 1: 进入一个有已完成步骤的任务详情页",
+      "Step 2: 找到已完成的节点",
+      "Step 3: 验证该节点显示完成状态（绿色或勾选图标）"
+    ],
+    "passes": true
+  },
+  {
+    "index": 14,
+    "category": "functional",
+    "description": "EW-03 任务详情：执行中节点显示进度动画",
+    "steps": [
+      "Step 1: 进入一个有节点正在执行的任务详情页",
+      "Step 2: 找到进行中的节点",
+      "Step 3: 验证该节点显示执行中状态（加载动画或蓝色高亮）"
+    ],
+    "passes": true
+  },
+  {
+    "index": 15,
+    "category": "functional",
+    "description": "EW-03 任务详情：失败节点显示为红色错误状态",
+    "steps": [
+      "Step 1: 进入一个有节点执行失败的任务详情页",
+      "Step 2: 找到失败的节点",
+      "Step 3: 验证该节点显示失败状态（红色或错误图标）",
+      "Step 4: 验证有错误提示文字"
+    ],
+    "passes": true
+  },
+  {
+    "index": 16,
+    "category": "functional",
+    "description": "EW-03 任务详情：点击节点展开执行日志面板",
+    "steps": [
+      "Step 1: 进入任务详情页，DAG图已渲染",
+      "Step 2: 点击一个已完成的节点",
+      "Step 3: 验证右侧或底部弹出日志面板",
+      "Step 4: 验证日志面板显示该节点的执行日志",
+      "Step 5: 关闭日志面板",
+      "Step 6: 验证面板关闭，DAG图恢复正常显示"
+    ],
+    "passes": true
+  },
+  {
+    "index": 17,
+    "category": "functional",
+    "description": "EW-04 人工操作步骤：从看板或任务列表点击进入待处理人工步骤页面",
+    "steps": [
+      "Step 1: 登录执行者账号",
+      "Step 2: 在看板的待办区域找到人工步骤任务",
+      "Step 3: 点击该任务",
+      "Step 4: 验证跳转到 /task/{taskId}/step/{stepId}",
+      "Step 5: 验证页面标题显示步骤名称",
+      "Step 6: 验证页面包含背景信息、AI建议和操作按钮"
+    ],
+    "passes": true
+  },
+  {
+    "index": 18,
+    "category": "functional",
+    "description": "EW-04 人工操作步骤：显示机器已完成的背景信息摘要",
+    "steps": [
+      "Step 1: 进入人工操作步骤页面",
+      "Step 2: 验证存在背景信息区域",
+      "Step 3: 验证背景信息显示机器已执行步骤的摘要文本",
+      "Step 4: 验证摘要内容非空"
+    ],
+    "passes": true
+  },
+  {
+    "index": 19,
+    "category": "functional",
+    "description": "EW-04 人工操作步骤：明确显示人需要执行什么操作的说明",
+    "steps": [
+      "Step 1: 进入人工操作步骤页面",
+      "Step 2: 验证存在'需要您完成'或类似的操作说明区域",
+      "Step 3: 验证操作说明文字清晰描述需要人做什么",
+      "Step 4: 验证说明非空且具体"
+    ],
+    "passes": true
+  },
+  {
+    "index": 20,
+    "category": "functional",
+    "description": "EW-04 人工操作步骤：显示AI建议内容并可修改",
+    "steps": [
+      "Step 1: 进入人工操作步骤页面",
+      "Step 2: 验证存在AI建议区域",
+      "Step 3: 验证AI建议内容非空",
+      "Step 4: 点击AI建议文本框",
+      "Step 5: 修改AI建议内容",
+      "Step 6: 验证内容已被修改（非只读）"
+    ],
+    "passes": true
+  },
+  {
+    "index": 21,
+    "category": "functional",
+    "description": "EW-04 人工操作步骤：点击'全部采纳AI建议'完成提交完整流程",
+    "steps": [
+      "Step 1: 以执行者身份登录",
+      "Step 2: 导航到一个待处理的人工步骤页面",
+      "Step 3: 阅读背景信息区域内容",
+      "Step 4: 阅读AI建议内容",
+      "Step 5: 注意页面上的不可撤回警告提示",
+      "Step 6: 点击'全部采纳AI建议'按钮",
+      "Step 7: 验证弹出确认对话框",
+      "Step 8: 点击确认按钮",
+      "Step 9: 验证提交成功提示消息出现",
+      "Step 10: 验证页面跳转回任务列表或看板",
+      "Step 11: 验证该任务步骤状态更新为已完成"
+    ],
+    "passes": true
+  },
+  {
+    "index": 22,
+    "category": "functional",
+    "description": "EW-04 人工操作步骤：修改AI建议后提交完整流程",
+    "steps": [
+      "Step 1: 以执行者身份登录",
+      "Step 2: 导航到一个待处理的人工步骤页面",
+      "Step 3: 查看AI建议内容",
+      "Step 4: 修改AI建议文本框内容（增加或修改文字）",
+      "Step 5: 验证修改后的内容保存在输入框中",
+      "Step 6: 点击'修改后提交'按钮",
+      "Step 7: 验证弹出确认对话框，显示修改后的内容",
+      "Step 8: 点击确认提交",
+      "Step 9: 验证提交成功消息",
+      "Step 10: 验证任务步骤标记为已完成",
+      "Step 11: 验证记录显示是修改后的内容而非原始AI建议"
+    ],
+    "passes": true
+  },
+  {
+    "index": 23,
+    "category": "functional",
+    "description": "EW-04 人工操作步骤：驳回操作并填写驳回原因完整流程",
+    "steps": [
+      "Step 1: 以执行者身份登录",
+      "Step 2: 导航到一个待处理的人工步骤页面",
+      "Step 3: 点击'驳回'按钮",
+      "Step 4: 验证弹出驳回原因输入对话框",
+      "Step 5: 输入驳回原因文字",
+      "Step 6: 点击确认驳回",
+      "Step 7: 验证驳回成功消息出现",
+      "Step 8: 验证任务步骤状态更新为已驳回",
+      "Step 9: 验证流程状态更新（可能暂停或需要管理员介入）",
+      "Step 10: 验证管理员端可以看到驳回事件"
+    ],
+    "passes": true
+  },
+  {
+    "index": 24,
+    "category": "functional",
+    "description": "EW-04 人工操作步骤：页面明显显示'提交后不可撤回'警告",
+    "steps": [
+      "Step 1: 进入人工操作步骤页面",
+      "Step 2: 验证存在警告文字，如'提交后不可撤回'或类似表述",
+      "Step 3: 验证警告文字视觉上突出（红色、警告图标或加粗）"
+    ],
+    "passes": true
+  },
+  {
+    "index": 25,
+    "category": "functional",
+    "description": "EW-04 人工操作步骤：提交表单为空时显示验证错误",
+    "steps": [
+      "Step 1: 进入人工操作步骤页面",
+      "Step 2: 清空AI建议文本框（如果必填）",
+      "Step 3: 点击'修改后提交'按钮",
+      "Step 4: 验证显示表单验证错误提示",
+      "Step 5: 验证不跳转页面，停留在当前步骤页"
+    ],
+    "passes": true
+  },
+  {
+    "index": 26,
+    "category": "functional",
+    "description": "MW-01 决策驾驶舱：管理员登录后页面加载显示全局概览",
+    "steps": [
+      "Step 1: 以管理员身份登录",
+      "Step 2: 导航到管理工作台首页 /manage/dashboard",
+      "Step 3: 验证页面标题为'决策驾驶舱'或类似",
+      "Step 4: 验证存在全局健康度指标区域",
+      "Step 5: 验证存在AI建议列表区域",
+      "Step 6: 验证存在进行中任务摘要区域"
+    ],
+    "passes": true
+  },
+  {
+    "index": 27,
+    "category": "functional",
+    "description": "MW-01 决策驾驶舱：全局健康度得分可视化展示",
+    "steps": [
+      "Step 1: 以管理员身份导航到决策驾驶舱",
+      "Step 2: 找到健康度指标区域",
+      "Step 3: 验证显示数值或百分比",
+      "Step 4: 验证有视觉化表示（仪表盘或评分卡）"
+    ],
+    "passes": true
+  },
+  {
+    "index": 28,
+    "category": "functional",
+    "description": "MW-01 决策驾驶舱：AI建议列表显示建议条目",
+    "steps": [
+      "Step 1: 以管理员身份导航到决策驾驶舱",
+      "Step 2: 找到AI建议区域",
+      "Step 3: 验证显示至少一条AI建议（或空状态提示）",
+      "Step 4: 验证每条建议显示摘要文字"
+    ],
+    "passes": true
+  },
+  {
+    "index": 29,
+    "category": "functional",
+    "description": "MW-01 决策驾驶舱：进行中任务摘要区域展示任务概况",
+    "steps": [
+      "Step 1: 以管理员身份导航到决策驾驶舱",
+      "Step 2: 找到进行中任务区域",
+      "Step 3: 验证显示任务数量统计",
+      "Step 4: 验证显示任务列表或摘要"
+    ],
+    "passes": true
+  },
+  {
+    "index": 30,
+    "category": "functional",
+    "description": "MW-01 决策驾驶舱：点击AI建议跳转到AI决策建议详情页",
+    "steps": [
+      "Step 1: 以管理员身份导航到决策驾驶舱",
+      "Step 2: 点击一条AI建议条目",
+      "Step 3: 验证跳转到 /manage/suggestions/{id}",
+      "Step 4: 验证建议详情页显示完整建议内容"
+    ],
+    "passes": true
+  },
+  {
+    "index": 31,
+    "category": "functional",
+    "description": "MW-03 流程编辑器：页面加载显示空白画布和节点面板",
+    "steps": [
+      "Step 1: 以管理员身份导航到 /manage/flows/new 或点击新建流程",
+      "Step 2: 验证页面加载流程编辑器",
+      "Step 3: 验证存在可视化画布区域",
+      "Step 4: 验证存在节点类型面板（左侧或右侧）",
+      "Step 5: 验证存在工具栏（保存、触发等按钮）"
+    ],
+    "passes": true
+  },
+  {
+    "index": 32,
+    "category": "functional",
+    "description": "MW-03 流程编辑器：自然语言输入生成DAG流程图",
+    "steps": [
+      "Step 1: 进入流程编辑器",
+      "Step 2: 找到自然语言输入框",
+      "Step 3: 输入流程描述，如'每天早上8点采集竞品数据，识别异常后通知老板确认'",
+      "Step 4: 点击'生成'或'AI生成'按钮",
+      "Step 5: 等待AI处理",
+      "Step 6: 验证画布上出现多个节点",
+      "Step 7: 验证节点之间有连线"
+    ],
+    "passes": true
+  },
+  {
+    "index": 33,
+    "category": "functional",
+    "description": "MW-03 流程编辑器：从节点面板拖拽自动节点到画布",
+    "steps": [
+      "Step 1: 进入流程编辑器（空白画布）",
+      "Step 2: 在节点面板找到'API调用'节点类型",
+      "Step 3: 拖拽该节点到画布空白区域",
+      "Step 4: 验证节点出现在画布上",
+      "Step 5: 验证节点显示类型图标和默认名称"
+    ],
+    "passes": true
+  },
+  {
+    "index": 34,
+    "category": "functional",
+    "description": "MW-03 流程编辑器：从节点面板拖拽人工节点到画布",
+    "steps": [
+      "Step 1: 进入流程编辑器",
+      "Step 2: 在节点面板找到'人工确认'节点类型",
+      "Step 3: 拖拽该节点到画布",
+      "Step 4: 验证节点出现在画布上",
+      "Step 5: 验证节点样式与自动节点不同（颜色或图标有区别）"
+    ],
+    "passes": true
+  },
+  {
+    "index": 35,
+    "category": "functional",
+    "description": "MW-03 流程编辑器：连接两个节点建立依赖关系",
+    "steps": [
+      "Step 1: 进入流程编辑器，添加两个节点到画布",
+      "Step 2: 将鼠标悬停在第一个节点的连接点上",
+      "Step 3: 拖拽出连线到第二个节点",
+      "Step 4: 释放鼠标完成连接",
+      "Step 5: 验证两节点之间出现连线（边）",
+      "Step 6: 验证连线方向正确（从上游到下游）"
+    ],
+    "passes": true
+  },
+  {
+    "index": 36,
+    "category": "functional",
+    "description": "MW-03 流程编辑器：删除节点从画布移除",
+    "steps": [
+      "Step 1: 进入流程编辑器，画布上有至少一个节点",
+      "Step 2: 点击选中一个节点",
+      "Step 3: 按Delete键或点击删除图标",
+      "Step 4: 验证节点从画布消失",
+      "Step 5: 验证相关连线也一并删除"
+    ],
+    "passes": true
+  },
+  {
+    "index": 37,
+    "category": "functional",
+    "description": "MW-03 流程编辑器：配置API调用自动节点（URL、方法、参数）",
+    "steps": [
+      "Step 1: 进入流程编辑器，添加一个API调用节点",
+      "Step 2: 双击节点或点击配置图标打开配置面板",
+      "Step 3: 输入请求URL",
+      "Step 4: 选择HTTP方法（GET/POST）",
+      "Step 5: 添加请求参数",
+      "Step 6: 点击保存",
+      "Step 7: 验证节点显示配置信息摘要"
+    ],
+    "passes": true
+  },
+  {
+    "index": 38,
+    "category": "functional",
+    "description": "MW-03 流程编辑器：配置人工节点（指定负责人角色、操作说明）完整流程",
+    "steps": [
+      "Step 1: 进入流程编辑器",
+      "Step 2: 添加一个人工确认节点",
+      "Step 3: 双击节点打开配置面板",
+      "Step 4: 选择负责人角色（如'运营主管'）",
+      "Step 5: 填写操作说明文本",
+      "Step 6: 配置AI建议提示词",
+      "Step 7: 设置超时时间",
+      "Step 8: 勾选超时后催办选项",
+      "Step 9: 点击保存配置",
+      "Step 10: 验证节点显示负责人角色信息",
+      "Step 11: 验证节点颜色或图标表示为人工节点"
+    ],
+    "passes": true
+  },
+  {
+    "index": 39,
+    "category": "functional",
+    "description": "MW-03 流程编辑器：保存流程定义并验证版本号",
+    "steps": [
+      "Step 1: 进入流程编辑器，完成基本流程定义（至少2个节点）",
+      "Step 2: 点击'保存'按钮",
+      "Step 3: 验证显示保存成功提示",
+      "Step 4: 验证URL更新为 /manage/flows/{flowId}",
+      "Step 5: 验证右上角或面板显示版本号（如 v1）"
+    ],
+    "passes": true
+  },
+  {
+    "index": 40,
+    "category": "functional",
+    "description": "MW-03 流程编辑器：手动触发已保存的流程创建任务实例",
+    "steps": [
+      "Step 1: 进入一个已保存的流程编辑器页面",
+      "Step 2: 点击'触发'或'手动运行'按钮",
+      "Step 3: 验证弹出确认对话框",
+      "Step 4: 点击确认触发",
+      "Step 5: 验证成功消息出现",
+      "Step 6: 导航到任务监控页面",
+      "Step 7: 验证新任务实例出现在列表中"
+    ],
+    "passes": true
+  },
+  {
+    "index": 41,
+    "category": "functional",
+    "description": "MW-03 流程编辑器：修改已保存流程后版本号递增",
+    "steps": [
+      "Step 1: 打开一个已有版本的流程（如 v1）",
+      "Step 2: 修改一个节点名称",
+      "Step 3: 点击保存",
+      "Step 4: 验证版本号更新为 v2",
+      "Step 5: 导航到流程版本历史页面",
+      "Step 6: 验证历史中显示 v1 和 v2 两个版本"
+    ],
+    "passes": true
+  },
+  {
+    "index": 42,
+    "category": "functional",
+    "description": "MW-03 流程编辑器：添加条件分支节点并配置判断条件",
+    "steps": [
+      "Step 1: 进入流程编辑器",
+      "Step 2: 从节点面板拖拽'条件分支'节点到画布",
+      "Step 3: 双击打开配置面板",
+      "Step 4: 配置条件表达式（如 '库存数量 < 100'）",
+      "Step 5: 配置True分支和False分支的下游节点",
+      "Step 6: 点击保存",
+      "Step 7: 验证节点显示为菱形或分支图标"
+    ],
+    "passes": true
+  },
+  {
+    "index": 43,
+    "category": "style",
+    "description": "EW-01 我的看板：整体布局符合设计规范，卡片间距合理",
+    "steps": [
+      "Step 1: 登录执行者账号，导航到看板",
+      "Step 2: 截图保存当前页面",
+      "Step 3: 验证页面无水平滚动条",
+      "Step 4: 验证待办和进行中区域布局整齐",
+      "Step 5: 验证卡片之间有合理间距"
+    ],
+    "passes": true
+  },
+  {
+    "index": 44,
+    "category": "style",
+    "description": "EW-01 我的看板：待办任务卡片视觉样式（头像/图标、标题、截止日期、状态徽章）",
+    "steps": [
+      "Step 1: 导航到执行者看板",
+      "Step 2: 找到待办任务卡片",
+      "Step 3: 截图",
+      "Step 4: 验证卡片有清晰的标题文字",
+      "Step 5: 验证状态徽章颜色突出（如橙色或红色表示紧急）",
+      "Step 6: 验证截止日期文字清晰可读"
+    ],
+    "passes": true
+  },
+  {
+    "index": 45,
+    "category": "style",
+    "description": "EW-02 任务列表：表格行样式整洁，状态徽章颜色编码正确",
+    "steps": [
+      "Step 1: 导航到任务列表页面",
+      "Step 2: 截图",
+      "Step 3: 验证表格列标题清晰",
+      "Step 4: 验证不同状态的徽章使用不同颜色（待处理=橙色，进行中=蓝色，已完成=绿色）",
+      "Step 5: 验证表格行有hover效果"
+    ],
+    "passes": true
+  },
+  {
+    "index": 46,
+    "category": "style",
+    "description": "EW-04 人工操作步骤：页面布局清晰，AI建议面板与背景信息区域区分明显",
+    "steps": [
+      "Step 1: 进入人工操作步骤页面",
+      "Step 2: 截图",
+      "Step 3: 验证背景信息区域与AI建议区域有视觉区分",
+      "Step 4: 验证操作按钮区域在页面底部或右侧显眼位置",
+      "Step 5: 验证不可撤回警告文字颜色为红色或橙色"
+    ],
+    "passes": true
+  },
+  {
+    "index": 47,
+    "category": "style",
+    "description": "MW-01 决策驾驶舱：健康度指标卡片视觉设计（数字大而清晰，颜色反映健康状态）",
+    "steps": [
+      "Step 1: 以管理员身份导航到决策驾驶舱",
+      "Step 2: 截图",
+      "Step 3: 验证健康度数字字体足够大（主要指标）",
+      "Step 4: 验证健康状态好时为绿色，差时为红色",
+      "Step 5: 验证页面整体布局无元素溢出"
+    ],
+    "passes": true
+  },
+  {
+    "index": 48,
+    "category": "style",
+    "description": "MW-03 流程编辑器画布：不同类型节点使用不同颜色区分（自动=蓝色，人工=橙色）",
+    "steps": [
+      "Step 1: 进入流程编辑器",
+      "Step 2: 添加自动节点和人工节点各一个",
+      "Step 3: 截图",
+      "Step 4: 验证自动节点和人工节点颜色或样式明显不同",
+      "Step 5: 验证节点标签文字清晰可读"
+    ],
+    "passes": true
+  },
+  {
+    "index": 49,
+    "category": "style",
+    "description": "MW-03 流程编辑器：工具栏和节点面板布局合理，不遮挡画布主区域",
+    "steps": [
+      "Step 1: 进入流程编辑器",
+      "Step 2: 截图整个编辑器页面",
+      "Step 3: 验证画布占据页面主要区域",
+      "Step 4: 验证节点面板固定在侧边不遮挡画布",
+      "Step 5: 验证工具栏位于顶部或浮动工具栏，不影响画布操作"
+    ],
+    "passes": true
+  },
+  {
+    "index": 50,
+    "category": "functional",
+    "description": "MW-03 流程编辑器：配置定时触发规则（Cron表达式）",
+    "steps": [
+      "Step 1: 进入流程编辑器",
+      "Step 2: 找到触发器配置区域",
+      "Step 3: 选择'定时触发'",
+      "Step 4: 输入Cron表达式（如 '0 8 * * *' 每天早8点）",
+      "Step 5: 点击保存",
+      "Step 6: 验证触发器配置已保存并显示在流程信息中"
+    ],
+    "passes": true
+  },
+  {
+    "index": 51,
+    "category": "functional",
+    "description": "EW-05 任务历史：页面加载显示已完成任务归档列表",
+    "steps": [
+      "Step 1: 以执行者身份登录",
+      "Step 2: 导航到 /executor/history",
+      "Step 3: 验证页面标题显示'任务历史'",
+      "Step 4: 验证已完成任务列表存在",
+      "Step 5: 验证每条任务显示完成时间"
+    ],
+    "passes": true
+  },
+  {
+    "index": 52,
+    "category": "functional",
+    "description": "EW-05 任务历史：已完成任务显示流程名、完成时间和耗时",
+    "steps": [
+      "Step 1: 导航到任务历史页面",
+      "Step 2: 找到一条历史任务记录",
+      "Step 3: 验证显示流程名称",
+      "Step 4: 验证显示完成时间",
+      "Step 5: 验证显示总耗时"
+    ],
+    "passes": true
+  },
+  {
+    "index": 53,
+    "category": "functional",
+    "description": "EW-05 任务历史：'我的操作记录' Tab显示个人参与的人工步骤",
+    "steps": [
+      "Step 1: 导航到任务历史页面",
+      "Step 2: 点击'我的操作记录' Tab（或类似选项）",
+      "Step 3: 验证只显示当前用户操作过的步骤记录",
+      "Step 4: 验证每条记录显示操作时间和操作类型（采纳/修改/驳回）"
+    ],
+    "passes": true
+  },
+  {
+    "index": 54,
+    "category": "functional",
+    "description": "EW-05 任务历史：按任务名称关键词搜索历史任务",
+    "steps": [
+      "Step 1: 导航到任务历史页面",
+      "Step 2: 在搜索框输入已知任务名称",
+      "Step 3: 验证列表过滤为匹配任务",
+      "Step 4: 清空搜索",
+      "Step 5: 验证列表恢复全部显示"
+    ],
+    "passes": true
+  },
+  {
+    "index": 55,
+    "category": "functional",
+    "description": "EW-05 任务历史：按日期范围筛选历史任务",
+    "steps": [
+      "Step 1: 导航到任务历史页面",
+      "Step 2: 选择开始日期",
+      "Step 3: 选择结束日期",
+      "Step 4: 点击筛选按钮",
+      "Step 5: 验证列表只显示在该日期范围内完成的任务"
+    ],
+    "passes": true
+  },
+  {
+    "index": 56,
+    "category": "functional",
+    "description": "EW-06 知识库首页：页面加载显示AI问答和分类浏览区域",
+    "steps": [
+      "Step 1: 以执行者身份导航到 /executor/knowledge",
+      "Step 2: 验证页面标题为'知识库'",
+      "Step 3: 验证存在AI问答输入框",
+      "Step 4: 验证存在知识分类浏览区域",
+      "Step 5: 验证分类包括仓库操作、客服规范、采购流程等"
+    ],
+    "passes": true
+  },
+  {
+    "index": 57,
+    "category": "functional",
+    "description": "EW-06 知识库首页：AI问答功能输入问题返回相关回答",
+    "steps": [
+      "Step 1: 导航到知识库首页",
+      "Step 2: 在问答输入框输入问题，如'退货处理的SOP是什么？'",
+      "Step 3: 点击发送或按Enter",
+      "Step 4: 等待AI响应",
+      "Step 5: 验证显示AI回答文字",
+      "Step 6: 验证回答引用了相关知识词条"
+    ],
+    "passes": true
+  },
+  {
+    "index": 58,
+    "category": "functional",
+    "description": "EW-06 知识库首页：按分类浏览过滤显示对应知识词条",
+    "steps": [
+      "Step 1: 导航到知识库首页",
+      "Step 2: 点击'仓库操作'分类",
+      "Step 3: 验证显示仓库操作相关的知识词条列表",
+      "Step 4: 点击'客服规范'分类",
+      "Step 5: 验证切换为客服规范相关词条"
+    ],
+    "passes": true
+  },
+  {
+    "index": 59,
+    "category": "functional",
+    "description": "EW-06 知识库首页：搜索框按关键词搜索知识词条",
+    "steps": [
+      "Step 1: 导航到知识库首页",
+      "Step 2: 在搜索框输入关键词（如'退货'）",
+      "Step 3: 触发搜索（Enter或点击搜索按钮）",
+      "Step 4: 验证显示包含该关键词的知识词条列表"
+    ],
+    "passes": true
+  },
+  {
+    "index": 60,
+    "category": "functional",
+    "description": "EW-06 知识库首页：搜索结果点击跳转到词条详情页",
+    "steps": [
+      "Step 1: 在知识库首页搜索关键词",
+      "Step 2: 在搜索结果中点击一条词条",
+      "Step 3: 验证跳转到 /executor/knowledge/{id}",
+      "Step 4: 验证显示该词条的详细内容"
+    ],
+    "passes": true
+  },
+  {
+    "index": 61,
+    "category": "functional",
+    "description": "EW-07 知识词条详情：页面加载显示词条完整内容",
+    "steps": [
+      "Step 1: 导航到一个知识词条详情页",
+      "Step 2: 验证显示词条标题",
+      "Step 3: 验证显示词条正文内容",
+      "Step 4: 验证显示所属分类"
+    ],
+    "passes": true
+  },
+  {
+    "index": 62,
+    "category": "functional",
+    "description": "EW-07 知识词条详情：SOP内容支持结构化格式（标题、列表、步骤）",
+    "steps": [
+      "Step 1: 导航到一个SOP类型的知识词条",
+      "Step 2: 验证内容有标题层级显示",
+      "Step 3: 验证有编号列表或步骤说明",
+      "Step 4: 验证格式渲染正确（Markdown渲染）"
+    ],
+    "passes": true
+  },
+  {
+    "index": 63,
+    "category": "functional",
+    "description": "EW-07 知识词条详情：点击'有帮助'按钮记录反馈",
+    "steps": [
+      "Step 1: 导航到知识词条详情页",
+      "Step 2: 找到'有帮助'按钮",
+      "Step 3: 点击'有帮助'",
+      "Step 4: 验证有帮助计数增加",
+      "Step 5: 验证按钮状态变为已点击（防止重复提交）"
+    ],
+    "passes": true
+  },
+  {
+    "index": 64,
+    "category": "functional",
+    "description": "EW-07 知识词条详情：显示版本号和最后更新时间",
+    "steps": [
+      "Step 1: 导航到知识词条详情页",
+      "Step 2: 验证显示版本号（如 v2.3）",
+      "Step 3: 验证显示最后更新时间"
+    ],
+    "passes": true
+  },
+  {
+    "index": 65,
+    "category": "functional",
+    "description": "EW-07 知识词条详情：显示查看次数统计",
+    "steps": [
+      "Step 1: 导航到知识词条详情页",
+      "Step 2: 验证显示查看次数",
+      "Step 3: 刷新页面",
+      "Step 4: 验证查看次数至少不减少"
+    ],
+    "passes": true
+  },
+  {
+    "index": 66,
+    "category": "functional",
+    "description": "EW-08 知识贡献：页面加载显示提交新知识和修正现有知识的表单",
+    "steps": [
+      "Step 1: 以执行者身份导航到 /executor/knowledge/contribute",
+      "Step 2: 验证页面标题为'知识贡献'或类似",
+      "Step 3: 验证存在提交新知识词条的表单",
+      "Step 4: 验证存在提交修正意见的区域"
+    ],
+    "passes": true
+  },
+  {
+    "index": 67,
+    "category": "functional",
+    "description": "EW-08 知识贡献：提交新知识词条并看到待审核状态",
+    "steps": [
+      "Step 1: 导航到知识贡献页面",
+      "Step 2: 填写词条标题",
+      "Step 3: 选择分类",
+      "Step 4: 填写词条正文内容",
+      "Step 5: 点击'提交'按钮",
+      "Step 6: 验证显示提交成功消息",
+      "Step 7: 验证提交记录出现在'我的提交'列表，状态为'待审核'"
+    ],
+    "passes": true
+  },
+  {
+    "index": 68,
+    "category": "functional",
+    "description": "EW-08 知识贡献：对已有词条提交修正意见",
+    "steps": [
+      "Step 1: 导航到知识词条详情页",
+      "Step 2: 点击'提交修正'按钮",
+      "Step 3: 验证跳转到修正表单，原内容预填",
+      "Step 4: 修改部分内容",
+      "Step 5: 填写修正原因",
+      "Step 6: 点击提交",
+      "Step 7: 验证提交成功消息"
+    ],
+    "passes": true
+  },
+  {
+    "index": 69,
+    "category": "functional",
+    "description": "EW-08 知识贡献：提交后显示成功确认并告知等待审核",
+    "steps": [
+      "Step 1: 提交一条新知识词条",
+      "Step 2: 验证成功消息包含'等待管理员审核'或类似文字",
+      "Step 3: 验证成功后可查看提交记录"
+    ],
+    "passes": true
+  },
+  {
+    "index": 70,
+    "category": "functional",
+    "description": "EW-09 工具列表：页面加载显示当前用户有权限的工具",
+    "steps": [
+      "Step 1: 以执行者身份导航到 /executor/tools",
+      "Step 2: 验证页面标题为'工具箱'或'工具列表'",
+      "Step 3: 验证显示工具卡片或列表",
+      "Step 4: 验证每个工具显示名称和描述"
+    ],
+    "passes": true
+  },
+  {
+    "index": 71,
+    "category": "functional",
+    "description": "EW-09 工具列表：没有权限的工具不显示在列表中",
+    "steps": [
+      "Step 1: 以受限执行者身份登录（无某工具权限）",
+      "Step 2: 导航到工具列表",
+      "Step 3: 验证无权限的工具不出现在列表中"
+    ],
+    "passes": true
+  },
+  {
+    "index": 72,
+    "category": "functional",
+    "description": "EW-09 工具列表：手动触发一个工具并看到执行开始",
+    "steps": [
+      "Step 1: 导航到工具列表页面",
+      "Step 2: 找到一个可手动触发的工具",
+      "Step 3: 点击'立即执行'或'触发'按钮",
+      "Step 4: 验证弹出确认对话框",
+      "Step 5: 确认执行",
+      "Step 6: 验证跳转到工具执行详情页",
+      "Step 7: 验证执行状态为'进行中'"
+    ],
+    "passes": true
+  },
+  {
+    "index": 73,
+    "category": "functional",
+    "description": "EW-10 工具执行详情：页面加载显示执行状态和基本信息",
+    "steps": [
+      "Step 1: 从工具列表触发工具，或直接导航到执行详情页",
+      "Step 2: 验证显示工具名称",
+      "Step 3: 验证显示执行状态（进行中/成功/失败）",
+      "Step 4: 验证显示开始时间"
+    ],
+    "passes": true
+  },
+  {
+    "index": 74,
+    "category": "functional",
+    "description": "EW-10 工具执行详情：执行日志实时滚动显示",
+    "steps": [
+      "Step 1: 触发一个长时间运行的工具",
+      "Step 2: 进入执行详情页",
+      "Step 3: 验证日志区域存在",
+      "Step 4: 验证日志有输出内容（逐行显示）",
+      "Step 5: 等待数秒，验证日志区域自动滚动到最新行"
+    ],
+    "passes": true
+  },
+  {
+    "index": 75,
+    "category": "functional",
+    "description": "EW-10 工具执行详情：执行成功后可下载输出文件",
+    "steps": [
+      "Step 1: 导航到一个已成功执行且有文件输出的工具详情页",
+      "Step 2: 验证显示'下载输出'按钮",
+      "Step 3: 点击下载按钮",
+      "Step 4: 验证文件下载开始",
+      "Step 5: 验证下载的文件格式正确（如 .xlsx 或 .csv）"
+    ],
+    "passes": true
+  },
+  {
+    "index": 76,
+    "category": "functional",
+    "description": "MW-02 流程定义列表：管理员页面加载显示所有流程模板",
+    "steps": [
+      "Step 1: 以管理员身份导航到 /manage/flows",
+      "Step 2: 验证页面标题为'流程定义'或类似",
+      "Step 3: 验证显示流程列表",
+      "Step 4: 验证每条流程显示名称和状态"
+    ],
+    "passes": true
+  },
+  {
+    "index": 77,
+    "category": "functional",
+    "description": "MW-02 流程定义列表：每条流程显示健康指标（成功率、平均耗时）",
+    "steps": [
+      "Step 1: 导航到流程定义列表",
+      "Step 2: 找到一条有历史执行记录的流程",
+      "Step 3: 验证显示成功率百分比",
+      "Step 4: 验证显示平均执行耗时"
+    ],
+    "passes": true
+  },
+  {
+    "index": 78,
+    "category": "functional",
+    "description": "MW-02 流程定义列表：点击'新建流程'跳转到流程编辑器",
+    "steps": [
+      "Step 1: 导航到流程定义列表",
+      "Step 2: 点击'新建流程'按钮",
+      "Step 3: 验证跳转到 /manage/flows/new",
+      "Step 4: 验证编辑器显示空白画布"
+    ],
+    "passes": true
+  },
+  {
+    "index": 79,
+    "category": "functional",
+    "description": "MW-02 流程定义列表：按流程名称搜索过滤",
+    "steps": [
+      "Step 1: 导航到流程定义列表",
+      "Step 2: 在搜索框输入流程名称关键词",
+      "Step 3: 验证列表过滤为匹配流程",
+      "Step 4: 清空搜索，验证列表恢复"
+    ],
+    "passes": true
+  },
+  {
+    "index": 80,
+    "category": "functional",
+    "description": "MW-02 流程定义列表：启用/禁用流程开关切换流程状态",
+    "steps": [
+      "Step 1: 导航到流程定义列表",
+      "Step 2: 找到一个启用状态的流程",
+      "Step 3: 点击禁用开关",
+      "Step 4: 验证状态变为禁用",
+      "Step 5: 再次点击启用",
+      "Step 6: 验证状态恢复为启用"
+    ],
+    "passes": true
+  },
+  {
+    "index": 81,
+    "category": "functional",
+    "description": "MW-04 流程版本历史：页面加载显示该流程所有历史版本",
+    "steps": [
+      "Step 1: 导航到一个有多个版本的流程详情",
+      "Step 2: 点击'版本历史'Tab或入口",
+      "Step 3: 验证显示版本列表",
+      "Step 4: 验证每个版本显示版本号、保存时间和操作人"
+    ],
+    "passes": true
+  },
+  {
+    "index": 82,
+    "category": "functional",
+    "description": "MW-04 流程版本历史：选择两个版本进行差异对比",
+    "steps": [
+      "Step 1: 进入流程版本历史页面（至少有2个版本）",
+      "Step 2: 选中 v1 复选框",
+      "Step 3: 选中 v2 复选框",
+      "Step 4: 点击'对比'按钮",
+      "Step 5: 验证显示差异对比视图",
+      "Step 6: 验证差异处高亮标注"
+    ],
+    "passes": true
+  },
+  {
+    "index": 83,
+    "category": "functional",
+    "description": "MW-04 流程版本历史：回滚到历史版本并确认",
+    "steps": [
+      "Step 1: 进入流程版本历史页面",
+      "Step 2: 点击旧版本的'回滚'按钮",
+      "Step 3: 验证弹出确认对话框，说明回滚操作",
+      "Step 4: 确认回滚",
+      "Step 5: 验证流程当前版本恢复到所选历史版本",
+      "Step 6: 验证版本列表更新显示最新回滚版本"
+    ],
+    "passes": true
+  },
+  {
+    "index": 84,
+    "category": "functional",
+    "description": "MW-05 工具库管理：页面加载显示所有工具列表",
+    "steps": [
+      "Step 1: 以管理员身份导航到 /manage/tools",
+      "Step 2: 验证页面标题为'工具库'",
+      "Step 3: 验证显示工具列表",
+      "Step 4: 验证每个工具显示类型（API/Webhook/Python脚本）"
+    ],
+    "passes": true
+  },
+  {
+    "index": 85,
+    "category": "functional",
+    "description": "MW-05 工具库管理：显示每个工具的调用次数统计",
+    "steps": [
+      "Step 1: 导航到工具库管理页面",
+      "Step 2: 找到一个有调用记录的工具",
+      "Step 3: 验证显示调用总次数",
+      "Step 4: 验证显示成功率"
+    ],
+    "passes": true
+  },
+  {
+    "index": 86,
+    "category": "functional",
+    "description": "MW-05 工具库管理：启用/禁用工具",
+    "steps": [
+      "Step 1: 导航到工具库管理页面",
+      "Step 2: 找到一个启用的工具",
+      "Step 3: 点击禁用",
+      "Step 4: 验证工具状态变为禁用",
+      "Step 5: 验证执行者工具列表中该工具不再出现"
+    ],
+    "passes": true
+  },
+  {
+    "index": 87,
+    "category": "functional",
+    "description": "MW-06 工具上传/编辑：页面加载显示工具配置表单",
+    "steps": [
+      "Step 1: 以管理员身份导航到 /manage/tools/new",
+      "Step 2: 验证页面显示工具配置表单",
+      "Step 3: 验证可以选择工具类型（API/Webhook/Python脚本）",
+      "Step 4: 验证有工具名称输入框"
+    ],
+    "passes": true
+  },
+  {
+    "index": 88,
+    "category": "functional",
+    "description": "MW-06 工具上传：配置API工具（URL、HTTP方法、认证头）并保存",
+    "steps": [
+      "Step 1: 导航到工具新建页面",
+      "Step 2: 选择工具类型为'API调用'",
+      "Step 3: 输入工具名称",
+      "Step 4: 输入API URL",
+      "Step 5: 选择HTTP方法",
+      "Step 6: 添加认证头（Authorization）",
+      "Step 7: 点击保存",
+      "Step 8: 验证成功消息并跳转到工具详情"
+    ],
+    "passes": true
+  },
+  {
+    "index": 89,
+    "category": "functional",
+    "description": "MW-06 工具上传：上传Python脚本文件",
+    "steps": [
+      "Step 1: 导航到工具新建页面",
+      "Step 2: 选择工具类型为'Python脚本'",
+      "Step 3: 输入工具名称和描述",
+      "Step 4: 点击上传脚本文件按钮",
+      "Step 5: 选择一个 .py 文件",
+      "Step 6: 验证文件上传成功显示文件名",
+      "Step 7: 点击保存",
+      "Step 8: 验证工具创建成功"
+    ],
+    "passes": true
+  },
+  {
+    "index": 90,
+    "category": "functional",
+    "description": "MW-06 工具编辑：定义工具输入参数（名称、类型、必填、描述）",
+    "steps": [
+      "Step 1: 进入工具编辑页面",
+      "Step 2: 找到参数定义区域",
+      "Step 3: 点击'添加参数'",
+      "Step 4: 输入参数名称",
+      "Step 5: 选择参数类型（string/number/boolean）",
+      "Step 6: 勾选'必填'",
+      "Step 7: 输入参数描述",
+      "Step 8: 保存参数",
+      "Step 9: 验证参数出现在参数列表中"
+    ],
+    "passes": true
+  },
+  {
+    "index": 91,
+    "category": "functional",
+    "description": "MW-06 工具编辑：设置工具访问权限（指定可使用的角色）",
+    "steps": [
+      "Step 1: 进入工具编辑页面",
+      "Step 2: 找到权限设置区域",
+      "Step 3: 选择可使用该工具的角色",
+      "Step 4: 点击保存",
+      "Step 5: 验证权限设置生效（无权限用户的工具列表不显示该工具）"
+    ],
+    "passes": true
+  },
+  {
+    "index": 92,
+    "category": "style",
+    "description": "EW-05 任务历史：列表条目样式整洁，时间戳格式统一",
+    "steps": [
+      "Step 1: 导航到任务历史页面",
+      "Step 2: 截图",
+      "Step 3: 验证列表条目排列整齐",
+      "Step 4: 验证时间戳格式一致（如 YYYY-MM-DD HH:mm）",
+      "Step 5: 验证操作类型（采纳/驳回）有颜色区分"
+    ],
+    "passes": true
+  },
+  {
+    "index": 93,
+    "category": "style",
+    "description": "EW-06 知识库首页：AI问答输入框和对话气泡布局清晰",
+    "steps": [
+      "Step 1: 导航到知识库首页",
+      "Step 2: 提交一个问题并获得回答",
+      "Step 3: 截图",
+      "Step 4: 验证问题气泡和回答气泡样式不同",
+      "Step 5: 验证输入框在底部，清晰可见"
+    ],
+    "passes": true
+  },
+  {
+    "index": 94,
+    "category": "style",
+    "description": "EW-07 知识词条详情：内容区域排版清晰（标题层级、段落间距、代码块高亮）",
+    "steps": [
+      "Step 1: 导航到一个有丰富内容的知识词条",
+      "Step 2: 截图",
+      "Step 3: 验证标题比正文字体更大",
+      "Step 4: 验证段落间有合适间距",
+      "Step 5: 如有代码块，验证有语法高亮或等宽字体"
+    ],
+    "passes": true
+  },
+  {
+    "index": 95,
+    "category": "style",
+    "description": "EW-09 工具列表：工具卡片视觉包含图标、名称、描述和触发按钮",
+    "steps": [
+      "Step 1: 导航到工具列表页面",
+      "Step 2: 截图",
+      "Step 3: 验证工具卡片有图标或类型标识",
+      "Step 4: 验证工具名称字体较大较突出",
+      "Step 5: 验证触发按钮清晰可见"
+    ],
+    "passes": true
+  },
+  {
+    "index": 96,
+    "category": "style",
+    "description": "MW-02 流程定义列表：流程卡片包含健康状态颜色指示器",
+    "steps": [
+      "Step 1: 导航到流程定义列表",
+      "Step 2: 截图",
+      "Step 3: 验证健康状态好的流程有绿色指示",
+      "Step 4: 验证健康状态差的流程有红色或黄色指示"
+    ],
+    "passes": true
+  },
+  {
+    "index": 97,
+    "category": "style",
+    "description": "MW-03 流程编辑器：自动节点和人工节点颜色区分（自动=蓝色/紫色，人工=橙色/黄色）",
+    "steps": [
+      "Step 1: 进入流程编辑器，画布上有两类节点",
+      "Step 2: 截图",
+      "Step 3: 验证自动节点颜色为蓝色系",
+      "Step 4: 验证人工节点颜色为橙色系或与自动节点明显不同"
+    ],
+    "passes": true
+  },
+  {
+    "index": 98,
+    "category": "style",
+    "description": "MW-05 工具库管理：工具列表视觉区分不同类型（图标标识）",
+    "steps": [
+      "Step 1: 导航到工具库管理页面",
+      "Step 2: 截图",
+      "Step 3: 验证API工具、Webhook工具、Python脚本有不同图标",
+      "Step 4: 验证禁用工具视觉上变灰"
+    ],
+    "passes": true
+  },
+  {
+    "index": 99,
+    "category": "style",
+    "description": "MW-06 工具配置表单：表单分区清晰（基本信息、配置、参数、权限各一区）",
+    "steps": [
+      "Step 1: 导航到工具编辑页面",
+      "Step 2: 截图",
+      "Step 3: 验证表单有明确的分区标题",
+      "Step 4: 验证每个分区内容排列整洁",
+      "Step 5: 验证必填字段有星号标记"
+    ],
+    "passes": true
+  },
+  {
+    "index": 100,
+    "category": "style",
+    "description": "EW-06 知识库：知识分类导航视觉清晰，选中状态高亮",
+    "steps": [
+      "Step 1: 导航到知识库首页",
+      "Step 2: 点击一个分类",
+      "Step 3: 截图",
+      "Step 4: 验证选中的分类有高亮或加粗样式",
+      "Step 5: 验证未选中分类颜色较浅"
+    ],
+    "passes": true
+  },
+  {
+    "index": 101,
+    "category": "functional",
+    "description": "MW-07 部门管理：页面加载显示组织树结构",
+    "steps": [
+      "Step 1: 以管理员身份导航到 /manage/departments",
+      "Step 2: 验证页面标题为'部门管理'",
+      "Step 3: 验证显示组织树结构",
+      "Step 4: 验证根节点（公司）和子节点（部门）层级关系正确"
+    ],
+    "passes": true
+  },
+  {
+    "index": 102,
+    "category": "functional",
+    "description": "MW-07 部门管理：展开/折叠组织树节点",
+    "steps": [
+      "Step 1: 导航到部门管理页面",
+      "Step 2: 找到有子部门的节点",
+      "Step 3: 点击折叠图标",
+      "Step 4: 验证子节点隐藏",
+      "Step 5: 点击展开图标",
+      "Step 6: 验证子节点重新显示"
+    ],
+    "passes": true
+  },
+  {
+    "index": 103,
+    "category": "functional",
+    "description": "MW-07 部门管理：新建部门并设置父级部门",
+    "steps": [
+      "Step 1: 导航到部门管理页面",
+      "Step 2: 点击'新建部门'按钮",
+      "Step 3: 输入部门名称",
+      "Step 4: 选择父级部门",
+      "Step 5: 点击确认创建",
+      "Step 6: 验证新部门出现在组织树中正确位置"
+    ],
+    "passes": true
+  },
+  {
+    "index": 104,
+    "category": "functional",
+    "description": "MW-07 部门管理：编辑部门名称",
+    "steps": [
+      "Step 1: 导航到部门管理页面",
+      "Step 2: 右键点击或点击编辑图标选择一个部门",
+      "Step 3: 点击'编辑'",
+      "Step 4: 修改部门名称",
+      "Step 5: 确认保存",
+      "Step 6: 验证组织树中部门名称已更新"
+    ],
+    "passes": true
+  },
+  {
+    "index": 105,
+    "category": "functional",
+    "description": "MW-07 部门管理：删除空部门（无成员）",
+    "steps": [
+      "Step 1: 导航到部门管理页面",
+      "Step 2: 找到一个没有成员的部门",
+      "Step 3: 点击删除图标",
+      "Step 4: 验证确认对话框出现",
+      "Step 5: 确认删除",
+      "Step 6: 验证部门从组织树移除"
+    ],
+    "passes": true
+  },
+  {
+    "index": 106,
+    "category": "functional",
+    "description": "MW-07 部门管理：尝试删除有成员的部门提示错误",
+    "steps": [
+      "Step 1: 导航到部门管理页面",
+      "Step 2: 找到一个有成员的部门",
+      "Step 3: 点击删除",
+      "Step 4: 验证显示错误提示（'该部门有成员，无法删除'）",
+      "Step 5: 验证部门仍然存在于组织树中"
+    ],
+    "passes": true
+  },
+  {
+    "index": 107,
+    "category": "functional",
+    "description": "MW-08 角色权限：页面加载显示角色列表和权限矩阵",
+    "steps": [
+      "Step 1: 以管理员身份导航到 /manage/roles",
+      "Step 2: 验证显示角色列表（如 管理员、执行者、只读）",
+      "Step 3: 验证选中一个角色显示权限矩阵",
+      "Step 4: 验证权限矩阵包含功能模块和操作类型"
+    ],
+    "passes": true
+  },
+  {
+    "index": 108,
+    "category": "functional",
+    "description": "MW-08 角色权限：创建新角色并配置基本权限",
+    "steps": [
+      "Step 1: 导航到角色权限页面",
+      "Step 2: 点击'新建角色'",
+      "Step 3: 输入角色名称",
+      "Step 4: 在权限矩阵中勾选任务查看权限",
+      "Step 5: 点击保存",
+      "Step 6: 验证新角色出现在角色列表中"
+    ],
+    "passes": true
+  },
+  {
+    "index": 109,
+    "category": "functional",
+    "description": "MW-08 角色权限：编辑现有角色权限",
+    "steps": [
+      "Step 1: 导航到角色权限页面",
+      "Step 2: 选中一个现有角色",
+      "Step 3: 在权限矩阵中取消勾选一个权限",
+      "Step 4: 保存更改",
+      "Step 5: 验证保存成功消息",
+      "Step 6: 重新加载页面，验证更改已持久化"
+    ],
+    "passes": true
+  },
+  {
+    "index": 110,
+    "category": "functional",
+    "description": "MW-08 角色权限：配置角色可接收的人工节点类型",
+    "steps": [
+      "Step 1: 导航到角色权限页面",
+      "Step 2: 选中一个角色",
+      "Step 3: 找到'可接收人工节点类型'配置区域",
+      "Step 4: 勾选'数值确认'类型",
+      "Step 5: 勾选'审核判断'类型",
+      "Step 6: 保存",
+      "Step 7: 验证配置已保存"
+    ],
+    "passes": true
+  },
+  {
+    "index": 111,
+    "category": "functional",
+    "description": "MW-09 成员管理：页面加载显示成员列表",
+    "steps": [
+      "Step 1: 以管理员身份导航到 /manage/members",
+      "Step 2: 验证页面标题为'成员管理'",
+      "Step 3: 验证显示成员列表",
+      "Step 4: 验证每个成员显示姓名、角色和所属部门"
+    ],
+    "passes": true
+  },
+  {
+    "index": 112,
+    "category": "functional",
+    "description": "MW-09 成员管理：搜索成员按姓名或飞书ID过滤",
+    "steps": [
+      "Step 1: 导航到成员管理页面",
+      "Step 2: 在搜索框输入成员姓名",
+      "Step 3: 验证列表过滤为匹配成员",
+      "Step 4: 清空搜索，验证列表恢复"
+    ],
+    "passes": true
+  },
+  {
+    "index": 113,
+    "category": "functional",
+    "description": "MW-09 成员管理：邀请新成员（输入飞书ID/邮箱发送邀请）",
+    "steps": [
+      "Step 1: 导航到成员管理页面",
+      "Step 2: 点击'邀请成员'按钮",
+      "Step 3: 在输入框输入飞书用户ID或邮箱",
+      "Step 4: 选择初始角色",
+      "Step 5: 选择所属部门",
+      "Step 6: 点击发送邀请",
+      "Step 7: 验证邀请发送成功消息"
+    ],
+    "passes": true
+  },
+  {
+    "index": 114,
+    "category": "functional",
+    "description": "MW-09 成员管理：为成员分配不同角色",
+    "steps": [
+      "Step 1: 导航到成员管理页面",
+      "Step 2: 找到一个成员，点击编辑",
+      "Step 3: 修改角色为另一个角色",
+      "Step 4: 保存",
+      "Step 5: 验证成员列表中该成员角色已更新"
+    ],
+    "passes": true
+  },
+  {
+    "index": 115,
+    "category": "functional",
+    "description": "MW-09 成员管理：将成员移出组织（移除成员）",
+    "steps": [
+      "Step 1: 导航到成员管理页面",
+      "Step 2: 找到一个成员",
+      "Step 3: 点击'移除'或'删除'按钮",
+      "Step 4: 确认移除操作",
+      "Step 5: 验证成员从列表中消失"
+    ],
+    "passes": true
+  },
+  {
+    "index": 116,
+    "category": "functional",
+    "description": "MW-10 全局任务监控：页面加载显示所有进行中任务",
+    "steps": [
+      "Step 1: 以管理员身份导航到 /manage/monitor",
+      "Step 2: 验证页面标题为'全局任务监控'",
+      "Step 3: 验证显示所有进行中的任务实例",
+      "Step 4: 验证每个任务显示流程名、当前步骤和开始时间"
+    ],
+    "passes": true
+  },
+  {
+    "index": 117,
+    "category": "functional",
+    "description": "MW-10 全局任务监控：甘特图视图切换并正确渲染",
+    "steps": [
+      "Step 1: 导航到全局任务监控页面",
+      "Step 2: 点击'甘特图'视图切换按钮",
+      "Step 3: 验证切换为甘特图视图",
+      "Step 4: 验证时间轴正确显示",
+      "Step 5: 验证任务条目在时间轴上的位置合理"
+    ],
+    "passes": true
+  },
+  {
+    "index": 118,
+    "category": "functional",
+    "description": "MW-10 全局任务监控：按流程类型筛选任务",
+    "steps": [
+      "Step 1: 导航到全局任务监控",
+      "Step 2: 在筛选器选择一个流程类型",
+      "Step 3: 验证列表只显示该类型的任务",
+      "Step 4: 清除筛选，验证恢复全部显示"
+    ],
+    "passes": true
+  },
+  {
+    "index": 119,
+    "category": "functional",
+    "description": "MW-10 全局任务监控：对停滞任务发送催办通知",
+    "steps": [
+      "Step 1: 导航到全局任务监控",
+      "Step 2: 找到一个停滞在人工节点的任务",
+      "Step 3: 点击'催办'按钮",
+      "Step 4: 验证确认对话框出现",
+      "Step 5: 确认催办",
+      "Step 6: 验证成功消息（催办通知已发送）"
+    ],
+    "passes": true
+  },
+  {
+    "index": 120,
+    "category": "functional",
+    "description": "MW-11 任务实例详情：管理员点击任务进入详情显示完整DAG执行图",
+    "steps": [
+      "Step 1: 导航到全局任务监控页面",
+      "Step 2: 点击一个任务实例",
+      "Step 3: 验证跳转到 /manage/tasks/{taskId}",
+      "Step 4: 验证显示完整DAG执行图",
+      "Step 5: 验证每个节点显示执行状态"
+    ],
+    "passes": true
+  },
+  {
+    "index": 121,
+    "category": "functional",
+    "description": "MW-11 任务实例详情：每个节点显示开始时间、结束时间和耗时",
+    "steps": [
+      "Step 1: 进入任务实例详情页",
+      "Step 2: 点击一个已完成的节点",
+      "Step 3: 验证显示开始时间",
+      "Step 4: 验证显示结束时间",
+      "Step 5: 验证显示耗时"
+    ],
+    "passes": true
+  },
+  {
+    "index": 122,
+    "category": "functional",
+    "description": "MW-11 任务实例详情：管理员对人工节点执行催办操作",
+    "steps": [
+      "Step 1: 进入一个有待处理人工节点的任务详情",
+      "Step 2: 找到该人工节点",
+      "Step 3: 点击'催办'",
+      "Step 4: 验证催办消息发送成功"
+    ],
+    "passes": true
+  },
+  {
+    "index": 123,
+    "category": "functional",
+    "description": "MW-11 任务实例详情：管理员代为处理人工节点（填写并提交）",
+    "steps": [
+      "Step 1: 进入一个有待处理人工节点的任务详情",
+      "Step 2: 点击'代为处理'按钮",
+      "Step 3: 验证弹出人工步骤操作界面",
+      "Step 4: 填写操作内容",
+      "Step 5: 以管理员身份提交",
+      "Step 6: 验证节点标记为已完成，且操作人显示为管理员代操"
+    ],
+    "passes": true
+  },
+  {
+    "index": 124,
+    "category": "functional",
+    "description": "MW-11 任务实例详情：管理员强制终止进行中的任务",
+    "steps": [
+      "Step 1: 进入一个进行中的任务详情",
+      "Step 2: 点击'强制终止'按钮",
+      "Step 3: 验证弹出确认对话框，提示影响",
+      "Step 4: 输入终止原因（如必填）",
+      "Step 5: 确认终止",
+      "Step 6: 验证任务状态更新为'已终止'",
+      "Step 7: 验证系统日志记录该操作"
+    ],
+    "passes": true
+  },
+  {
+    "index": 125,
+    "category": "functional",
+    "description": "MW-12 数据分析看板：页面加载显示效率趋势图表",
+    "steps": [
+      "Step 1: 以管理员身份导航到 /manage/analytics",
+      "Step 2: 验证页面标题为'数据分析'",
+      "Step 3: 验证显示效率趋势折线图或柱状图",
+      "Step 4: 验证图表有时间轴"
+    ],
+    "passes": true
+  },
+  {
+    "index": 126,
+    "category": "functional",
+    "description": "MW-12 数据分析看板：显示流程瓶颈识别分析结果",
+    "steps": [
+      "Step 1: 导航到数据分析看板",
+      "Step 2: 找到瓶颈分析区域",
+      "Step 3: 验证显示耗时最长的步骤或流程",
+      "Step 4: 验证有百分比或时长数据"
+    ],
+    "passes": true
+  },
+  {
+    "index": 127,
+    "category": "functional",
+    "description": "MW-12 数据分析看板：按日期范围筛选分析数据",
+    "steps": [
+      "Step 1: 导航到数据分析看板",
+      "Step 2: 选择日期范围（如最近30天）",
+      "Step 3: 点击应用",
+      "Step 4: 验证图表数据更新为选定时间范围"
+    ],
+    "passes": true
+  },
+  {
+    "index": 128,
+    "category": "functional",
+    "description": "MW-13 AI决策建议：列表页面加载显示所有建议",
+    "steps": [
+      "Step 1: 以管理员身份导航到 /manage/suggestions",
+      "Step 2: 验证页面标题为'AI决策建议'",
+      "Step 3: 验证显示建议列表",
+      "Step 4: 验证每条建议显示摘要、类型和生成时间"
+    ],
+    "passes": true
+  },
+  {
+    "index": 129,
+    "category": "functional",
+    "description": "MW-13 AI决策建议：采纳一条建议并触发对应流程",
+    "steps": [
+      "Step 1: 导航到AI决策建议列表",
+      "Step 2: 点击一条建议查看详情",
+      "Step 3: 点击'采纳'按钮",
+      "Step 4: 验证确认对话框出现",
+      "Step 5: 确认采纳",
+      "Step 6: 验证成功消息，提示流程已触发",
+      "Step 7: 验证建议状态更新为'已采纳'",
+      "Step 8: 导航到任务监控，验证新任务已创建"
+    ],
+    "passes": true
+  },
+  {
+    "index": 130,
+    "category": "functional",
+    "description": "MW-13 AI决策建议：忽略一条建议并从活跃列表移除",
+    "steps": [
+      "Step 1: 导航到AI决策建议列表",
+      "Step 2: 找到一条建议",
+      "Step 3: 点击'忽略'按钮",
+      "Step 4: 验证建议从活跃列表中消失",
+      "Step 5: 在'历史记录'Tab验证该建议标记为'已忽略'"
+    ],
+    "passes": true
+  },
+  {
+    "index": 131,
+    "category": "functional",
+    "description": "MW-13 AI决策建议：查看历史决策记录（采纳/忽略记录）",
+    "steps": [
+      "Step 1: 导航到AI决策建议页面",
+      "Step 2: 点击'决策记录'Tab",
+      "Step 3: 验证显示所有已处理的建议历史",
+      "Step 4: 验证每条记录显示决策类型、决策时间和操作人"
+    ],
+    "passes": true
+  },
+  {
+    "index": 132,
+    "category": "functional",
+    "description": "MW-14 平台集成配置：页面加载显示各平台集成状态",
+    "steps": [
+      "Step 1: 以管理员身份导航到 /manage/integrations",
+      "Step 2: 验证页面显示各集成平台（飞书、ERP、电商平台）",
+      "Step 3: 验证每个平台显示连接状态（已连接/未连接）"
+    ],
+    "passes": true
+  },
+  {
+    "index": 133,
+    "category": "functional",
+    "description": "MW-14 平台集成配置：配置飞书Bot Token并测试连接",
+    "steps": [
+      "Step 1: 导航到平台集成配置页面",
+      "Step 2: 找到飞书集成配置区域",
+      "Step 3: 输入App ID",
+      "Step 4: 输入App Secret",
+      "Step 5: 点击'测试连接'",
+      "Step 6: 验证显示连接成功或失败的反馈"
+    ],
+    "passes": true
+  },
+  {
+    "index": 134,
+    "category": "functional",
+    "description": "MW-14 平台集成配置：配置ERP系统API对接信息",
+    "steps": [
+      "Step 1: 导航到平台集成配置页面",
+      "Step 2: 找到ERP集成配置区域",
+      "Step 3: 输入ERP API基础URL",
+      "Step 4: 输入API密钥",
+      "Step 5: 点击保存",
+      "Step 6: 验证配置保存成功"
+    ],
+    "passes": true
+  },
+  {
+    "index": 135,
+    "category": "functional",
+    "description": "MW-14 平台集成配置：配置电商平台（淘宝/天猫）对接信息",
+    "steps": [
+      "Step 1: 导航到平台集成配置页面",
+      "Step 2: 找到电商平台配置区域",
+      "Step 3: 选择平台类型（如淘宝）",
+      "Step 4: 输入App Key和App Secret",
+      "Step 5: 保存配置",
+      "Step 6: 验证配置保存成功"
+    ],
+    "passes": true
+  },
+  {
+    "index": 136,
+    "category": "functional",
+    "description": "MW-15 系统日志：页面加载显示操作审计记录列表",
+    "steps": [
+      "Step 1: 以管理员身份导航到 /manage/logs",
+      "Step 2: 验证页面标题为'系统日志'",
+      "Step 3: 验证显示操作记录列表",
+      "Step 4: 验证每条记录显示操作用户、操作类型、时间戳"
+    ],
+    "passes": true
+  },
+  {
+    "index": 137,
+    "category": "functional",
+    "description": "MW-15 系统日志：按操作用户筛选日志",
+    "steps": [
+      "Step 1: 导航到系统日志页面",
+      "Step 2: 在用户筛选器选择一个用户",
+      "Step 3: 验证列表只显示该用户的操作记录",
+      "Step 4: 清除筛选，验证恢复全部显示"
+    ],
+    "passes": true
+  },
+  {
+    "index": 138,
+    "category": "functional",
+    "description": "MW-15 系统日志：按操作类型筛选（如'任务强制终止'）",
+    "steps": [
+      "Step 1: 导航到系统日志页面",
+      "Step 2: 在操作类型筛选器选择'任务强制终止'",
+      "Step 3: 验证列表只显示该类型操作记录"
+    ],
+    "passes": true
+  },
+  {
+    "index": 139,
+    "category": "functional",
+    "description": "MW-15 系统日志：按日期范围筛选日志记录",
+    "steps": [
+      "Step 1: 导航到系统日志页面",
+      "Step 2: 选择开始日期和结束日期",
+      "Step 3: 应用筛选",
+      "Step 4: 验证只显示该时间段内的日志"
+    ],
+    "passes": true
+  },
+  {
+    "index": 140,
+    "category": "functional",
+    "description": "MW-15 系统日志：导出日志为CSV文件",
+    "steps": [
+      "Step 1: 导航到系统日志页面",
+      "Step 2: 可选择性地应用筛选条件",
+      "Step 3: 点击'导出CSV'按钮",
+      "Step 4: 验证文件下载开始",
+      "Step 5: 验证下载的文件为 .csv 格式"
+    ],
+    "passes": true
+  },
+  {
+    "index": 141,
+    "category": "style",
+    "description": "MW-07 部门管理：组织树节点有层级缩进和展开/折叠图标",
+    "steps": [
+      "Step 1: 导航到部门管理页面",
+      "Step 2: 截图",
+      "Step 3: 验证子节点有视觉缩进",
+      "Step 4: 验证有展开/折叠按钮（三角形或箭头）",
+      "Step 5: 验证节点有图标区分类型"
+    ],
+    "passes": true
+  },
+  {
+    "index": 142,
+    "category": "style",
+    "description": "MW-08 角色权限：权限矩阵表格对齐整洁，复选框大小合适",
+    "steps": [
+      "Step 1: 导航到角色权限页面",
+      "Step 2: 选中一个角色查看权限矩阵",
+      "Step 3: 截图",
+      "Step 4: 验证表格列对齐",
+      "Step 5: 验证复选框大小适中，易于点击",
+      "Step 6: 验证行高合适，内容不拥挤"
+    ],
+    "passes": true
+  },
+  {
+    "index": 143,
+    "category": "style",
+    "description": "MW-09 成员管理：成员列表行包含头像/头像缩写、姓名、角色徽章、部门",
+    "steps": [
+      "Step 1: 导航到成员管理页面",
+      "Step 2: 截图",
+      "Step 3: 验证每行有头像或头像文字缩写",
+      "Step 4: 验证角色用徽章样式显示",
+      "Step 5: 验证部门文字清晰"
+    ],
+    "passes": true
+  },
+  {
+    "index": 144,
+    "category": "style",
+    "description": "MW-10 全局任务监控：甘特图时间轴刻度清晰，任务条颜色区分状态",
+    "steps": [
+      "Step 1: 导航到全局任务监控并切换到甘特图视图",
+      "Step 2: 截图",
+      "Step 3: 验证时间轴有日期/时间标签",
+      "Step 4: 验证进行中任务条和停滞任务条颜色不同",
+      "Step 5: 验证任务条上有任务名称标签"
+    ],
+    "passes": true
+  },
+  {
+    "index": 145,
+    "category": "style",
+    "description": "MW-11 任务实例详情：DAG执行图节点状态颜色清晰（完成=绿，进行中=蓝，失败=红，待执行=灰）",
+    "steps": [
+      "Step 1: 进入一个包含多种状态节点的任务实例详情",
+      "Step 2: 截图",
+      "Step 3: 验证已完成节点为绿色",
+      "Step 4: 验证进行中节点为蓝色或有动画",
+      "Step 5: 验证失败节点为红色",
+      "Step 6: 验证待执行节点为灰色"
+    ],
+    "passes": true
+  },
+  {
+    "index": 146,
+    "category": "style",
+    "description": "MW-12 数据分析看板：图表颜色主题一致，有图例说明",
+    "steps": [
+      "Step 1: 导航到数据分析看板",
+      "Step 2: 截图",
+      "Step 3: 验证所有图表使用一致的颜色主题",
+      "Step 4: 验证每个图表有图例",
+      "Step 5: 验证坐标轴有单位标注"
+    ],
+    "passes": true
+  },
+  {
+    "index": 147,
+    "category": "style",
+    "description": "MW-13 AI决策建议：建议卡片有优先级标识（高/中/低）和操作按钮突出",
+    "steps": [
+      "Step 1: 导航到AI决策建议列表",
+      "Step 2: 截图",
+      "Step 3: 验证每条建议有优先级标识",
+      "Step 4: 验证'采纳'按钮为主色（蓝色或绿色）",
+      "Step 5: 验证'忽略'按钮为次要样式（灰色或空心）"
+    ],
+    "passes": true
+  },
+  {
+    "index": 148,
+    "category": "style",
+    "description": "MW-14 平台集成配置：各集成平台用卡片展示，已连接显示绿色勾选",
+    "steps": [
+      "Step 1: 导航到平台集成配置页面",
+      "Step 2: 截图",
+      "Step 3: 验证每个平台使用独立卡片",
+      "Step 4: 验证已连接的平台显示绿色状态图标",
+      "Step 5: 验证未连接的平台显示灰色或橙色警告图标"
+    ],
+    "passes": true
+  },
+  {
+    "index": 149,
+    "category": "style",
+    "description": "MW-15 系统日志：表格有斑马纹或悬停高亮，操作类型有颜色标签",
+    "steps": [
+      "Step 1: 导航到系统日志页面",
+      "Step 2: 截图",
+      "Step 3: 验证表格有交替行颜色（斑马纹）或悬停高亮",
+      "Step 4: 验证不同操作类型用不同颜色标签区分",
+      "Step 5: 验证时间戳列格式统一"
+    ],
+    "passes": true
+  },
+  {
+    "index": 150,
+    "category": "style",
+    "description": "MW-01 决策驾驶舱：全局健康度仪表盘大字显示，整体布局信息密度适中",
+    "steps": [
+      "Step 1: 以管理员身份导航到决策驾驶舱",
+      "Step 2: 截图整个页面",
+      "Step 3: 验证健康度指标字体足够大（主要数据突出）",
+      "Step 4: 验证各区域之间有合理间距",
+      "Step 5: 验证信息密度不过高（可读性好）"
+    ],
+    "passes": true
+  },
+  {
+    "index": 151,
+    "category": "functional",
+    "description": "BOT-01 任务推送卡片：任务创建时飞书Bot推送任务启动通知",
+    "steps": [
+      "Step 1: 管理员手动触发一个流程",
+      "Step 2: 等待飞书Bot发送消息（或检查模拟推送接口）",
+      "Step 3: 验证推送内容包含任务名称",
+      "Step 4: 验证包含任务负责人信息",
+      "Step 5: 验证包含任务开始时间"
+    ],
+    "passes": true
+  },
+  {
+    "index": 152,
+    "category": "functional",
+    "description": "BOT-02★ 人工确认卡片：人工节点触发时推送确认卡片到负责人飞书",
+    "steps": [
+      "Step 1: 触发一个包含人工节点的流程",
+      "Step 2: 流程执行到人工节点时，检查飞书消息",
+      "Step 3: 验证收到BOT-02人工确认卡片",
+      "Step 4: 验证卡片显示背景摘要信息",
+      "Step 5: 验证卡片显示AI建议内容",
+      "Step 6: 验证卡片有'采纳'和'查看详情'按钮"
+    ],
+    "passes": true
+  },
+  {
+    "index": 153,
+    "category": "functional",
+    "description": "BOT-02★ 人工确认卡片：点击'一键采纳'直接完成人工步骤",
+    "steps": [
+      "Step 1: 收到BOT-02人工确认卡片",
+      "Step 2: 点击卡片上的'一键采纳'按钮",
+      "Step 3: 验证飞书Bot回复确认消息",
+      "Step 4: 导航到任务详情页",
+      "Step 5: 验证人工步骤已标记为已完成"
+    ],
+    "passes": true
+  },
+  {
+    "index": 154,
+    "category": "functional",
+    "description": "BOT-02★ 人工确认卡片：点击'前往工作台'深链接跳转到EW-04页面",
+    "steps": [
+      "Step 1: 收到BOT-02人工确认卡片",
+      "Step 2: 点击'前往工作台'按钮",
+      "Step 3: 验证跳转到 /task/{taskId}/step/{stepId}",
+      "Step 4: 验证EW-04页面正确加载该步骤的内容"
+    ],
+    "passes": true
+  },
+  {
+    "index": 155,
+    "category": "functional",
+    "description": "BOT-03 异常告警卡片：任务超时或失败时推送告警到管理员",
+    "steps": [
+      "Step 1: 触发一个会超时的任务（或模拟任务失败）",
+      "Step 2: 等待告警推送",
+      "Step 3: 验证管理员收到BOT-03告警卡片",
+      "Step 4: 验证卡片显示任务名称和异常原因"
+    ],
+    "passes": true
+  },
+  {
+    "index": 156,
+    "category": "functional",
+    "description": "BOT-03 异常告警卡片：点击'催办'发送催办提醒",
+    "steps": [
+      "Step 1: 收到BOT-03告警卡片",
+      "Step 2: 点击'催办'按钮",
+      "Step 3: 验证系统发送催办通知给负责人",
+      "Step 4: 验证飞书Bot回复催办已发送"
+    ],
+    "passes": true
+  },
+  {
+    "index": 157,
+    "category": "functional",
+    "description": "BOT-03 异常告警卡片：点击'代为处理'跳转到管理员处理页面",
+    "steps": [
+      "Step 1: 收到BOT-03告警卡片",
+      "Step 2: 点击'代为处理'按钮",
+      "Step 3: 验证跳转到 /manage/task/{taskId}",
+      "Step 4: 验证管理员可在该页面执行代处理操作"
+    ],
+    "passes": true
+  },
+  {
+    "index": 158,
+    "category": "functional",
+    "description": "BOT-04 日报/周报摘要：定时推送日报包含关键指标",
+    "steps": [
+      "Step 1: 配置日报推送时间为测试时间",
+      "Step 2: 等待推送触发（或手动触发日报生成）",
+      "Step 3: 验证管理员收到日报消息",
+      "Step 4: 验证日报包含当日任务完成数量",
+      "Step 5: 验证包含人工节点平均处理时间"
+    ],
+    "passes": true
+  },
+  {
+    "index": 159,
+    "category": "functional",
+    "description": "BOT-05 AI决策建议卡片：推送AI建议到管理员并显示建议摘要",
+    "steps": [
+      "Step 1: 触发AI分析生成决策建议（或模拟推送）",
+      "Step 2: 验证管理员收到BOT-05卡片",
+      "Step 3: 验证卡片显示建议摘要文字",
+      "Step 4: 验证卡片有'采纳'和'查看详情'按钮"
+    ],
+    "passes": true
+  },
+  {
+    "index": 160,
+    "category": "functional",
+    "description": "BOT-05 AI决策建议卡片：一键采纳触发对应流程",
+    "steps": [
+      "Step 1: 收到BOT-05 AI决策建议卡片",
+      "Step 2: 点击'一键采纳'按钮",
+      "Step 3: 验证Bot回复采纳成功，流程已触发",
+      "Step 4: 导航到任务监控，验证对应任务已创建",
+      "Step 5: 验证建议状态更新为'已采纳'"
+    ],
+    "passes": true
+  },
+  {
+    "index": 161,
+    "category": "functional",
+    "description": "用户认证：使用正确账号密码登录成功",
+    "steps": [
+      "Step 1: 导航到登录页 /login",
+      "Step 2: 输入正确用户名",
+      "Step 3: 输入正确密码",
+      "Step 4: 点击登录按钮",
+      "Step 5: 验证跳转到工作台首页",
+      "Step 6: 验证顶部显示用户名"
+    ],
+    "passes": true
+  },
+  {
+    "index": 162,
+    "category": "functional",
+    "description": "用户认证：密码错误时显示错误提示",
+    "steps": [
+      "Step 1: 导航到登录页",
+      "Step 2: 输入正确用户名",
+      "Step 3: 输入错误密码",
+      "Step 4: 点击登录",
+      "Step 5: 验证显示错误消息（'用户名或密码错误'）",
+      "Step 6: 验证停留在登录页"
+    ],
+    "passes": true
+  },
+  {
+    "index": 163,
+    "category": "functional",
+    "description": "用户认证：登录会话在页面刷新后保持有效",
+    "steps": [
+      "Step 1: 成功登录系统",
+      "Step 2: 刷新页面",
+      "Step 3: 验证未跳转到登录页",
+      "Step 4: 验证用户信息仍然显示",
+      "Step 5: 验证可以正常操作页面功能"
+    ],
+    "passes": true
+  },
+  {
+    "index": 164,
+    "category": "functional",
+    "description": "用户认证：点击退出登录清除会话并跳转登录页",
+    "steps": [
+      "Step 1: 以登录状态访问任意页面",
+      "Step 2: 点击右上角用户头像或菜单",
+      "Step 3: 点击'退出登录'",
+      "Step 4: 验证跳转到登录页",
+      "Step 5: 手动导航到工作台URL",
+      "Step 6: 验证重定向回登录页（会话已清除）"
+    ],
+    "passes": true
+  },
+  {
+    "index": 165,
+    "category": "functional",
+    "description": "权限控制：执行者角色无法访问管理工作台页面",
+    "steps": [
+      "Step 1: 以执行者身份登录",
+      "Step 2: 尝试直接导航到 /manage/dashboard",
+      "Step 3: 验证显示权限不足错误页面或重定向到执行者首页",
+      "Step 4: 验证管理工作台菜单项不在导航中"
+    ],
+    "passes": true
+  },
+  {
+    "index": 166,
+    "category": "functional",
+    "description": "权限控制：管理员角色可访问所有页面",
+    "steps": [
+      "Step 1: 以管理员身份登录",
+      "Step 2: 导航到执行者工作台各页面，验证可访问",
+      "Step 3: 导航到管理工作台各页面，验证可访问",
+      "Step 4: 验证没有权限拦截错误"
+    ],
+    "passes": true
+  },
+  {
+    "index": 167,
+    "category": "functional",
+    "description": "导航菜单：执行者工作台侧边导航菜单可用",
+    "steps": [
+      "Step 1: 以执行者身份登录",
+      "Step 2: 验证左侧菜单显示：我的看板、任务列表、任务历史、知识库、工具箱",
+      "Step 3: 点击每个菜单项，验证导航正确",
+      "Step 4: 验证当前页面菜单项高亮"
+    ],
+    "passes": true
+  },
+  {
+    "index": 168,
+    "category": "functional",
+    "description": "导航菜单：管理工作台侧边导航菜单可用",
+    "steps": [
+      "Step 1: 以管理员身份登录",
+      "Step 2: 验证左侧菜单显示管理工作台各入口",
+      "Step 3: 点击每个菜单项，验证导航正确",
+      "Step 4: 验证当前页面菜单项高亮"
+    ],
+    "passes": true
+  },
+  {
+    "index": 169,
+    "category": "functional",
+    "description": "全局通知：顶部通知铃铛显示未读数量",
+    "steps": [
+      "Step 1: 触发一个任务产生通知",
+      "Step 2: 导航到任意页面",
+      "Step 3: 验证顶部通知图标显示未读数量角标",
+      "Step 4: 点击通知图标",
+      "Step 5: 验证显示通知列表"
+    ],
+    "passes": true
+  },
+  {
+    "index": 170,
+    "category": "functional",
+    "description": "全局搜索：顶部搜索框可搜索任务、流程、知识词条",
+    "steps": [
+      "Step 1: 点击顶部搜索框",
+      "Step 2: 输入搜索关键词",
+      "Step 3: 验证显示搜索结果下拉列表",
+      "Step 4: 验证结果中包含任务、流程或知识词条条目",
+      "Step 5: 点击一个结果，验证跳转到对应详情页"
+    ],
+    "passes": true
+  },
+  {
+    "index": 171,
+    "category": "functional",
+    "description": "飞书通知集成：新任务分配时发送飞书通知给负责人",
+    "steps": [
+      "Step 1: 管理员手动触发一个有人工节点的流程",
+      "Step 2: 配置人工节点负责人为测试执行者",
+      "Step 3: 流程执行到人工节点",
+      "Step 4: 验证测试执行者收到飞书通知",
+      "Step 5: 验证通知内容包含任务名称和步骤说明"
+    ],
+    "passes": true
+  },
+  {
+    "index": 172,
+    "category": "functional",
+    "description": "工作流引擎：创建并触发简单两步自动流程端到端执行",
+    "steps": [
+      "Step 1: 管理员在流程编辑器创建一个两步自动流程",
+      "Step 2: 配置第一步为HTTP API调用",
+      "Step 3: 配置第二步为飞书通知",
+      "Step 4: 保存流程",
+      "Step 5: 手动触发流程",
+      "Step 6: 验证任务实例创建",
+      "Step 7: 等待第一步完成，验证状态更新",
+      "Step 8: 等待第二步完成，验证飞书通知发送",
+      "Step 9: 验证整个任务状态为已完成"
+    ],
+    "passes": true
+  },
+  {
+    "index": 173,
+    "category": "functional",
+    "description": "工作流引擎：条件分支节点根据条件选择正确执行路径",
+    "steps": [
+      "Step 1: 创建含条件分支的流程（True路径和False路径）",
+      "Step 2: 配置条件为可控变量（如 input.value > 100）",
+      "Step 3: 触发流程，传入满足True条件的值",
+      "Step 4: 验证执行了True路径的后续步骤",
+      "Step 5: 再次触发，传入False条件值",
+      "Step 6: 验证执行了False路径的后续步骤"
+    ],
+    "passes": true
+  },
+  {
+    "index": 174,
+    "category": "functional",
+    "description": "工作流引擎：到达人工节点时流程暂停等待人工响应",
+    "steps": [
+      "Step 1: 触发含人工节点的流程",
+      "Step 2: 等待自动步骤完成",
+      "Step 3: 验证任务在人工节点处暂停（状态为'等待人工'）",
+      "Step 4: 不执行人工步骤，等待一段时间",
+      "Step 5: 验证流程保持在等待状态（不自动跳过）",
+      "Step 6: 执行者完成人工步骤",
+      "Step 7: 验证流程继续执行后续自动步骤"
+    ],
+    "passes": true
+  },
+  {
+    "index": 175,
+    "category": "functional",
+    "description": "工作流引擎：自动节点执行失败时任务状态更新为失败",
+    "steps": [
+      "Step 1: 创建一个调用必然失败的API的流程（错误URL）",
+      "Step 2: 触发流程",
+      "Step 3: 等待自动节点执行失败",
+      "Step 4: 验证节点状态更新为失败（红色）",
+      "Step 5: 验证任务整体状态更新为失败",
+      "Step 6: 验证管理员收到告警通知"
+    ],
+    "passes": true
+  },
+  {
+    "index": 176,
+    "category": "functional",
+    "description": "工具执行：生意参谋数据采集工具可触发并返回数据",
+    "steps": [
+      "Step 1: 以有权限的用户导航到工具列表",
+      "Step 2: 找到'生意参谋数据采集'工具",
+      "Step 3: 点击触发",
+      "Step 4: 配置采集参数（如关键词）",
+      "Step 5: 确认执行",
+      "Step 6: 进入执行详情页，验证执行状态",
+      "Step 7: 等待完成（或超时），验证有输出数据或日志"
+    ],
+    "passes": true
+  },
+  {
+    "index": 177,
+    "category": "functional",
+    "description": "工具执行：ERP库存查询工具返回库存数据",
+    "steps": [
+      "Step 1: 导航到工具列表",
+      "Step 2: 找到'ERP库存查询'工具",
+      "Step 3: 触发执行（传入SKU参数）",
+      "Step 4: 进入执行详情",
+      "Step 5: 验证返回包含库存数量的数据"
+    ],
+    "passes": true
+  },
+  {
+    "index": 178,
+    "category": "functional",
+    "description": "工具执行：发货单导出工具生成Excel文件",
+    "steps": [
+      "Step 1: 导航到工具列表",
+      "Step 2: 找到'发货单导出'工具",
+      "Step 3: 触发执行（传入日期参数）",
+      "Step 4: 进入执行详情",
+      "Step 5: 验证执行成功",
+      "Step 6: 点击下载按钮",
+      "Step 7: 验证下载文件为 .xlsx 格式"
+    ],
+    "passes": true
+  },
+  {
+    "index": 179,
+    "category": "functional",
+    "description": "Python脚本工具：自定义Python脚本在沙箱中安全执行",
+    "steps": [
+      "Step 1: 管理员上传一个简单的Python脚本（如print('hello')）",
+      "Step 2: 配置为工具并保存",
+      "Step 3: 执行者触发该工具",
+      "Step 4: 进入执行详情页",
+      "Step 5: 验证日志中显示脚本输出",
+      "Step 6: 验证执行状态为成功"
+    ],
+    "passes": true
+  },
+  {
+    "index": 180,
+    "category": "functional",
+    "description": "知识库RAG：AI问答基于知识库内容回答电商相关问题",
+    "steps": [
+      "Step 1: 确保知识库中有退货处理SOP内容",
+      "Step 2: 导航到知识库AI问答",
+      "Step 3: 提问：'客户要申请退货，我需要做什么？'",
+      "Step 4: 验证AI回答引用了退货处理SOP的内容",
+      "Step 5: 验证回答中提示了相关知识词条链接"
+    ],
+    "passes": true
+  },
+  {
+    "index": 181,
+    "category": "functional",
+    "description": "数据持久化：任务状态在数据库中正确存储和读取",
+    "steps": [
+      "Step 1: 触发一个流程，记录任务ID",
+      "Step 2: 关闭浏览器标签页",
+      "Step 3: 重新打开并导航到该任务详情",
+      "Step 4: 验证任务状态与关闭前一致",
+      "Step 5: 验证任务进度数据未丢失"
+    ],
+    "passes": true
+  },
+  {
+    "index": 182,
+    "category": "functional",
+    "description": "数据持久化：流程定义在保存后可重新加载编辑",
+    "steps": [
+      "Step 1: 在流程编辑器创建并保存一个流程",
+      "Step 2: 关闭浏览器",
+      "Step 3: 重新登录，导航到流程定义列表",
+      "Step 4: 找到并点击该流程",
+      "Step 5: 验证流程编辑器中显示之前配置的节点和连线"
+    ],
+    "passes": true
+  },
+  {
+    "index": 183,
+    "category": "functional",
+    "description": "API接口：任务CRUD接口正常工作（创建、读取、更新）",
+    "steps": [
+      "Step 1: 通过API POST /api/tasks 创建任务实例",
+      "Step 2: 验证返回201状态码和任务ID",
+      "Step 3: 通过GET /api/tasks/{id} 读取任务",
+      "Step 4: 验证返回正确的任务数据",
+      "Step 5: 通过PATCH /api/tasks/{id} 更新任务状态",
+      "Step 6: 验证更新成功并在UI中反映"
+    ],
+    "passes": true
+  },
+  {
+    "index": 184,
+    "category": "functional",
+    "description": "API接口：流程定义CRUD接口正常工作",
+    "steps": [
+      "Step 1: 通过API POST /api/flows 创建流程定义",
+      "Step 2: 验证返回201和流程ID",
+      "Step 3: 通过GET /api/flows/{id} 读取流程",
+      "Step 4: 验证返回正确的DAG结构",
+      "Step 5: 通过PUT /api/flows/{id} 更新流程",
+      "Step 6: 验证版本号递增"
+    ],
+    "passes": true
+  },
+  {
+    "index": 185,
+    "category": "style",
+    "description": "全局配色方案：主色调在各页面保持一致",
+    "steps": [
+      "Step 1: 导航到执行者看板，截图",
+      "Step 2: 导航到任务列表，截图",
+      "Step 3: 导航到管理工作台，截图",
+      "Step 4: 验证三个页面的主色调（按钮、链接、高亮）一致",
+      "Step 5: 验证无随机颜色出现"
+    ],
+    "passes": true
+  },
+  {
+    "index": 186,
+    "category": "style",
+    "description": "全局排版：字体层级H1/H2/H3/正文大小和粗细一致",
+    "steps": [
+      "Step 1: 检查多个页面的标题样式",
+      "Step 2: 验证页面标题（H1）字号最大",
+      "Step 3: 验证区域标题（H2）次之",
+      "Step 4: 验证正文字号适中（14-16px）",
+      "Step 5: 验证各层级字重（加粗程度）有明显区分"
+    ],
+    "passes": true
+  },
+  {
+    "index": 187,
+    "category": "style",
+    "description": "按钮变体：主要/次要/危险按钮样式统一且语义清晰",
+    "steps": [
+      "Step 1: 在多个页面寻找不同类型按钮",
+      "Step 2: 截图对比",
+      "Step 3: 验证主要操作按钮（提交、确认）为实心主色",
+      "Step 4: 验证次要按钮（取消、返回）为空心或灰色",
+      "Step 5: 验证危险操作按钮（删除、终止）为红色"
+    ],
+    "passes": true
+  },
+  {
+    "index": 188,
+    "category": "style",
+    "description": "表单控件视觉：输入框、下拉、复选框、单选框样式规范统一",
+    "steps": [
+      "Step 1: 导航到包含表单的页面（如工具编辑）",
+      "Step 2: 截图",
+      "Step 3: 验证输入框有清晰边框和聚焦状态",
+      "Step 4: 验证下拉菜单下拉图标一致",
+      "Step 5: 验证复选框和单选框大小适中"
+    ],
+    "passes": true
+  },
+  {
+    "index": 189,
+    "category": "style",
+    "description": "加载状态：数据加载时显示Skeleton骨架屏或Loading Spinner",
+    "steps": [
+      "Step 1: 模拟网络较慢或硬刷新页面",
+      "Step 2: 在数据加载期间截图",
+      "Step 3: 验证显示骨架屏或加载动画",
+      "Step 4: 验证页面不显示空白或错误"
+    ],
+    "passes": true
+  },
+  {
+    "index": 190,
+    "category": "style",
+    "description": "空状态：列表为空时显示友好的空状态插图和说明文字",
+    "steps": [
+      "Step 1: 导航到一个预期为空的列表页面（如无任务历史）",
+      "Step 2: 截图",
+      "Step 3: 验证显示空状态插图或图标",
+      "Step 4: 验证有说明文字（如'暂无数据'）",
+      "Step 5: 验证有引导操作按钮（如'新建任务'）"
+    ],
+    "passes": true
+  },
+  {
+    "index": 191,
+    "category": "style",
+    "description": "错误状态：表单验证错误显示在字段下方（内联），颜色为红色",
+    "steps": [
+      "Step 1: 提交一个必填字段为空的表单",
+      "Step 2: 截图",
+      "Step 3: 验证错误消息显示在对应字段下方",
+      "Step 4: 验证错误消息文字为红色",
+      "Step 5: 验证错误字段边框变红"
+    ],
+    "passes": true
+  },
+  {
+    "index": 192,
+    "category": "style",
+    "description": "成功反馈：操作成功后显示Toast消息通知（右上角）",
+    "steps": [
+      "Step 1: 执行一个成功操作（如保存流程）",
+      "Step 2: 截图",
+      "Step 3: 验证右上角显示Toast消息",
+      "Step 4: 验证Toast为绿色或成功色",
+      "Step 5: 验证Toast在3-5秒后自动消失"
+    ],
+    "passes": true
+  },
+  {
+    "index": 193,
+    "category": "style",
+    "description": "侧边导航：折叠/展开功能可用，折叠后只显示图标",
+    "steps": [
+      "Step 1: 登录任意角色",
+      "Step 2: 点击侧边导航折叠按钮",
+      "Step 3: 截图",
+      "Step 4: 验证导航宽度收缩",
+      "Step 5: 验证折叠后只显示图标不显示文字",
+      "Step 6: 点击展开，验证恢复显示文字"
+    ],
+    "passes": true
+  },
+  {
+    "index": 194,
+    "category": "style",
+    "description": "响应式布局：1280px宽度下页面布局无溢出无横向滚动条",
+    "steps": [
+      "Step 1: 将浏览器窗口宽度设置为1280px",
+      "Step 2: 依次访问看板、任务列表、流程编辑器等主要页面",
+      "Step 3: 截图每个页面",
+      "Step 4: 验证所有页面无横向滚动条",
+      "Step 5: 验证内容不截断"
+    ],
+    "passes": true
+  },
+  {
+    "index": 195,
+    "category": "style",
+    "description": "响应式布局：1920px宽度下页面合理利用宽屏空间",
+    "steps": [
+      "Step 1: 将浏览器窗口宽度设置为1920px",
+      "Step 2: 依次访问主要页面",
+      "Step 3: 截图",
+      "Step 4: 验证内容区域宽度合理（不过度拉伸）",
+      "Step 5: 验证流程编辑器画布充分利用空间"
+    ],
+    "passes": true
+  },
+  {
+    "index": 196,
+    "category": "functional",
+    "description": "MW-10 全局任务监控：显示人工节点等待时间（超时预警）",
+    "steps": [
+      "Step 1: 导航到全局任务监控",
+      "Step 2: 找到停留在人工节点的任务",
+      "Step 3: 验证显示等待时间",
+      "Step 4: 验证超过阈值的任务有警告标识（红色或橙色）"
+    ],
+    "passes": true
+  },
+  {
+    "index": 197,
+    "category": "functional",
+    "description": "EW-02 任务列表：按负责人筛选任务",
+    "steps": [
+      "Step 1: 导航到任务列表",
+      "Step 2: 找到按负责人筛选器",
+      "Step 3: 选择一个负责人",
+      "Step 4: 验证列表只显示该负责人的任务"
+    ],
+    "passes": true
+  },
+  {
+    "index": 198,
+    "category": "functional",
+    "description": "MW-02 流程定义列表：点击流程名称进入流程编辑器（编辑模式）",
+    "steps": [
+      "Step 1: 导航到流程定义列表",
+      "Step 2: 点击一个已有流程的名称",
+      "Step 3: 验证跳转到流程编辑器",
+      "Step 4: 验证编辑器中加载了该流程的节点和连线",
+      "Step 5: 修改一个节点名称并保存"
+    ],
+    "passes": true
+  },
+  {
+    "index": 199,
+    "category": "functional",
+    "description": "知识库管理（管理员）：审核并批准执行者提交的知识贡献",
+    "steps": [
+      "Step 1: 执行者提交一条新知识词条",
+      "Step 2: 管理员导航到知识审核页面",
+      "Step 3: 找到待审核的词条",
+      "Step 4: 查看词条内容",
+      "Step 5: 点击'批准'",
+      "Step 6: 验证词条状态更新为已发布",
+      "Step 7: 执行者在知识库中可以看到该词条"
+    ],
+    "passes": true
+  },
+  {
+    "index": 200,
+    "category": "functional",
+    "description": "MW-03 流程编辑器：飞书通知类型自动节点配置（接收人、消息模板）",
+    "steps": [
+      "Step 1: 进入流程编辑器",
+      "Step 2: 添加'飞书通知'类型自动节点",
+      "Step 3: 双击配置节点",
+      "Step 4: 配置接收人（如指定角色的所有成员）",
+      "Step 5: 编写消息模板（支持变量插值如 {{task.name}}）",
+      "Step 6: 保存配置",
+      "Step 7: 验证节点显示配置摘要"
+    ],
+    "passes": true
+  },
+  {
+    "index": 201,
+    "category": "functional",
+    "description": "E2E：完整人机协作流程——从流程触发到人工步骤完成再到流程结束",
+    "steps": [
+      "Step 1: 管理员在流程编辑器创建含一个人工节点的流程（自动节点→人工节点→自动节点）",
+      "Step 2: 配置人工节点指定执行者角色，保存流程",
+      "Step 3: 管理员手动触发流程",
+      "Step 4: 验证任务实例创建，第一个自动节点开始执行",
+      "Step 5: 等待第一个自动节点完成",
+      "Step 6: 验证流程暂停在人工节点，执行者看板出现待办任务",
+      "Step 7: 执行者收到飞书通知，点击进入EW-04页面",
+      "Step 8: 执行者查看背景信息和AI建议",
+      "Step 9: 执行者点击'全部采纳AI建议'并确认提交",
+      "Step 10: 验证人工步骤标记完成，流程继续执行最后的自动节点",
+      "Step 11: 等待最后自动节点完成",
+      "Step 12: 验证整个任务状态为已完成，出现在任务历史中"
+    ],
+    "passes": true
+  },
+  {
+    "index": 202,
+    "category": "functional",
+    "description": "E2E：流程从自然语言创建到保存到触发执行完整流程",
+    "steps": [
+      "Step 1: 管理员导航到流程编辑器新建页",
+      "Step 2: 在自然语言输入框输入：'每天早上8点查询昨日销售数据，发现异常销售额时通知运营主管确认'",
+      "Step 3: 点击'AI生成'，等待DAG生成",
+      "Step 4: 验证画布出现多个节点（定时触发、数据查询、条件判断、人工确认等）",
+      "Step 5: 检查并调整节点配置（确认条件参数合理）",
+      "Step 6: 添加节点之间的必要连线",
+      "Step 7: 修改流程名称为'销售异常监控'",
+      "Step 8: 点击保存，验证保存成功并生成流程ID",
+      "Step 9: 点击'立即触发'手动执行一次",
+      "Step 10: 验证任务实例创建并出现在全局任务监控中",
+      "Step 11: 在任务详情页观察DAG执行进度"
+    ],
+    "passes": true
+  },
+  {
+    "index": 203,
+    "category": "functional",
+    "description": "E2E：库存监控场景——自动采集→风险识别→人工确认补货→任务完成",
+    "steps": [
+      "Step 1: 配置库存监控流程（ERP查询→LLM分析→库存预警人工确认→记录决策）",
+      "Step 2: 触发流程执行",
+      "Step 3: ERP库存查询工具返回库存数据",
+      "Step 4: LLM分析节点识别低库存SKU",
+      "Step 5: 流程暂停，推送飞书告警给采购负责人",
+      "Step 6: 采购负责人在EW-04页面看到：当前库存列表 + AI建议补货量",
+      "Step 7: 采购负责人修改建议补货量后提交",
+      "Step 8: 流程记录决策并触发采购通知",
+      "Step 9: 任务完成，验证决策记录出现在任务历史中",
+      "Step 10: 管理员在数据分析看板查看库存处理效率",
+      "Step 11: 验证本次任务出现在分析数据中",
+      "Step 12: 系统日志中记录了整个流程的操作"
+    ],
+    "passes": true
+  },
+  {
+    "index": 204,
+    "category": "functional",
+    "description": "E2E：竞品监控场景——定时采集→异常识别→推送建议→老板采纳→触发行动",
+    "steps": [
+      "Step 1: 配置竞品监控流程（生意参谋采集→LLM异常识别→AI建议生成→推送决策建议）",
+      "Step 2: 手动触发流程模拟定时触发",
+      "Step 3: 验证生意参谋数据采集工具开始执行",
+      "Step 4: 验证采集数据写入数据库",
+      "Step 5: LLM分析节点识别竞品价格异常",
+      "Step 6: 系统生成AI决策建议（如'降价促销'）",
+      "Step 7: 管理员在MW-01驾驶舱看到新的AI建议",
+      "Step 8: 管理员点击查看建议详情",
+      "Step 9: 管理员点击'采纳'，触发降价流程",
+      "Step 10: 验证新任务实例创建",
+      "Step 11: 决策记录出现在MW-13历史记录中"
+    ],
+    "passes": true
+  },
+  {
+    "index": 205,
+    "category": "functional",
+    "description": "E2E：任务超时告警和催办完整流程",
+    "steps": [
+      "Step 1: 创建含人工节点的流程，设置人工节点超时为5分钟",
+      "Step 2: 触发流程",
+      "Step 3: 流程暂停在人工节点，不执行任何操作",
+      "Step 4: 等待超时（5分钟或通过测试加速）",
+      "Step 5: 验证管理员收到BOT-03超时告警卡片",
+      "Step 6: 管理员在MW-10全局监控看到该任务标红",
+      "Step 7: 管理员点击'催办'按钮",
+      "Step 8: 验证负责执行者收到催办通知",
+      "Step 9: 执行者完成人工步骤",
+      "Step 10: 验证任务继续执行并最终完成"
+    ],
+    "passes": true
+  },
+  {
+    "index": 206,
+    "category": "functional",
+    "description": "E2E：知识贡献从提交到管理员审核发布完整流程",
+    "steps": [
+      "Step 1: 执行者登录，导航到知识贡献页面",
+      "Step 2: 填写新知识词条（标题：'拼多多退款处理规范'，分类：平台规则）",
+      "Step 3: 填写内容并提交",
+      "Step 4: 验证提交成功，状态为'待审核'",
+      "Step 5: 管理员导航到知识审核页面",
+      "Step 6: 找到该待审核词条",
+      "Step 7: 查看内容，点击'批准'",
+      "Step 8: 验证词条状态变为'已发布'",
+      "Step 9: 执行者在知识库搜索该词条",
+      "Step 10: 验证词条出现在搜索结果中",
+      "Step 11: 点击查看详情，验证内容正确显示"
+    ],
+    "passes": true
+  },
+  {
+    "index": 207,
+    "category": "functional",
+    "description": "E2E：新成员邀请、配置权限、完成首次任务完整流程",
+    "steps": [
+      "Step 1: 管理员在MW-09成员管理页面点击'邀请成员'",
+      "Step 2: 输入新成员的飞书ID",
+      "Step 3: 选择角色为'执行者'",
+      "Step 4: 选择所属部门为'运营部'",
+      "Step 5: 发送邀请",
+      "Step 6: 新成员接受邀请并登录系统",
+      "Step 7: 管理员在MW-08配置该角色可接收'审核判断'类型人工节点",
+      "Step 8: 管理员触发包含审核节点的流程，指定该成员处理",
+      "Step 9: 成员在EW-01看板收到待办任务",
+      "Step 10: 成员完成人工步骤并提交",
+      "Step 11: 管理员在MW-15系统日志中查看到该成员的操作记录"
+    ],
+    "passes": true
+  },
+  {
+    "index": 208,
+    "category": "functional",
+    "description": "E2E：流程版本回滚完整操作流程",
+    "steps": [
+      "Step 1: 打开一个现有流程（v1），记录节点数量",
+      "Step 2: 添加一个新节点，保存（生成v2）",
+      "Step 3: 再次修改并保存（生成v3）",
+      "Step 4: 在流程编辑器触发流程，发现问题",
+      "Step 5: 导航到MW-04流程版本历史页面",
+      "Step 6: 选中v1和v3进行对比，查看差异",
+      "Step 7: 点击v1旁边的'回滚'按钮",
+      "Step 8: 确认回滚操作",
+      "Step 9: 验证当前版本恢复到v1的配置",
+      "Step 10: 重新触发流程，验证执行正常"
+    ],
+    "passes": true
+  },
+  {
+    "index": 209,
+    "category": "functional",
+    "description": "E2E：自定义工具从上传到集成到工作流完整流程",
+    "steps": [
+      "Step 1: 管理员导航到MW-06工具上传页面",
+      "Step 2: 选择Python脚本类型",
+      "Step 3: 填写工具名称'自定义数据汇总'和描述",
+      "Step 4: 上传Python脚本文件",
+      "Step 5: 定义输入参数（start_date: string, end_date: string）",
+      "Step 6: 设置权限为运营部成员可用",
+      "Step 7: 保存工具",
+      "Step 8: 在流程编辑器创建新流程，添加该工具节点",
+      "Step 9: 配置工具参数映射",
+      "Step 10: 保存并触发流程",
+      "Step 11: 验证工具节点成功执行并有日志输出",
+      "Step 12: 管理员在MW-05工具库查看该工具调用统计"
+    ],
+    "passes": true
+  },
+  {
+    "index": 210,
+    "category": "functional",
+    "description": "E2E：管理员全局监控查看、筛选、催办任务完整流程",
+    "steps": [
+      "Step 1: 触发多个流程实例（至少3个）",
+      "Step 2: 管理员导航到MW-10全局任务监控",
+      "Step 3: 验证所有进行中任务显示在列表中",
+      "Step 4: 切换到甘特图视图，验证时间轴正确",
+      "Step 5: 按流程类型筛选，验证过滤效果",
+      "Step 6: 找到一个停滞在人工节点的任务",
+      "Step 7: 查看其等待时间",
+      "Step 8: 点击该任务进入MW-11任务实例详情",
+      "Step 9: 查看完整DAG执行状态",
+      "Step 10: 点击催办按钮，发送提醒",
+      "Step 11: 验证催办记录出现在系统日志中"
+    ],
+    "passes": true
+  },
+  {
+    "index": 211,
+    "category": "style",
+    "description": "EW-04 人工操作步骤：完整页面视觉验证——布局、间距、按钮样式符合设计规范",
+    "steps": [
+      "Step 1: 导航到一个待处理的人工步骤页面",
+      "Step 2: 截图整个页面",
+      "Step 3: 验证页面有明确的顶部标题区、背景信息区、AI建议区和操作区",
+      "Step 4: 验证各区域之间有足够间距（不拥挤）",
+      "Step 5: 验证三个操作按钮（采纳/修改提交/驳回）视觉层级清晰",
+      "Step 6: 验证不可撤回警告文字颜色醒目（红色或橙色）",
+      "Step 7: 验证页面背景颜色与整体风格一致",
+      "Step 8: 验证AI建议区域有视觉边框或背景色区分"
+    ],
+    "passes": true
+  },
+  {
+    "index": 212,
+    "category": "style",
+    "description": "MW-03 流程编辑器：完整视觉验证——画布、工具栏、节点面板、选中状态",
+    "steps": [
+      "Step 1: 进入流程编辑器，创建3-4个节点并连线",
+      "Step 2: 截图整个编辑器页面",
+      "Step 3: 验证画布背景有网格或点阵（有助于对齐）",
+      "Step 4: 验证节点有阴影或立体感",
+      "Step 5: 点击一个节点，截图验证选中状态（蓝色边框或高亮）",
+      "Step 6: 验证连线箭头方向清晰",
+      "Step 7: 验证工具栏按钮图标语义清晰（保存图标、触发图标）",
+      "Step 8: 验证节点面板分类标题清晰（自动节点/人工节点）"
+    ],
+    "passes": true
+  },
+  {
+    "index": 213,
+    "category": "style",
+    "description": "MW-01 决策驾驶舱：完整视觉验证——健康度组件、AI建议列表、任务摘要区",
+    "steps": [
+      "Step 1: 以管理员身份导航到决策驾驶舱",
+      "Step 2: 截图整个页面",
+      "Step 3: 验证健康度组件字体大且清晰（主指标字号>=32px）",
+      "Step 4: 验证AI建议列表有分隔线或卡片边界",
+      "Step 5: 验证进行中任务区域有进度指示",
+      "Step 6: 验证整体页面使用三列或两列布局，信息密度合理",
+      "Step 7: 验证无文字溢出或截断"
+    ],
+    "passes": true
+  },
+  {
+    "index": 214,
+    "category": "functional",
+    "description": "并发人工任务：执行者有多个待办人工步骤时看板全部显示",
+    "steps": [
+      "Step 1: 触发两个都指向同一执行者的人工节点任务",
+      "Step 2: 以执行者身份登录",
+      "Step 3: 导航到EW-01看板",
+      "Step 4: 验证待办区域显示两个不同的人工步骤任务",
+      "Step 5: 点击第一个任务，完成提交",
+      "Step 6: 返回看板，验证只剩一个待办任务",
+      "Step 7: 完成第二个任务",
+      "Step 8: 验证看板待办区域清空（或显示空状态）"
+    ],
+    "passes": true
+  },
+  {
+    "index": 215,
+    "category": "functional",
+    "description": "工作流引擎：多个顺序自动节点完整链式执行",
+    "steps": [
+      "Step 1: 创建一个有5个顺序自动节点的流程",
+      "Step 2: 每个节点配置为简单HTTP GET请求",
+      "Step 3: 触发流程",
+      "Step 4: 在任务详情页观察DAG执行",
+      "Step 5: 验证节点按顺序依次执行（第一个完成后才开始第二个）",
+      "Step 6: 验证所有5个节点最终全部完成",
+      "Step 7: 验证任务总状态为已完成"
+    ],
+    "passes": true
+  },
+  {
+    "index": 216,
+    "category": "functional",
+    "description": "工作流引擎：自动节点失败后任务进入失败状态并告警",
+    "steps": [
+      "Step 1: 创建一个调用不存在URL的API节点的流程",
+      "Step 2: 触发流程",
+      "Step 3: 验证该API节点执行失败（显示红色）",
+      "Step 4: 验证任务整体状态变为失败",
+      "Step 5: 验证管理员收到失败告警（飞书或系统通知）",
+      "Step 6: 进入任务详情，验证失败节点显示错误信息"
+    ],
+    "passes": true
+  },
+  {
+    "index": 217,
+    "category": "functional",
+    "description": "工具执行：长时间运行工具的状态实时更新",
+    "steps": [
+      "Step 1: 触发一个执行时间较长的工具（如生意参谋采集）",
+      "Step 2: 进入EW-10工具执行详情页",
+      "Step 3: 验证状态显示为'进行中'",
+      "Step 4: 观察日志区域是否有新日志追加（等待30秒）",
+      "Step 5: 验证页面无需刷新就能看到最新状态",
+      "Step 6: 工具执行完成后，验证状态更新为'成功'或'失败'"
+    ],
+    "passes": true
+  },
+  {
+    "index": 218,
+    "category": "functional",
+    "description": "MW-09 成员管理：按部门筛选成员列表",
+    "steps": [
+      "Step 1: 导航到成员管理页面",
+      "Step 2: 在部门筛选器选择一个部门",
+      "Step 3: 验证列表只显示该部门成员",
+      "Step 4: 清除筛选，验证全部成员显示"
+    ],
+    "passes": true
+  },
+  {
+    "index": 219,
+    "category": "style",
+    "description": "整体页面：浏览器控制台无JavaScript报错（主要页面检查）",
+    "steps": [
+      "Step 1: 打开浏览器开发者工具Console",
+      "Step 2: 依次访问：看板、任务列表、EW-04、流程编辑器、决策驾驶舱",
+      "Step 3: 在每个页面截图Console输出",
+      "Step 4: 验证Console中无红色Error错误",
+      "Step 5: 记录任何Warning，确认不影响功能"
+    ],
+    "passes": true
+  },
+  {
+    "index": 220,
+    "category": "style",
+    "description": "EW-03 任务详情（自动）：DAG图完整视觉——节点布局不重叠，连线弯曲合理",
+    "steps": [
+      "Step 1: 进入一个有5个以上节点的任务详情页",
+      "Step 2: 截图DAG图区域",
+      "Step 3: 验证节点之间不重叠",
+      "Step 4: 验证连线路由合理（无穿越节点的连线）",
+      "Step 5: 验证节点名称完整显示（不截断）",
+      "Step 6: 验证DAG图可通过鼠标拖拽平移"
+    ],
+    "passes": true
+  },
+  {
+    "index": 221,
+    "category": "functional",
+    "description": "E2E：管理员完整配置角色权限到执行者使用功能验证",
+    "steps": [
+      "Step 1: 管理员导航到MW-08角色权限页面",
+      "Step 2: 创建新角色'高级运营'",
+      "Step 3: 为该角色配置：任务查看、人工步骤处理、知识库访问、工具触发权限",
+      "Step 4: 配置可接收人工节点类型：数值确认、审核判断、内容填写",
+      "Step 5: 保存角色配置",
+      "Step 6: 在MW-09成员管理为某执行者分配该角色",
+      "Step 7: 执行者重新登录",
+      "Step 8: 验证执行者可以访问工具列表页面",
+      "Step 9: 触发一个含'审核判断'人工节点的流程，指定该执行者",
+      "Step 10: 验证执行者收到该人工步骤任务并可以操作",
+      "Step 11: 完成操作，验证任务继续流转"
+    ],
+    "passes": true
+  },
+  {
+    "index": 222,
+    "category": "functional",
+    "description": "E2E：多部门协作流程——跨部门人工节点转交和处理",
+    "steps": [
+      "Step 1: 确保系统中有采购部和运营部两个部门及对应成员",
+      "Step 2: 创建含两个人工节点的流程：第一个指定运营部，第二个指定采购部",
+      "Step 3: 触发流程",
+      "Step 4: 运营部成员登录，在看板看到第一个待办",
+      "Step 5: 运营部成员完成第一个人工步骤（分析竞品并填写结论）",
+      "Step 6: 流程自动流转到第二个人工节点",
+      "Step 7: 采购部成员登录，在看板看到第二个待办",
+      "Step 8: 采购部成员查看运营部的分析结论（作为背景信息）",
+      "Step 9: 采购部成员确认采购决策并提交",
+      "Step 10: 流程完成，管理员在任务历史中看到完整记录",
+      "Step 11: 系统日志显示两个成员的操作记录"
+    ],
+    "passes": true
+  },
+  {
+    "index": 223,
+    "category": "functional",
+    "description": "E2E：工具故障恢复——工具执行失败后管理员排查并重新触发",
+    "steps": [
+      "Step 1: 配置一个工具使用错误的API端点",
+      "Step 2: 执行者触发该工具",
+      "Step 3: 进入EW-10执行详情，验证执行失败，错误日志显示",
+      "Step 4: 管理员收到失败告警",
+      "Step 5: 管理员导航到MW-05工具库，找到该工具",
+      "Step 6: 点击编辑，修正API端点为正确地址",
+      "Step 7: 保存工具配置",
+      "Step 8: 执行者重新触发该工具",
+      "Step 9: 验证工具执行成功，日志显示正确输出",
+      "Step 10: 管理员查看MW-05中该工具的调用统计（成功率应已更新）"
+    ],
+    "passes": true
+  },
+  {
+    "index": 224,
+    "category": "functional",
+    "description": "E2E：定时流程从配置到自动执行验证",
+    "steps": [
+      "Step 1: 管理员进入流程编辑器创建新流程",
+      "Step 2: 配置触发器为定时触发（Cron: 每5分钟执行一次用于测试）",
+      "Step 3: 添加一个简单自动节点（HTTP请求）",
+      "Step 4: 保存并激活流程",
+      "Step 5: 等待定时触发时间到达",
+      "Step 6: 在MW-10全局监控验证自动触发的任务实例出现",
+      "Step 7: 进入任务详情，验证自动节点执行",
+      "Step 8: 等待任务完成",
+      "Step 9: 在任务历史中验证完成记录",
+      "Step 10: 再次等待下一个定时周期，验证流程再次自动触发",
+      "Step 11: 禁用流程，验证不再自动触发"
+    ],
+    "passes": true
+  },
+  {
+    "index": 225,
+    "category": "functional",
+    "description": "E2E：飞书Bot深链接完整验证——BOT-02卡片到EW-04页面",
+    "steps": [
+      "Step 1: 触发一个包含人工节点的流程，配置负责人",
+      "Step 2: 负责人收到飞书BOT-02人工确认卡片",
+      "Step 3: 检查卡片内容是否包含正确的背景信息摘要",
+      "Step 4: 检查卡片是否显示AI建议内容",
+      "Step 5: 点击'前往工作台'按钮",
+      "Step 6: 验证浏览器打开正确的深链接URL /task/{taskId}/step/{stepId}",
+      "Step 7: 验证EW-04页面正确加载，显示正确的任务步骤内容",
+      "Step 8: 在EW-04页面点击'全部采纳AI建议'",
+      "Step 9: 验证提交成功消息",
+      "Step 10: 返回飞书，卡片状态更新为已处理",
+      "Step 11: 流程继续执行下一步"
+    ],
+    "passes": true
+  },
+  {
+    "index": 226,
+    "category": "functional",
+    "description": "E2E：数据分析看板展示真实任务执行效率数据",
+    "steps": [
+      "Step 1: 确保系统中有过去30天的任务执行历史数据",
+      "Step 2: 管理员导航到MW-12数据分析看板",
+      "Step 3: 选择日期范围为最近30天",
+      "Step 4: 验证效率趋势图显示每日任务完成数量",
+      "Step 5: 查看瓶颈分析，找到耗时最长的流程步骤",
+      "Step 6: 按流程类型筛选，查看特定流程的效率数据",
+      "Step 7: 验证图表数据与实际完成任务数量相符",
+      "Step 8: 检查平均人工步骤处理时间指标",
+      "Step 9: 找到一个效率低的流程，点击跳转到该流程定义",
+      "Step 10: 在流程编辑器优化该流程配置（如减少人工节点）",
+      "Step 11: 保存优化后的流程版本"
+    ],
+    "passes": true
+  },
+  {
+    "index": 227,
+    "category": "functional",
+    "description": "E2E：知识库AI问答引用SOP内容指导执行者操作",
+    "steps": [
+      "Step 1: 确保知识库有'退货处理SOP'词条",
+      "Step 2: 执行者遇到退货问题，导航到知识库",
+      "Step 3: 在AI问答输入：'客户买了7天前的商品要求退货，天猫规定是什么？'",
+      "Step 4: 验证AI回答引用了相关平台规则知识词条",
+      "Step 5: 验证回答内容准确描述了退货流程",
+      "Step 6: 点击回答中引用的知识词条链接",
+      "Step 7: 进入EW-07词条详情，验证内容完整",
+      "Step 8: 执行者点击'有帮助'，记录反馈",
+      "Step 9: 执行者认为内容需要补充，点击'提交修正'",
+      "Step 10: 填写修正内容并提交",
+      "Step 11: 验证修正记录提交成功，等待审核"
+    ],
+    "passes": true
+  },
+  {
+    "index": 228,
+    "category": "functional",
+    "description": "E2E：任务驳回后管理员代处理完整流程",
+    "steps": [
+      "Step 1: 触发含人工节点的流程",
+      "Step 2: 执行者进入EW-04人工步骤页面",
+      "Step 3: 执行者认为AI建议不合理，点击'驳回'",
+      "Step 4: 填写驳回原因：'建议数量超出库存上限'",
+      "Step 5: 确认驳回提交",
+      "Step 6: 管理员收到任务异常告警",
+      "Step 7: 管理员导航到MW-11任务实例详情",
+      "Step 8: 看到人工节点显示已驳回状态",
+      "Step 9: 管理员点击'代为处理'",
+      "Step 10: 在代处理界面修改内容后以管理员身份提交",
+      "Step 11: 验证节点标记完成，操作记录显示为管理员代操",
+      "Step 12: 流程继续执行并最终完成"
+    ],
+    "passes": true
+  },
+  {
+    "index": 229,
+    "category": "functional",
+    "description": "E2E：完整组织架构配置——公司→部门→角色→成员",
+    "steps": [
+      "Step 1: 管理员导航到MW-07部门管理",
+      "Step 2: 在根节点下创建'运营部'子部门",
+      "Step 3: 在运营部下创建'店铺运营组'子部门",
+      "Step 4: 导航到MW-08角色权限，创建'店铺运营'角色",
+      "Step 5: 为该角色配置适当权限",
+      "Step 6: 导航到MW-09成员管理，邀请新成员",
+      "Step 7: 为新成员分配'店铺运营'角色",
+      "Step 8: 将新成员归入'店铺运营组'部门",
+      "Step 9: 返回部门管理，验证组织树正确显示",
+      "Step 10: 新成员登录验证权限正确（只能看到有权限的功能）",
+      "Step 11: 系统日志中记录了组织架构变更操作"
+    ],
+    "passes": true
+  },
+  {
+    "index": 230,
+    "category": "functional",
+    "description": "E2E：飞书平台完整集成——配置连接→发送通知→接收回复",
+    "steps": [
+      "Step 1: 管理员导航到MW-14平台集成配置",
+      "Step 2: 配置飞书应用的App ID和App Secret",
+      "Step 3: 点击'测试连接'，验证连接成功",
+      "Step 4: 配置机器人Webhook地址",
+      "Step 5: 保存集成配置",
+      "Step 6: 触发一个含飞书通知节点的流程",
+      "Step 7: 验证飞书收到任务推送消息",
+      "Step 8: 流程到达人工节点，验证飞书收到BOT-02确认卡片",
+      "Step 9: 在飞书卡片上操作'一键采纳'",
+      "Step 10: 验证系统接收到回复并更新人工节点状态为完成",
+      "Step 11: 流程继续执行并完成"
+    ],
+    "passes": true
+  },
+  {
+    "index": 231,
+    "category": "functional",
+    "description": "E2E：权限边界验证——执行者无法访问管理功能的完整测试",
+    "steps": [
+      "Step 1: 以执行者身份登录系统",
+      "Step 2: 尝试直接访问 /manage/flows，验证被拒绝",
+      "Step 3: 尝试访问 /manage/members，验证被拒绝",
+      "Step 4: 尝试访问 /manage/roles，验证被拒绝",
+      "Step 5: 确认侧边导航中无管理工作台菜单项",
+      "Step 6: 尝试通过API直接POST /api/flows 创建流程，验证返回403",
+      "Step 7: 尝试通过API DELETE /api/tasks/{id}，验证返回403",
+      "Step 8: 确认执行者只能访问 /executor/* 下的页面",
+      "Step 9: 执行者可正常访问EW-01到EW-10所有页面",
+      "Step 10: 验证执行者的操作日志只记录执行类操作，无管理操作"
+    ],
+    "passes": true
+  }
+]

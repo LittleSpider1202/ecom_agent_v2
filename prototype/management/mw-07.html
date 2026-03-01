@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>MW-07 · 部门管理 · 电商智能运营平台</title>
+<link rel="stylesheet" href="../_styles.css">
+</head>
+<body>
+<div class="page-nav">
+  <a href="../index.html">← 返回导航</a>
+  <span class="nav-center">MW-07 · 部门管理</span>
+  <div><a href="mw-06.html">‹ 上一页</a> &nbsp; <a href="mw-08.html">下一页 ›</a></div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-title">MW-07 · 管理工作台 · 部门管理</span>
+    <span class="page-desc">建立公司组织树，为权限分配和任务路由提供基础</span>
+  </div>
+  <div class="page-body">
+    <div class="topbar"><span class="topbar-logo">▣ 电商运营平台</span><div class="topbar-nav"><span>总览</span><span>流程定义</span><span>工具库</span><span class="active">组织</span></div><div class="topbar-right"><span>老板▼</span></div></div>
+    <div style="display:flex;justify-content:space-between;padding:10px 12px;border-top:1px solid #ccc">
+      <span class="btn btn-primary">+ 新建部门</span>
+      <span class="hint">共 6 个部门 · 12 名成员</span>
+    </div>
+    <div class="row">
+      <div class="col col-30 sidebar" style="min-height:360px">
+        <div class="section-title" style="padding:4px 2px">部门树</div>
+        <div style="font-size:12px;line-height:2.2">
+          <div>▼ 整体公司</div>
+          <div style="padding-left:14px">▶ 采购部</div>
+          <div style="padding-left:14px;background:#333;color:#fff;padding:2px 8px">▼ 仓库部 ←</div>
+          <div style="padding-left:28px">· 主仓组</div>
+          <div style="padding-left:28px">· 退换货组</div>
+          <div style="padding-left:14px">▶ 客服部</div>
+          <div style="padding-left:14px">▶ 运营部</div>
+        </div>
+      </div>
+      <div class="col col-70">
+        <div class="section-title">部门详情：仓库部</div>
+        <div class="box">
+          <span class="label">部门名称</span>
+          <input class="input" value="仓库部">
+          <span class="label">负责人</span>
+          <span class="select" style="display:block;width:200px;margin-bottom:8px">李四（仓管主管）▼</span>
+          <span class="label">成员（5人）</span>
+          <div class="hint" style="margin-bottom:6px">李四、张三、王六、赣5、刘八</div>
+          <span class="btn">管理成员</span>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <span class="btn btn-primary">保存修改</span>
+          <span class="btn btn-danger">删除部门</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

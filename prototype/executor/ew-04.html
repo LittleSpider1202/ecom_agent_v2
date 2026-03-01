@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>EW-04 · 人工操作步骤 · 电商智能运营平台</title>
+<link rel="stylesheet" href="../_styles.css">
+</head>
+<body>
+<div class="page-nav">
+  <a href="../index.html">← 返回导航</a>
+  <span class="nav-center">EW-04 · 人工操作步骤 ★</span>
+  <div><a href="ew-03.html">‹ 上一页</a> &nbsp; <a href="ew-05.html">下一页 ›</a></div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <span class="page-title">EW-04 ★ · 执行者工作台 · 人工操作步骤（核心页面）</span>
+    <span class="page-desc">人机交接节点——机器停下来，人来做判断，完成后机器继续</span>
+  </div>
+  <div class="page-body">
+    <div class="topbar"><span class="topbar-logo">▣ 电商运营平台</span><div class="topbar-right"><span>张三▼</span></div></div>
+    <div class="col col-100" style="border-top:1px solid #ccc">
+      <div class="breadcrumb">任务列表 / 冬季补货 #T-001 / 步骤 4</div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <strong style="font-size:15px">冬季补货 · 第 4 步 / 共 7 步</strong>
+        <span class="tag tag-red">截止 今日 18:00（还有 4 小时）</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col col-100">
+        <div class="box" style="background:#f5f5f5">
+          <div class="box-title">▶ 机器已完成（背景信息）</div>
+          <div class="hint">· 获取了最新库存数据（截止09:00，共 SKU 847 个）</div>
+          <div class="hint">· 识别出低库存 SKU <strong>23 个</strong>（低于30天销售预测）</div>
+          <div class="hint">· 基于历史销售数据和促销计划生成了采购建议（见下方表格）</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col col-100">
+        <div class="section-title">你需要做的事情</div>
+        <div style="font-size:13px;margin-bottom:8px"><strong>确认以下采购数量，并决定是否向供应商下单</strong></div>
+        <table class="table">
+          <tr>
+            <th>商品名称</th><th>当前库存</th><th>AI 建议采购</th><th>你的决定（可修改）</th><th>AI 依据</th>
+          </tr>
+          <tr>
+            <td>羽绒服 A款（深蓝/M）</td>
+            <td>12 件</td>
+            <td>100 件</td>
+            <td><input class="input" style="width:80px;margin:0" value="100"></td>
+            <td class="hint">近30天日均销5件，预计缺货2天</td>
+          </tr>
+          <tr>
+            <td>毛衣 B款（米白/L）</td>
+            <td>5 件</td>
+            <td>60 件</td>
+            <td><input class="input" style="width:80px;margin:0" value="60"></td>
+            <td class="hint">促销期预计+20%，建议提前备货</td>
+          </tr>
+          <tr>
+            <td>围巾 C款（格子）</td>
+            <td>18 件</td>
+            <td>40 件</td>
+            <td><input class="input" style="width:80px;margin:0" value="40"></td>
+            <td class="hint">节日礼品套装关联商品</td>
+          </tr>
+        </table>
+
+        <div style="margin-top:12px">
+          <span class="label">附件上传（可选，如供应商报价单）</span>
+          <div class="box btn-ghost" style="text-align:center;padding:16px;cursor:pointer">
+            拖拽文件到此处，或 <span style="text-decoration:underline">点击上传</span>
+          </div>
+        </div>
+
+        <div style="margin-top:8px">
+          <span class="label">备注（可选）</span>
+          <textarea class="input" rows="2" placeholder="如有特殊说明，请填写..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="background:#f8f8f8;position:sticky;bottom:0">
+      <div class="col col-100">
+        <div class="hint" style="margin-bottom:8px">⚠ 提交后将自动向供应商发送采购单，此操作<strong>无法撤回</strong></div>
+        <div style="display:flex;gap:8px">
+          <span class="btn btn-primary">全部采纳 AI 建议并提交</span>
+          <span class="btn btn-primary">修改后提交</span>
+          <span class="btn btn-danger" style="margin-left:auto">驳回 / 暂不处理</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

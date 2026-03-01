@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep:*)",
+      "Bash(git:*)",
+      "Bash(python3:*)",
+      "Bash(python:*)",
+      "Bash(cd:*)",
+      "Bash(echo Python not found:*)",
+      "Bash(tail:*)",
+      "Bash(echo backend not ready:*)",
+      "Bash(head:*)",
+      "Bash(sleep 3:*)",
+      "Bash(sleep 8:*)",
+      "Bash(sleep 6:*)",
+      "Bash(curl:*)",
+      "Bash(netstat:*)",
+      "Bash(taskkill:*)",
+      "Bash(wmic process:*)",
+      "Bash(kill 27212:*)",
+      "Bash(tasklist 2>/dev/null | grep \"27212\" || powershell.exe -Command \"Get-Process -Id 27212 -ErrorAction SilentlyContinue | Select-Object Name,Id,Path\" 2>/dev/null)",
+      "Bash(powershell.exe:*)",
+      "Bash(cd /d/code/ecom_agent_v2/tests && npx playwright test feature-161.spec.ts feature-162.spec.ts feature-163.spec.ts feature-164.spec.ts --reporter=list 2>&1)",
+      "Bash(ls:*)",
+      "Bash(cd /d/code/ecom_agent_v2/tests && NO_PROXY=\"localhost,127.0.0.1\" npx playwright test \\\\\n  feature-161.spec.ts feature-162.spec.ts feature-163.spec.ts feature-164.spec.ts \\\\\n  feature-001.spec.ts feature-002.spec.ts feature-003.spec.ts feature-004.spec.ts \\\\\n  feature-005.spec.ts feature-006.spec.ts feature-007.spec.ts feature-008.spec.ts \\\\\n  feature-009.spec.ts feature-010.spec.ts \\\\\n  --reporter=list 2>&1)",
+      "Bash(bash:*)",
+      "Bash(node:*)",
+      "Bash(NO_PROXY=\"localhost,127.0.0.1\" npx playwright:*)"
+    ]
+  }
+}
