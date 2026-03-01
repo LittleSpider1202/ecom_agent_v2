@@ -42,7 +42,15 @@ export default function ToolList() {
     fetch('/api/tools', {
       headers: { Authorization: `Bearer ${t}` },
     })
-      .then(r => r.json())
+      .then(r => {
+        if (r.status === 401) {
+          localStorage.removeItem('auth_token')
+          localStorage.removeItem('auth_user')
+          window.location.href = '/login'
+          return []
+        }
+        return r.json()
+      })
       .then(data => setTools(Array.isArray(data) ? data : []))
       .catch(() => setTools([]))
       .finally(() => setLoading(false))
