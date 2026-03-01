@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 
-const API = 'http://localhost:8001'
+const API = 'http://192.168.0.112:8002'
 
 async function loginAsExecutor(page: any) {
   await page.goto('/login', { waitUntil: 'domcontentloaded' })

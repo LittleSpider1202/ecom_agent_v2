@@ -1,7 +1,7 @@
 import { test, expect, Page } from '@playwright/test'
 
 const BASE_URL = 'http://localhost:3000'
-const API_URL = 'http://localhost:8001'
+const API_URL = 'http://192.168.0.112:8002'
 
 async function loginAsExecutor(page: Page) {
   await page.goto(`${BASE_URL}/login`)
@@ -22,7 +22,7 @@ test('#56 EW-06 知识库首页：页面加载显示AI问答和分类浏览区�
   await page.goto(`${BASE_URL}/executor/knowledge`)
 
   // Page title
-  await expect(page.getByText('知识库')).toBeVisible()
+  await expect(page.locator('h1, h2, [data-testid="page-title"]').filter({ hasText: '知识库' }).first()).toBeVisible()
 
   // AI Q&A input
   await expect(page.locator('[data-testid="qa-input"]')).toBeVisible()

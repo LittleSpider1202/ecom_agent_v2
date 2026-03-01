@@ -2,7 +2,7 @@ import { test, expect, Page } from '@playwright/test'
 
 async function loginAsExecutor(page: Page) {
   await page.goto('/login', { waitUntil: 'domcontentloaded' })
-  const res = await page.request.post('http://localhost:8001/api/auth/login', {
+  const res = await page.request.post('http://192.168.0.112:8002/api/auth/login', {
     form: { username: 'executor', password: 'executor123' },
   })
   const data = await res.json()
@@ -17,7 +17,7 @@ async function loginAsExecutor(page: Page) {
 
 async function loginAsManager(page: Page) {
   await page.goto('/login', { waitUntil: 'domcontentloaded' })
-  const res = await page.request.post('http://localhost:8001/api/auth/login', {
+  const res = await page.request.post('http://192.168.0.112:8002/api/auth/login', {
     form: { username: 'manager', password: 'manager123' },
   })
   const data = await res.json()
@@ -107,6 +107,11 @@ test('feature-045: EW-02 task list - pending badge is yellow-colored', async ({ 
 
 test('feature-046: EW-04 human step - layout clarity and red warning banner', async ({ page }) => {
   await loginAsExecutor(page)
+  // Reset task 1 step 1 to pending for idempotency (earlier tests may have consumed it)
+  const token = await page.evaluate(() => localStorage.getItem('auth_token'))
+  await page.request.post('http://192.168.0.112:8002/api/tasks/1/steps/1/reset', {
+    headers: { Authorization: `Bearer ${token}` },
+  })
   // Task 1 (seed data) has has_human_step=true — navigate directly
   await page.goto('/task/1/step/current')
   await page.waitForSelector('[data-testid="warning-banner"]')

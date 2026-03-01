@@ -5,7 +5,7 @@ import { test, expect, type Page } from '@playwright/test'
 // ── 稳定登录 ────────────────────────────────────────────────────────────────
 async function loginAsExecutor(page: Page) {
   await page.goto('/login', { waitUntil: 'domcontentloaded' })
-  const res = await page.request.post('http://localhost:8001/api/auth/login', {
+  const res = await page.request.post('http://192.168.0.112:8002/api/auth/login', {
     form: { username: 'executor', password: 'executor123' },
   })
   const data = await res.json()
@@ -20,12 +20,12 @@ async function loginAsExecutor(page: Page) {
 
 // 获取"618大促活动方案执行"任务 ID（用 page.request，在 Node.js context 运行）
 async function getAutoTaskId(page: Page): Promise<number> {
-  const loginRes = await page.request.post('http://localhost:8001/api/auth/login', {
+  const loginRes = await page.request.post('http://192.168.0.112:8002/api/auth/login', {
     form: { username: 'executor', password: 'executor123' },
   })
   const { access_token } = await loginRes.json()
 
-  const tasksRes = await page.request.get('http://localhost:8001/api/tasks?status=running&page_size=20', {
+  const tasksRes = await page.request.get('http://192.168.0.112:8002/api/tasks?status=running&page_size=20', {
     headers: { Authorization: `Bearer ${access_token}` },
   })
   const { items } = await tasksRes.json()

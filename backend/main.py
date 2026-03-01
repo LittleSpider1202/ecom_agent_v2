@@ -418,6 +418,19 @@ async def seed_data():
                 db.add(f)
             db.commit()
 
+        # ---- FlowVersion 种子数据（为测试回滚功能提供多版本数据）----
+        if db.query(FlowVersion).count() == 0:
+            first_flow = db.query(Flow).first()
+            if first_flow:
+                for v in range(1, first_flow.version + 1):
+                    db.add(FlowVersion(
+                        flow_id=first_flow.id,
+                        version=v,
+                        nodes=[{"id": f"n{v}", "type": "auto", "label": f"v{v}节点"}],
+                        edges=[],
+                    ))
+                db.commit()
+
         # ---- KnowledgeEntry 种子数据 ----
         if db.query(KnowledgeEntry).count() == 0:
             seed_knowledge = [
@@ -880,6 +893,32 @@ async def seed_data():
             db.commit()
     finally:
         db.close()
+
+
+@app.post("/api/dev/reset-db")
+async def reset_db():
+    """仅供测试使用：截断所有业务表并重新 seed，确保每次回归从干净状态开始。"""
+    db = next(get_db())
+    try:
+        tables = [
+            "tool_executions", "task_dag_nodes", "task_steps",
+            "task_instances", "ai_suggestions", "knowledge_submissions",
+            "knowledge_entries", "flow_versions", "flows", "tools",
+            "competitor_daily", "roles", "departments", "users",
+        ]
+        for t in tables:
+            db.execute(text(f"TRUNCATE TABLE {t} RESTART IDENTITY CASCADE"))
+        db.commit()
+    finally:
+        db.close()
+    await seed_data()
+    # 重置内存状态（通知列表、系统日志）
+    import routers.bot as _bot_module
+    import routers.logs as _logs_module
+    _bot_module._notifications.clear()
+    _bot_module._next_id = 1
+    _logs_module._system_logs.clear()
+    return {"status": "ok", "message": "数据库已重置并重新 seed"}
 
 
 @app.get("/")

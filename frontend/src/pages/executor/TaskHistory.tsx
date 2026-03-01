@@ -19,7 +19,7 @@ interface MyStep {
   completed_at: string | null
 }
 
-const API = 'http://localhost:8001'
+const API = ''
 
 function getToken(): string {
   return localStorage.getItem('auth_token') || ''

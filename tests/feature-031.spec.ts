@@ -8,7 +8,7 @@ async function loginAsManager(page: Page) {
   await page.goto('/login', { waitUntil: 'domcontentloaded' })
 
   // 2. 通过 API 获取 token
-  const res = await page.request.post('http://localhost:8001/api/auth/login', {
+  const res = await page.request.post('http://192.168.0.112:8002/api/auth/login', {
     form: { username: 'manager', password: 'manager123' },
   })
   const data = await res.json()

@@ -1,9 +1,18 @@
-import { chromium } from '@playwright/test'
+import { chromium, request } from '@playwright/test'
 
 const API_URL = 'http://192.168.0.112:8002'
 
-// 预热：程序式登录，让 DB 连接池就绪
+// 每次全量回归前重置 DB，确保干净状态
 async function globalSetup() {
+  // Step 1: 重置数据库（截断所有表并重新 seed）
+  const apiCtx = await request.newContext()
+  const resetRes = await apiCtx.post(`${API_URL}/api/dev/reset-db`)
+  if (!resetRes.ok()) {
+    throw new Error(`DB reset failed: ${resetRes.status()} ${await resetRes.text()}`)
+  }
+  await apiCtx.dispose()
+
+  // Step 2: 预热登录，让连接池就绪
   const browser = await chromium.launch({
     args: ['--proxy-bypass-list=localhost,127.0.0.1'],
   })

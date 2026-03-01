@@ -1,7 +1,7 @@
 import { test, expect, Page } from '@playwright/test'
 
 const BASE_URL = 'http://localhost:3000'
-const API_URL = 'http://localhost:8001'
+const API_URL = 'http://192.168.0.112:8002'
 
 async function loginAs(page: Page, username: string, password: string) {
   await page.goto(`${BASE_URL}/login`)
