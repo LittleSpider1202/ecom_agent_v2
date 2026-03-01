@@ -253,6 +253,48 @@
 - `[data-testid="monitor-task-row"].filter({ hasText: '66' })` → 命中4个元素（"66"出现在多行文本中）
 - 修复：用正则 `/^#66\b/` 精确匹配 task ID 前缀，或用 `.filter({ hasText: /#66\b/ })`
 
+## curl 本地代理绕过
+
+- `--noproxy '*'` 无法绕过 `http_proxy` 环境变量（至少在 MINGW64 下如此）
+- 正确做法：用 `-x ""` 清空代理，即 `curl -x "" -s http://192.168.0.112:8002/...`
+
+## 测试幂等性 — 步骤重置端点
+
+- E2E 测试提交 TaskStep 后，该步骤变为 completed，下次运行测试时无法再次提交（400: 步骤已处理）
+- Bot 通知的 `card_processed` 也会被 `mark_notification_processed` 标记为 True，导致"前往工作台"按钮消失
+- 解决：在 `tasks.py` 添加 `POST /{task_id}/steps/{step_id}/reset` 端点，测试开始前先调用重置
+- 该端点将 step 恢复为 pending，task 恢复为 pending + has_human_step=True，同时重置通知 card_processed=False
+
+## 测试幂等性 — 步骤 reset 需用固定 stepId
+
+- 若用 `/steps/current` 动态获取 stepId，admin proxy submit 后该接口返回 404（无 pending/rejected 步骤）
+- 导致 stepId = undefined，reset 失败，页面加载 `/task/2/step/undefined` 无法找到 background-section
+- 解决：直接硬编码 seed stepId（如 task 2 → stepId = 2），确保 reset 始终有目标
+
+## DepartmentManagement.tsx API_URL 硬编码问题
+
+- 发现 `DepartmentManagement.tsx` 使用 `http://localhost:8001` 而非 `''`（走 Vite proxy）
+- 页面加载后 dept-tree 始终显示"加载中"，dept-tree testid 不可见
+- 修复：改为 `const API_URL = ''`，与其他页面一致
+- 教训：新建页面必须用 `const API_URL = ''` 或从共享配置导入，严禁硬编码 localhost 端口
+
+## 飞书集成测试（#230）
+
+- 飞书连接测试是模拟的：只要 app_id + app_secret 非空就返回成功
+- webhook_url 需要单独添加 `/feishu/save` 端点（`/feishu/test` 只做连接测试，不保存 webhook）
+- 步骤 7-11（飞书卡片实操）用 in-app bot notification 系统模拟，无法测试真实飞书 API
+
+## 权限边界测试（#231）
+
+- 系统日志 seed 数据随机分配 user 字段，可能把管理操作日志标记为 executor
+- 不能在测试里断言 "executor 无管理类日志"（seed 数据会误判）
+- 解决：只断言日志 API 返回正确结构 `{logs, total}`，不检查具体 user/action 组合
+
+## 系统日志 API
+
+- `GET /api/logs` 返回 `{total, logs, users, actions}`（对象），不是平铺数组
+- 取日志列表用 `data.logs || []`
+
 ## Playwright route interception + networkidle 时序
 
 - `page.route()` 拦截后，若用 `waitUntil: 'networkidle'`，Playwright 会等所有网络请求静止

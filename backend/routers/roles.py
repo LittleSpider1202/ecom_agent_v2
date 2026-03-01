@@ -48,6 +48,8 @@ def create_role(body: RoleCreate, db: Session = Depends(get_db), current_user=De
     db.add(role)
     db.commit()
     db.refresh(role)
+    from routers.logs import add_log
+    add_log(current_user.username, "角色变更", f"创建角色：{body.name}")
     return role_to_dict(role)
 
 

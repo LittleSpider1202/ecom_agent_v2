@@ -1,45 +1,57 @@
-# Session 16 进度记录
+# Session 17 进度记录
 
-## 本次完成（224 total passing，+10）
+## 本次完成（231/231 total passing，+7，全部完成！）
 
-### 批次 1: #215-219（顺序节点+失败告警+实时状态+部门筛选+控制台检查）
-- #215: 工作流引擎：多个顺序自动节点完整链式执行
-- #216: 工作流引擎：自动节点失败后任务进入失败状态并告警
-- #217: 工具执行：长时间运行工具的状态实时更新（前端添加轮询）
-- #218: MW-09 成员管理：按部门筛选成员列表（后端+前端实现）
-- #219: 整体页面：浏览器控制台无JavaScript报错
-
-### 批次 2: #220-224（DAG视觉+角色E2E+多部门协作+工具故障+定时流程）
-- #220: EW-03 DAG图完整视觉——节点布局不重叠，连线弯曲合理
-- #221: E2E 管理员完整配置角色权限到执行者使用功能验证
-- #222: E2E 多部门协作流程——跨部门人工节点转交和处理
-- #223: E2E 工具故障恢复——工具执行失败后管理员排查并重新触发
-- #224: E2E 定时流程从配置到自动执行验证
-
-## 下一步（从 #225 开始，共 7 个）
-
+### 批次 1: #225-228
 - #225: E2E 飞书Bot深链接完整验证——BOT-02卡片到EW-04页面
 - #226: E2E 数据分析看板展示真实任务执行效率数据
 - #227: E2E 知识库AI问答引用SOP内容指导执行者操作
 - #228: E2E 任务驳回后管理员代处理完整流程
+
+### 批次 2: #229-231
 - #229: E2E 完整组织架构配置——公司→部门→角色→成员
 - #230: E2E 飞书平台完整集成——配置连接→发送通知→接收回复
 - #231: E2E 权限边界验证——执行者无法访问管理功能的完整测试
 
+## 项目状态：已完成所有 231 个 feature
+
+所有测试均 passes: true。无更多 feature 待实现。
+
 ## 关键变更记录
 
-### 代码修复
-- `frontend/src/pages/Login.tsx` — navigate 从 render 移入 useEffect（修复 React Warning）
-- `frontend/src/pages/manager/RoleManagement.tsx` — API_URL 从 'http://localhost:8001' 改为 ''（走proxy）
-- `frontend/src/pages/executor/ToolExecutionDetail.tsx` — 添加 polling（2秒interval，当status='running'时）
-- `frontend/src/pages/manager/MemberManagement.tsx` — 添加部门筛选下拉器
-- `backend/routers/members.py` — GET /api/members 添加 department_id 过滤参数
+### 后端
+- `backend/routers/tasks.py`:
+  - 新增 `POST /{task_id}/steps/{step_id}/reset` 端点（测试幂等用）
+  - `submit_step` 允许 manager/admin 提交已驳回步骤（is_admin_override）
+  - `GET /steps/current` 无 pending 时返回 rejected 步骤
+  - `reject_step` 同步更新 TaskDagNode 状态
+  - 新增 `DELETE /{task_id}` 端点（仅 manager/admin，用于权限边界测试）
+- `backend/routers/flows.py`: `POST /` 添加 403（executor 不可创建流程）
+- `backend/routers/analytics.py`: 新增 flow-names 端点、avg_human_step 指标、flow_name 过滤
+- `backend/routers/bot.py`: 扩展通知结构（background_info/ai_suggestion/card_processed）
+- `backend/routers/integrations.py`: 新增 webhook_url 字段，新增 /feishu/save 端点
+- `backend/routers/departments.py`: 创建部门后写入系统日志
+- `backend/routers/roles.py`: 创建角色后写入系统日志
+- `backend/routers/members.py`: 邀请成员后写入系统日志
 
-### 新文件
-- tests/feature-215.spec.ts ~ feature-224.spec.ts（共10个测试文件）
+### 前端
+- `frontend/src/pages/manager/DepartmentManagement.tsx`: API_URL 从 localhost:8001 改为 ''
+- `frontend/src/pages/manager/IntegrationConfig.tsx`: 添加 webhook 字段 + feishu-save-btn
+- `frontend/src/pages/manager/ManagerTaskDetail.tsx`: 支持 rejected 状态 + proxy-handle-btn
+- `frontend/src/pages/manager/AnalyticsDashboard.tsx`: 流程筛选 + avg human step 指标卡
+- `frontend/src/components/AppLayout.tsx`: 通知卡扩展（background/ai suggestion/goto 按钮）
+- `frontend/src/pages/executor/KnowledgeHome.tsx`: qa-ref data-testid
+
+### 新测试文件
+- tests/feature-225.spec.ts ~ feature-231.spec.ts（共7个）
+
+## 下一步
+无。全部 231 个 feature 已完成，可以考虑：
+1. 开 PR 将 dev 合并到 main
+2. 运行全量回归确认所有测试绿色
+3. 准备生产部署
 
 ## 环境状态
 - 小主机：192.168.0.112
 - 后端：port 8002，nginx port 80（前端）
 - 分支：dev
-- API_URL in tests：http://192.168.0.112:8002

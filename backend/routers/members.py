@@ -88,6 +88,8 @@ def invite_member(
     db.add(user)
     db.commit()
     db.refresh(user)
+    from routers.logs import add_log
+    add_log(current_user.username, "成员邀请", f"邀请新成员：{body.display_name}（{username}），角色：{body.role}")
     depts = {d.id: d for d in db.query(Department).all()}
     return {"ok": True, "user": user_to_dict(user, depts)}
 

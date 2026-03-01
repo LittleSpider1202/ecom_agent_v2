@@ -10,7 +10,7 @@ router = APIRouter(prefix="/api/integrations", tags=["integrations"])
 
 # In-memory config store (demo — no DB table needed for config settings)
 _config: dict = {
-    "feishu": {"app_id": "", "app_secret": "", "connected": False},
+    "feishu": {"app_id": "", "app_secret": "", "webhook_url": "", "connected": False},
     "erp": {"api_url": "", "api_key": "", "connected": False},
     "taobao": {"app_key": "", "app_secret": "", "platform": "taobao", "connected": False},
 }
@@ -19,6 +19,7 @@ _config: dict = {
 class FeishuConfig(BaseModel):
     app_id: str
     app_secret: str
+    webhook_url: Optional[str] = None
 
 
 class ErpConfig(BaseModel):
@@ -77,6 +78,20 @@ async def test_feishu(
     else:
         _config["feishu"]["connected"] = False
         return {"success": False, "message": "连接失败：App ID 和 App Secret 不能为空"}
+
+
+@router.post("/feishu/save")
+async def save_feishu(
+    body: FeishuConfig,
+    current_user: User = Depends(require_current_user),
+):
+    """保存飞书配置（含 Webhook）"""
+    _config["feishu"]["app_id"] = body.app_id
+    _config["feishu"]["app_secret"] = body.app_secret
+    if body.webhook_url is not None:
+        _config["feishu"]["webhook_url"] = body.webhook_url
+    _config["feishu"]["connected"] = bool(body.app_id and body.app_secret)
+    return {"success": True, "message": "飞书配置已保存", "webhook_url": _config["feishu"]["webhook_url"]}
 
 
 @router.post("/erp/save")

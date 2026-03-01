@@ -57,6 +57,8 @@ def create_department(body: DeptCreate, db: Session = Depends(get_db), current_u
     db.add(dept)
     db.commit()
     db.refresh(dept)
+    from routers.logs import add_log
+    add_log(current_user.username, "角色变更", f"创建部门：{body.name}（父部门ID：{body.parent_id}）")
     return dept_to_dict(dept)
 
 

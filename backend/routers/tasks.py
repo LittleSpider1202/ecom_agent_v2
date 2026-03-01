@@ -244,8 +244,17 @@ async def get_task_dag(
         .order_by(TaskDagNode.id)
         .all()
     )
+    # Build a map of step reject_reason by step_name for rejected human steps
+    rejected_steps = {
+        s.step_name: s.reject_reason
+        for s in db.query(TaskStep).filter(
+            TaskStep.task_id == task_id, TaskStep.status == "rejected"
+        ).all()
+    }
+
     nodes = []
     for n in dag_nodes:
+        reject_reason = rejected_steps.get(n.label) if n.node_type == "human" and n.status == "rejected" else None
         nodes.append({
             "id": n.node_key,
             "label": n.label,
@@ -253,6 +262,7 @@ async def get_task_dag(
             "status": n.status,
             "log": n.log or "",
             "error_msg": n.error_msg or "",
+            "reject_reason": reject_reason or "",
             "position": {"x": n.pos_x, "y": n.pos_y},
             "source_keys": n.source_keys or [],
             "started_at": n.started_at.isoformat() if getattr(n, "started_at", None) else None,
@@ -321,11 +331,18 @@ async def get_step(
         raise HTTPException(status_code=404, detail="任务不存在")
 
     if step_id == "current":
+        # Return pending step; if task is rejected, also check for rejected steps
         step = (
             db.query(TaskStep)
             .filter(TaskStep.task_id == task_id, TaskStep.status == "pending")
             .first()
         )
+        if not step:
+            step = (
+                db.query(TaskStep)
+                .filter(TaskStep.task_id == task_id, TaskStep.status == "rejected")
+                .first()
+            )
     else:
         try:
             sid = int(step_id)
@@ -349,7 +366,8 @@ async def submit_step(
     step = db.query(TaskStep).filter(TaskStep.id == step_id, TaskStep.task_id == task_id).first()
     if not step:
         raise HTTPException(status_code=404, detail="步骤不存在")
-    if step.status != "pending":
+    is_admin_override = current_user.role in ("admin", "manager") and step.status == "rejected"
+    if step.status not in ("pending",) and not is_admin_override:
         raise HTTPException(status_code=400, detail="步骤已处理，不可重复提交")
 
     step.status = "completed"
@@ -357,16 +375,20 @@ async def submit_step(
     step.completed_by = current_user.id
     step.completed_at = datetime.now(timezone.utc)
 
-    # Check remaining pending steps
+    # Check remaining pending/rejected steps
     remaining = (
         db.query(TaskStep)
-        .filter(TaskStep.task_id == task_id, TaskStep.status == "pending", TaskStep.id != step_id)
+        .filter(TaskStep.task_id == task_id, TaskStep.status.in_(["pending", "rejected"]), TaskStep.id != step_id)
         .count()
     )
     task = db.query(TaskInstance).filter(TaskInstance.id == task_id).first()
     if task and remaining == 0:
         task.has_human_step = False
         task.status = "completed"
+    elif task and is_admin_override:
+        # Admin override of rejected step: reset task to running
+        task.status = "running"
+        task.has_human_step = False
 
     db.commit()
 
@@ -482,5 +504,30 @@ async def reject_step(
         task.status = "rejected"
         task.has_human_step = False
 
+    # Update DAG node status to reflect rejection
+    dag_node = (
+        db.query(TaskDagNode)
+        .filter(TaskDagNode.task_id == task_id, TaskDagNode.node_type == "human", TaskDagNode.status == "pending")
+        .first()
+    )
+    if dag_node:
+        dag_node.status = "rejected"
+
     db.commit()
     return {"success": True, "message": "已驳回"}
+
+
+@router.delete("/{task_id}")
+def delete_task(
+    task_id: int,
+    current_user: User = Depends(require_current_user),
+    db: Session = Depends(get_db),
+):
+    if current_user.role not in ("manager", "admin"):
+        raise HTTPException(status_code=403, detail="Permission denied")
+    task = db.query(TaskInstance).filter(TaskInstance.id == task_id).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="任务不存在")
+    db.delete(task)
+    db.commit()
+    return {"success": True}

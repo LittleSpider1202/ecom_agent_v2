@@ -93,6 +93,9 @@ def list_flows(search: Optional[str] = None, db: Session = Depends(get_db), user
 
 @router.post("")
 def create_flow(req: FlowSaveRequest, db: Session = Depends(get_db), user=Depends(require_current_user)):
+    if user.role not in ("manager", "admin"):
+        from fastapi import HTTPException
+        raise HTTPException(status_code=403, detail="Permission denied")
     flow = Flow(
         name=req.name,
         nodes=req.nodes,

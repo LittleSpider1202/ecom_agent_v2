@@ -46,6 +46,7 @@ interface RawNode {
   status: string
   log: string
   error_msg: string
+  reject_reason?: string
   position: { x: number; y: number }
   source_keys: string[]
   started_at: string | null
@@ -59,6 +60,7 @@ const STATUS_STYLE: Record<string, string> = {
   running:   'bg-blue-50 border-blue-400 text-blue-800',
   failed:    'bg-red-50 border-red-400 text-red-800',
   pending:   'bg-gray-50 border-gray-300 text-gray-500',
+  rejected:  'bg-orange-50 border-orange-400 text-orange-800',
 }
 
 const STATUS_LABEL: Record<string, string> = {
@@ -66,6 +68,7 @@ const STATUS_LABEL: Record<string, string> = {
   running:   '⟳ 执行中',
   failed:    '✗ 失败',
   pending:   '○ 待执行',
+  rejected:  '✗ 已驳回',
 }
 
 const TASK_STATUS_BADGE: Record<string, string> = {
@@ -291,15 +294,17 @@ function ManagerTaskDetailInner() {
         </div>
         {/* Admin actions */}
         <div className="flex items-center gap-2">
-          {task.has_human_step && (
+          {(task.has_human_step || task.status === 'rejected') && (
             <>
-              <button
-                data-testid="urge-task-btn"
-                onClick={() => setUrgeNodeKey('task')}
-                className="px-3 py-1.5 text-sm bg-orange-100 text-orange-700 rounded-lg hover:bg-orange-200"
-              >
-                催办
-              </button>
+              {task.has_human_step && (
+                <button
+                  data-testid="urge-task-btn"
+                  onClick={() => setUrgeNodeKey('task')}
+                  className="px-3 py-1.5 text-sm bg-orange-100 text-orange-700 rounded-lg hover:bg-orange-200"
+                >
+                  催办
+                </button>
+              )}
               <button
                 data-testid="proxy-handle-btn"
                 onClick={openProxyHandle}
@@ -385,6 +390,11 @@ function ManagerTaskDetailInner() {
                 )}
                 {selectedNode.error_msg && (
                   <div className="p-2 bg-red-50 text-red-700 text-xs rounded">{selectedNode.error_msg}</div>
+                )}
+                {selectedNode.status === 'rejected' && selectedNode.reject_reason && (
+                  <div data-testid="rejected-reason-panel" className="p-2 bg-orange-50 text-orange-700 text-xs rounded border border-orange-200">
+                    <span className="font-medium">驳回原因：</span>{selectedNode.reject_reason}
+                  </div>
                 )}
                 {/* Node-level urge for pending human nodes */}
                 {selectedNode.node_type === 'human' && selectedNode.status === 'pending' && (

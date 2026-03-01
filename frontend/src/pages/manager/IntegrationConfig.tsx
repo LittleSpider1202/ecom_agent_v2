@@ -17,8 +17,10 @@ export default function IntegrationConfig() {
   // Feishu form
   const [feishuAppId, setFeishuAppId] = useState('')
   const [feishuSecret, setFeishuSecret] = useState('')
+  const [feishuWebhook, setFeishuWebhook] = useState('')
   const [feishuTesting, setFeishuTesting] = useState(false)
   const [feishuResult, setFeishuResult] = useState<{ success: boolean; message: string } | null>(null)
+  const [feishuSaved, setFeishuSaved] = useState(false)
 
   // ERP form
   const [erpUrl, setErpUrl] = useState('')
@@ -56,6 +58,21 @@ export default function IntegrationConfig() {
       setFeishuResult({ success: false, message: '连接请求失败' })
     } finally {
       setFeishuTesting(false)
+    }
+  }
+
+  const handleFeishuSave = async () => {
+    try {
+      await api.post('/api/integrations/feishu/save', {
+        app_id: feishuAppId,
+        app_secret: feishuSecret,
+        webhook_url: feishuWebhook,
+      })
+      setFeishuSaved(true)
+      setTimeout(() => setFeishuSaved(false), 3000)
+      load()
+    } catch {
+      // ignore
     }
   }
 
@@ -149,20 +166,45 @@ export default function IntegrationConfig() {
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
-              <button
-                data-testid="feishu-test-btn"
-                onClick={handleFeishuTest}
-                disabled={feishuTesting}
-                className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
-              >
-                {feishuTesting ? '测试中…' : '测试连接'}
-              </button>
+              <div>
+                <label className="block text-sm text-gray-600 mb-1">机器人 Webhook 地址</label>
+                <input
+                  data-testid="feishu-webhook"
+                  type="text"
+                  value={feishuWebhook}
+                  onChange={e => setFeishuWebhook(e.target.value)}
+                  placeholder="https://open.feishu.cn/open-apis/bot/v2/hook/..."
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+              </div>
+              <div className="flex gap-2">
+                <button
+                  data-testid="feishu-test-btn"
+                  onClick={handleFeishuTest}
+                  disabled={feishuTesting}
+                  className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                >
+                  {feishuTesting ? '测试中…' : '测试连接'}
+                </button>
+                <button
+                  data-testid="feishu-save-btn"
+                  onClick={handleFeishuSave}
+                  className="px-4 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700"
+                >
+                  保存配置
+                </button>
+              </div>
               {feishuResult && (
                 <div
                   data-testid="feishu-result"
                   className={`px-3 py-2 rounded-lg text-sm ${feishuResult.success ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}
                 >
                   {feishuResult.message}
+                </div>
+              )}
+              {feishuSaved && (
+                <div data-testid="feishu-save-success" className="px-3 py-2 rounded-lg text-sm bg-green-50 text-green-700">
+                  飞书配置已保存
                 </div>
               )}
             </div>
